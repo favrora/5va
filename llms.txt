@@ -1,38 +1,29 @@
 # 5VA Appliance Repair
 
-> 5VA Appliance Repair provides appliance repair and handyman home repairs in Philadelphia and surrounding communities, based in Feasterville-Trevose, Pennsylvania.
+> Residential appliance repair with Philadelphia as the primary service area. Pennsylvania and New Jersey requests are confirmed by ZIP code and appliance before booking.
 
 ## Business information
 
-- Business name: 5VA Appliance Repair.
-- Telephone: +1 267-704-8588.
-- Services: household appliance repair and a broad range of handyman home repairs.
-- Service locality: Philadelphia and surrounding communities; call to confirm travel availability and the scope of a particular job.
-- [Google Maps business listing](https://www.google.com/maps?cid=12282828888363558368).
-- Contact the business for current scheduling, diagnosis, pricing, and repair suitability. The website does not guarantee same-day availability or a fixed repair price.
+- Exact business name: 5VA Appliance Repair
+- Phone and SMS: +1 (267) 704-8588
+- Base: Feasterville-Trevose, Pennsylvania; visits at customers' homes
+- Services: household refrigerators, washers, dryers, ovens/stoves/cooktops, dishwashers, freezers, microwaves, and ice makers, subject to model assessment
+- No appliance sales, no retail parts sales, no commercial equipment repair, and no general home repair services
+- [Original Google Business Profile](https://www.google.com/maps?cid=12282828888363558368)
+- The initial conversation has no 5VA service charge. Carrier terms may apply. Visit, diagnosis, parts, and repair fees are separate.
+- Do not infer guaranteed statewide appointments, same-day service, fixed prices, warranties, licenses, or manufacturer authorization.
 
 ## Website navigation
 
-- [Home](/): Overview and contact options.
-- [Services](/5va/services/): Appliance repair and handyman service information.
-- [Service areas](/5va/service-areas/): Where to request a visit.
-- [About](/5va/about/): Business background and approach.
-- [Blog](/5va/blog/): Practical appliance and home maintenance articles.
-- [Contact](/5va/contact/): Call or start a service inquiry.
+- [Home](/): Appliance repair scope, phone/SMS, actual Google photos, and next steps
+- [Services](/5va/services/): Eight appliance categories
+- [Service areas](/5va/service-areas/): Philadelphia, nearby communities, PA and NJ inquiries
+- [About](/5va/about/): Business approach
+- [Blog](/5va/blog/): Ten appliance symptom and repair planning guides
+- [Contact](/5va/contact/): Direct call or SMS; no inquiry form
+- [Visit checklist](/5va/blog/appliance-repair-visit-checklist/)
+- [Philadelphia booking guide](/5va/blog/appliance-repair-philadelphia/)
 
-## Content notes
+## Source notes
 
-Article images illustrate the topics discussed. The home page separately attributes three actual appliance photos uploaded by 5VA to its Google Business Profile. Google reviews are attributed excerpts linked to the original listing; check that listing for the current rating and full reviews.
-
-This optional publisher-written guide summarizes the website. It does not replace crawlable HTML, canonical URLs, the XML sitemap, or the original source material. A production canonical domain will be established at launch; relative links refer to this website.
-
-
-## Philadelphia project planning guides
-
-- [Small handyman jobs](/5va/blog/handyman-philadelphia-small-jobs/): prioritize a repair list and prepare a useful inquiry.
-- [Drywall repair planning](/5va/blog/drywall-repair-philadelphia/): describe wall damage, finish, and quote requirements.
-- [Furniture assembly preparation](/5va/blog/furniture-assembly-philadelphia/): product details, access, hardware, and anchoring.
-- [Interior door repair](/5va/blog/interior-door-repair-philadelphia/): describe the door and frame before booking.
-- [Home maintenance checklist](/5va/blog/philadelphia-home-maintenance-checklist/): group and prioritize local home projects.
-
-The initial conversation with 5VA is free and does not require booking. A visit, diagnosis, materials, and repair work may involve separately agreed charges. Contact is by direct phone call or text to +1 267-704-8588. There is no website inquiry form.
+Google review excerpts and actual appliance photos are attributed to the original listing, checked October 17, 2026. Rating 5.0 and 38 reviews are a dated snapshot, not a live feed. Editorial blog illustrations do not document company jobs or staff. This publisher-written guide does not guarantee AI visibility or replace HTML, canonical URLs, or the sitemap. The current public preview is noindex; a production domain has not been selected.
