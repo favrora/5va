@@ -6,7 +6,9 @@
 
 - Exact business name: 5VA Appliance Repair
 - Phone and SMS: +1 (267) 704-8588
-- Base: Feasterville-Trevose, Pennsylvania; visits at customers' homes
+- Mobile service only: visits at customers' homes; no shop, street address or customer drop-off
+- Hours: 7 AM–8 PM every day, America/New_York
+- Territory: Philadelphia 19115 and 19116, all Montgomery County PA, plus the exact PA/NJ ZIPs listed on /service-areas/
 - Services: household refrigerators, washers, dryers, ovens/stoves/cooktops, dishwashers, freezers, microwaves, and ice makers, subject to model assessment
 - No appliance sales, no retail parts sales, no commercial equipment repair, and no general home repair services
 - [Original Google Business Profile](https://www.google.com/maps?cid=12282828888363558368)
@@ -26,4 +28,4 @@
 
 ## Source notes
 
-Google review excerpts and actual appliance photos are attributed to the original listing, checked October 17, 2026. Rating 5.0 and 38 reviews are a dated snapshot, not a live feed. Editorial blog illustrations do not document company jobs or staff. This publisher-written guide does not guarantee AI visibility or replace HTML, canonical URLs, or the sitemap. The current public preview is noindex; a production domain has not been selected.
+Google review excerpts and actual appliance photos are attributed to the original listing, checked October 24, 2026. Rating 5.0 and 39 reviews are a dated snapshot, not a live feed. Editorial blog illustrations do not document company jobs or staff. This publisher-written guide does not guarantee AI visibility or replace HTML, canonical URLs, or the sitemap. The current public preview is noindex; a production domain has not been selected.
