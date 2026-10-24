@@ -29,7 +29,7 @@ try {
     });
     const files = await walk(output);
     const pages = files.filter((file) => file.endsWith('.html'));
-    assert.equal(pages.length, 33);
+    assert.equal(pages.length, 35);
     for (const page of pages) {
       const html = await readFile(page, 'utf8');
       assert.match(
@@ -62,7 +62,7 @@ try {
     assert.equal(social.readUInt32BE(20), 630);
   }
   console.log(
-    'Release fixtures verified: explicit approved production origin, 32 indexable production URLs, noindex previews and 404, robots/sitemap, phone-only contacts, no private address or review-star manipulation. Existing dist/ unchanged.',
+    'Release fixtures verified: explicit approved production origin, 34 indexable production URLs, noindex previews and 404, robots/sitemap, phone-only contacts, no private address or review-star manipulation. Existing dist/ unchanged.',
   );
 } catch (error) {
   if (error.stdout) process.stderr.write(error.stdout.toString().slice(-3000));

@@ -203,7 +203,7 @@ for (const file of pages) {
 for (const [file, count] of incoming)
   if (!file.endsWith('/404.html')) assert.ok(count > 0, `Orphan content page: ${file}`);
 const blogFiles = pages.filter((file) => /\/blog\/[^/]+\/index\.html$/.test(file));
-assert.equal(blogFiles.length, 10, 'Every article needs a built page');
+assert.equal(blogFiles.length, 12, 'Every article needs a built page');
 for (const file of blogFiles) {
   const html = await readFile(file, 'utf8');
   assert.match(html, /class="guide-cover"/, `${file}: missing editorial cover`);
@@ -228,7 +228,7 @@ assert.deepEqual(
   'Sitemap must match all public page canonicals and exclude 404',
 );
 assert.equal(pages.length, locations.length + 1, 'Content pages plus a noindex 404');
-assert.equal(pages.length, 33, 'Expected 8 root pages, 8 services, 6 areas, 10 guides, and 404');
+assert.equal(pages.length, 35, 'Expected 8 root pages, 8 services, 6 areas, 12 guides, and 404');
 const js = files.filter((file) => file.endsWith('.js'));
 let javascriptBytes = 0;
 for (const file of js) javascriptBytes += (await stat(file)).size;

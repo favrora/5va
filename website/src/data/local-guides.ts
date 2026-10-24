@@ -24,6 +24,118 @@ const guide = (
 
 export const localGuides = [
   guide(
+    'washer-leaking-water-philadelphia',
+    'Washer Leaking Water in Philadelphia? What to Do Next',
+    'Laundry care',
+    'Washer leaking in Philadelphia? Learn what to record safely, when to stop using it, and how to arrange residential washer repair with 5VA.',
+    'washer leaking water Philadelphia',
+    ['washer-repair'],
+    'Pause laundry and keep clear of wet electrical equipment. Note where and when water appeared, then call or text with the washer model and ZIP code.',
+    [
+      [
+        'Pause laundry and protect safe access',
+        'Do not run another load to recreate a leak. If the controls are safely reachable from a dry position, stop the cycle. Keep children and pets away from wet flooring. Do not step into water to reach a plug, outlet, or control, and do not pull a heavy washer out of its space. If water is spreading or reaching electrical equipment, arrange appropriate urgent help before an ordinary repair appointment. A technician can assess the appliance after the immediate hazard is controlled.',
+      ],
+      [
+        'Describe the leak without opening the machine',
+        'From a safe, dry position, note whether water first appeared near the door, below the machine, or behind the installation. Did it happen during filling, washing, draining, or while the washer was idle? Whirlpool identifies several possible leak sources, including door seals, hoses, and internal components. Water can travel across a floor, so the puddle location alone does not identify a failed part. A photograph of the visible area is more useful than removing a panel to search for the source.',
+      ],
+      [
+        'Record detergent, load, and error details',
+        'Mention a recent detergent change, an unusually bulky load, a move, or new installation. If you noticed excess foam, tell the technician which detergent and amount you used. Whirlpool explains that unsuitable detergent or too much of it can produce excess suds. That possibility does not prove that soap caused your leak. Photograph any displayed error and keep your exact owner’s manual available. Do not add a cleaning product, open a drain filter, or attempt a test cycle while the machine is leaking.',
+      ],
+      [
+        'Prepare a clear repair request',
+        'Text the appliance brand, model if accessible, a short symptom history, and your ZIP code to +1 (267) 704-8588. Mention whether it is a front-load, top-load, stacked, or combination washer, and whether the laundry is in a closet or on an upper floor. Leave hoses and connections undisturbed. For a rental, confirm who can authorize the visit and repair. These details help plan access and the assessment; a text conversation cannot determine the failed component or final repair price.',
+      ],
+      [
+        'Book residential washer service in the covered area',
+        '5VA Appliance Repair visits customers at home daily, 7 AM–8 PM Eastern. In Philadelphia, service covers ZIP codes 19115 and 19116. Coverage also includes listed nearby Pennsylvania and New Jersey ZIP codes and all of Montgomery County, PA; confirm the exact address before booking. We repair household appliances and do not offer laundromat equipment repair, appliance sales, retail parts sales, or a customer drop-off location. The initial call is free; any visit, diagnostic, parts, and repair charges are separate and discussed for the job.',
+      ],
+    ],
+    [
+      [
+        'Should I keep using a washer with a small leak?',
+        'Pause use and arrange an assessment. A small visible puddle does not establish the source or make another test load safe.',
+      ],
+      [
+        'Does water under the washer mean the pump failed?',
+        'No. Several sources can leave water underneath. Share the timing and visible symptoms rather than buying a pump based on the puddle alone.',
+      ],
+      [
+        'Can I text a leak photo to 5VA?',
+        'Yes. Send a safely taken photo, the appliance details, and your ZIP code to +1 (267) 704-8588. Do not move the washer or approach wet electrical equipment for a better picture.',
+      ],
+    ],
+    [
+      [
+        'Whirlpool: reasons a washing machine may leak',
+        'https://www.whirlpool.com/blog/washers-and-dryers/leaking-washing-machine.html',
+      ],
+      [
+        'Whirlpool: excessive suds in a front-load washer',
+        'https://producthelp.whirlpool.com/Laundry/Washers/Product_Info/Washer_Tips_and_Tricks/Excessive_Suds_in_a_Front_Load_Washer',
+      ],
+    ],
+  ),
+
+  guide(
+    'refrigerator-making-noise-philadelphia',
+    'Refrigerator Making Noise in Philadelphia? When to Call',
+    'Kitchen care',
+    'New loud refrigerator noise in Philadelphia? Compare normal operating sounds, record useful symptoms, and arrange a residential repair assessment.',
+    'refrigerator making noise Philadelphia',
+    ['refrigerator-repair', 'freezer-repair'],
+    'Some refrigerator sounds are normal. A new, persistent, or much louder noise deserves attention, especially with poor cooling. Record it safely without opening panels.',
+    [
+      [
+        'Separate familiar operation from a new change',
+        'A refrigerator does not operate in complete silence. GE Appliances describes normal clicks during control changes, brief ice-maker sounds, and changes in fan speed. The useful question is what changed in your own kitchen: a new grinding sound, repeated loud clicking, or a noise that lasts much longer than before. Compare the sound with the guidance for your exact model. A recording from another refrigerator online cannot establish whether yours needs a repair.',
+      ],
+      [
+        'Note when the sound happens',
+        'Listen from outside the appliance without reaching behind or underneath it. Does the sound begin after a door closes, when ice drops, when a dispenser is used, or at intervals while the doors stay closed? GE notes that brief buzzing may accompany an ice-maker water valve, while some unfamiliar fan-like sounds require service. Describe the timing and approximate location without naming a failed part. Do not remove a rear cover, touch a fan, or move a heavy refrigerator to capture a recording.',
+      ],
+      [
+        'Include cooling and other symptoms',
+        'Tell the technician whether food seems warmer, ice production changed, a display shows an error, or water is appearing on the floor. If you already have an appliance thermometer, share its reading and when you took it. A noise together with a cooling complaint is more informative than the word “loud” alone. Keep door openings brief while arranging help. Smoke, a burning smell, sparks, or water near electrical equipment call for immediate safety action and appropriate urgent assistance rather than continued observation.',
+      ],
+      [
+        'Send a useful recording and model information',
+        'A short audio or video clip taken from a safe position can help communicate an intermittent sound. Avoid recording people or private household details. Include the brand, accessible model number, when the noise started, and whether the refrigerator was recently installed or moved. Mention built-in cabinetry, an upper-floor kitchen, or limited access. Leave sealed-system, electrical, and internal fan checks to a qualified professional. The sound alone cannot confirm which component needs work or whether repair will be suitable.',
+      ],
+      [
+        'Arrange an at-home refrigerator assessment',
+        'Call or text 5VA Appliance Repair at +1 (267) 704-8588 with the symptoms and ZIP code. Residential visits are available daily, 7 AM–8 PM Eastern, subject to appointment availability. Philadelphia coverage is ZIP codes 19115 and 19116, alongside listed nearby PA and NJ ZIP codes and all Montgomery County, PA. Confirm your address before booking. We do not repair commercial refrigeration or sell refrigerators or retail spare parts. The first conversation is free; on-site diagnosis, parts, and repair are separately priced after the job is assessed.',
+      ],
+    ],
+    [
+      [
+        'Is a buzzing refrigerator always broken?',
+        'No. A brief buzz can be part of normal operation on some models. A new, prolonged, or louder sound needs model-specific assessment, especially if cooling has changed.',
+      ],
+      [
+        'Can a recording confirm the repair price?',
+        'No. A recording helps describe the complaint, but an inspection is needed to assess the cause, suitable work, and cost.',
+      ],
+      [
+        'Do you repair restaurant refrigerators?',
+        'No. 5VA repairs residential household appliances at the customer’s home. Commercial refrigeration and retail parts sales are outside the service.',
+      ],
+    ],
+    [
+      [
+        'GE Appliances: normal refrigerator sounds',
+        'https://products.geappliances.com/appliance/gea-support-search-content?contentId=15901',
+      ],
+      [
+        'GE Appliances: unusual refrigerator noises',
+        'https://products.geappliances.com/appliance/gea-support-search-content?contentId=17473',
+      ],
+    ],
+  ),
+
+  guide(
     'appliance-repair-philadelphia',
     'Appliance Repair in Philadelphia: What to Know Before Booking',
     'Repair planning',

@@ -43,6 +43,9 @@ const metadata: Record<
   },
 };
 const titles: Record<string, string> = {
+  'washer-leaking-water-philadelphia': 'Washer Leaking Water? Philadelphia Repair Guide | 5VA',
+  'refrigerator-making-noise-philadelphia':
+    'Refrigerator Making Noise? Philadelphia Repair Guide | 5VA',
   'appliance-repair-philadelphia': 'Appliance Repair in Philadelphia: Booking Guide | 5VA',
   'dryer-not-heating-philadelphia': 'Dryer Not Heating? Philadelphia Repair Guide | 5VA',
   'dishwasher-not-draining': 'Dishwasher Not Draining? What to Record | 5VA',
@@ -55,6 +58,10 @@ const titles: Record<string, string> = {
   'appliance-repair-or-replace': 'Repair or Replace an Appliance? Decision Guide | 5VA',
 };
 const imageDescriptions: Record<string, string> = {
+  'washer-leaking-water-philadelphia':
+    'Small water puddle beside a closed household washing machine in a laundry room',
+  'refrigerator-making-noise-philadelphia':
+    'Closed stainless steel refrigerator with a notebook and phone on the kitchen counter',
   'appliance-repair-philadelphia':
     'Residential refrigerator and range in a sunlit Philadelphia-style kitchen',
   'dryer-not-heating-philadelphia':

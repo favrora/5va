@@ -127,7 +127,7 @@ for (const file of (await walk(output)).filter((file) => file.endsWith('.css')))
     styles++;
   }
 }
-assert.equal(pages.length, 33);
+assert.equal(pages.length, 35);
 console.log(
   JSON.stringify(
     {

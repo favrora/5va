@@ -21,4 +21,4 @@ for (const file of await readdir(dir)) {
       .toFile(`public/images/blog/${slug}-${width}.webp`);
   }
 }
-console.log('Prepared 10 editorial covers in three responsive WebP sizes');
+console.log(`Prepared ${articles.length} editorial covers in three responsive WebP sizes`);

@@ -5,6 +5,8 @@ import { articles as originalArticles, services } from '../src/data/content.ts';
 import { localGuides } from '../src/data/local-guides.ts';
 
 const localTopics = {
+  'washer-leaking-water-philadelphia': 'washer-repair',
+  'refrigerator-making-noise-philadelphia': 'refrigerator-repair',
   'appliance-repair-philadelphia': 'refrigerator-repair',
   'dryer-not-heating-philadelphia': 'dryer-repair',
   'dishwasher-not-draining': 'dishwasher-repair',
@@ -22,8 +24,8 @@ const normalize = (value) => value.trim().replace(/\s+/g, ' ').toLowerCase();
 const sharesService = (left, right) =>
   left.relatedServices.some((slug) => right.relatedServices.includes(slug));
 
-test('the journal has ten appliance guides and preserves the three original appliance topics', () => {
-  assert.equal(articles.length, 10);
+test('the journal has twelve appliance guides and preserves the three original appliance topics', () => {
+  assert.equal(articles.length, 12);
   assert.deepEqual(
     localGuides.map((article) => article.slug).sort(),
     Object.keys(localTopics).sort(),
@@ -33,7 +35,7 @@ test('the journal has ten appliance guides and preserves the three original appl
     [...originalSlugs].sort(),
   );
   assert.deepEqual(
-    articles.slice(0, 7).map((article) => article.slug),
+    articles.slice(0, localGuides.length).map((article) => article.slug),
     localGuides.map((article) => article.slug),
     'new local guides should be discoverable before the existing general guides',
   );

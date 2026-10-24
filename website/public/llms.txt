@@ -22,10 +22,12 @@
 - [Services](https://5varepair.com/services/): Eight appliance categories
 - [Service areas](https://5varepair.com/service-areas/): Philadelphia, nearby communities, PA and NJ inquiries
 - [About](https://5varepair.com/about/): Business approach
-- [Blog](https://5varepair.com/blog/): Ten appliance symptom and repair planning guides
+- [Blog](https://5varepair.com/blog/): Twelve appliance symptom and repair planning guides
 - [Contact](https://5varepair.com/contact/): Direct call or SMS; no inquiry form
 - [Visit checklist](https://5varepair.com/blog/appliance-repair-visit-checklist/)
 - [Philadelphia booking guide](https://5varepair.com/blog/appliance-repair-philadelphia/)
+- [Washer leaking water](https://5varepair.com/blog/washer-leaking-water-philadelphia/): Safe observations and a residential washer repair request
+- [Refrigerator making noise](https://5varepair.com/blog/refrigerator-making-noise-philadelphia/): Normal sounds, changed symptoms, and booking an assessment
 
 ## Source notes
 
