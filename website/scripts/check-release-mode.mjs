@@ -40,6 +40,15 @@ try {
       );
       assert.ok(html.includes(`rel="canonical" href="${origin}/`));
       assert.doesNotMatch(html, /AggregateRating|streetAddress|latitude|longitude/);
+      assert.equal(
+        html.includes('id="call-privacy"'),
+        mode === 'production' && !page.endsWith('/404.html'),
+        'Optional measurement controls belong only on approved production pages',
+      );
+      assert.doesNotMatch(
+        html,
+        /<(?:script|img|iframe|link)\b[^>]*(?:src|href)="https?:\/\/[^"/]*(?:googletagmanager|googleadservices|google-analytics|doubleclick|googlesyndication)\.[^"/]+/i,
+      );
     }
     const home = await readFile(join(output, 'index.html'), 'utf8');
     const robots = await readFile(join(output, 'robots.txt'), 'utf8');

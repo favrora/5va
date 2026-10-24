@@ -479,7 +479,7 @@ export const localGuides = [
         'For a rental, ask who can approve the assessment and repair. Discuss any diagnostic fee and how proposed work will be priced. The initial conversation has no 5VA service charge; on-site work, parts, and repairs are separate. A visit may identify a part order or show that repair is unsuitable. Ask what happens next before committing.',
       ],
       [
-        'Call or text the same number',
+        'Call or text 5VA directly',
         'Use +1 (267) 704-8588 with your ZIP code, model, and summary. Philadelphia is our primary area; Pennsylvania and New Jersey appointments are confirmed by location and job. 5VA repairs household appliances only, with no appliance sales, retail parts sales, or commercial repair. Send photos from your messaging app. No website form or account is needed.',
       ],
     ],

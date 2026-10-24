@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CallMeasurement from '../components/CallMeasurement.astro';
 import { serviceAreaSchema } from '../data/territory';
 import { business } from '../data/business';
 import { getReleaseSettings } from '../../release-config.mjs';
@@ -202,7 +203,8 @@ if (
     <main id="main">
       <slot />
     </main>
-    <Footer />
+    <Footer showPrivacyChoices={isProduction && !noindex} />
+    {isProduction && !noindex && <CallMeasurement />}
     <script>
       if (
         !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&

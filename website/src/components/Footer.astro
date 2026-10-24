@@ -2,6 +2,7 @@
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { business } from '../data/business';
+const { showPrivacyChoices = false } = Astro.props;
 ---
 
 <footer class="site-footer">
@@ -65,6 +66,11 @@ import { business } from '../data/business';
       </span>
       <div>
         <a href="/privacy/">Privacy</a>
+        {showPrivacyChoices && (
+          <button type="button" class="privacy-choices" data-call-measurement-open hidden>
+            Privacy choices
+          </button>
+        )}
         <a href="/contact/">Contact</a>
         <span>Made for a home that works.</span>
       </div>
@@ -83,3 +89,18 @@ import { business } from '../data/business';
     <span>Text 5VA</span>
   </a>
 </div>
+
+<style>
+  .privacy-choices {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .privacy-choices:hover {
+    color: var(--yellow);
+  }
+</style>

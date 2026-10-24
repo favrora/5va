@@ -163,9 +163,18 @@ for (const file of pages) {
     }
   }
   let pageJavaScript = 0;
+  assert.doesNotMatch(
+    html,
+    /<(?:script|img|iframe|link)\b[^>]*(?:src|href)="https?:\/\/[^"/]*(?:googletagmanager|googleadservices|google-analytics|doubleclick|googlesyndication)\.[^"/]+/i,
+    `${label}: Google measurement must never load through a static tag or preconnect`,
+  );
   for (const match of html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)) {
     if (/type="application\/(?:ld\+json|json)"/.test(match[1])) continue;
     const src = match[1].match(/src="([^"]+)"/)?.[1];
+    assert.ok(
+      !src || src.startsWith('/'),
+      `${label}: external JavaScript requires optional consent`,
+    );
     if (src?.startsWith('/')) pageJavaScript += (await stat(join(dist, src))).size;
     else if (!src) {
       inlineScripts.add(match[2]);

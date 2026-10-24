@@ -1,0 +1,84 @@
+---
+// Rendered only for explicitly approved production pages. The client checks the hostname too.
+---
+
+<section id="call-privacy" class="call-privacy" aria-labelledby="call-privacy-title" hidden>
+  <h2 id="call-privacy-title">Your privacy choices</h2>
+  <p data-call-message>
+    Allow Google to measure calls from its ads? Google may use cookies and show a forwarding number
+    that connects to 5VA. Calling and texting work without measurement.
+  </p>
+  <div class="call-privacy-actions">
+    <button type="button" data-call-allow>
+      Allow call measurement
+    </button>
+    <button type="button" data-call-decline>
+      No thanks
+    </button>
+  </div>
+  <a href="/privacy/">How measurement works</a>
+</section>
+
+<script>
+  import { initCallMeasurement } from '../scripts/call-measurement';
+  initCallMeasurement();
+</script>
+
+<style>
+  .call-privacy {
+    position: fixed;
+    z-index: 90;
+    right: 20px;
+    bottom: 20px;
+    width: min(410px, calc(100% - 32px));
+    max-height: calc(100dvh - 130px);
+    overflow: auto;
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: 0 8px 30px #193b3520;
+  }
+  .call-privacy h2 {
+    font-size: 20px;
+    line-height: 1.25;
+    margin: 0 0 10px;
+  }
+  .call-privacy p {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .call-privacy-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0 12px;
+  }
+  .call-privacy button {
+    flex: 1 1 140px;
+    min-height: 44px;
+    padding: 9px 12px;
+    border: 1px solid var(--ink);
+    border-radius: 8px;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 800;
+  }
+  .call-privacy button:hover {
+    background: var(--cream);
+  }
+  .call-privacy > a {
+    font-size: 12px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  @media (max-width: 950px) {
+    .call-privacy {
+      right: 16px;
+      bottom: calc(86px + env(safe-area-inset-bottom));
+      padding: 18px;
+    }
+  }
+</style>

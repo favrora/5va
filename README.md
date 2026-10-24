@@ -15,6 +15,10 @@ Use Node 22.22.0 or newer. From `website/`: `npm ci`, `npm run dev`. Local build
 
 ## Production release
 
+Production pages offer optional Google ad-call measurement through Privacy choices. The Google tag loads only after permission; the automatic prompt appears only for Google ad-click parameters. The callback updates call numbers and links together, while SMS and structured business identity keep the real 267 number. Our code remembers the consent preference for up to 180 days and does not save ad click IDs.
+
+This is a separate Secondary website-call conversion for eligible Google forwarding-number calls of at least 60 seconds, not a conversion sent for every phone-button tap. Automated tests do not establish Google-side call attribution; that requires a real eligible call. Preserve existing campaign goals and the direct-number fallback.
+
 From `website/`: `SITE_ENV=production SITE_URL=https://5varepair.com npm run build`, `npm test`, `npm run validate:html`. The 404 remains noindex.
 
 Pushing `main` runs the checked production build and the isolated SSH deployment in `.github/workflows/deploy-production.yml`. Only built static files are sent to the dedicated production site. See `infra/deploy/README.md` for credentials, release checks and rollback. Secrets are held in GitHub Actions, never this repository.
