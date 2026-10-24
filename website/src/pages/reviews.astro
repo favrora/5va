@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Reviews from '../components/Reviews.astro';
+import CTA from '../components/CTA.astro';
+---
+
+<Layout
+  title="5VA Customer Reviews | Philadelphia Appliance Repair"
+  description="Read real English Google review excerpts for 5VA Appliance Repair. 5.0 from 39 Google reviews checked October 24, 2026. View the original reviews on Google."
+>
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <span>Customer reviews</span>
+      </div>
+      <h1>
+        A little reassurance
+        <br />
+        from our neighbors
+      </h1>
+      <p class="lead">
+        When you’re inviting someone into your home, other people’s experiences matter. Here are
+        selected short excerpts from our Google reviews, in their original English.
+      </p>
+    </div>
+  </section>
+  <Reviews />
+  <CTA />
+</Layout>

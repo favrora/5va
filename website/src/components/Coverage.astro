@@ -1,0 +1,45 @@
+---
+import { postalCodes } from '../data/territory';
+import { business } from '../data/business';
+---
+
+<section class="section territory-section" id="coverage">
+  <div class="container territory-grid">
+    <div>
+      <h2>We come to your home</h2>
+      <p>
+        Residential appliance repair in Philadelphia ZIPs <strong>19115 and 19116</strong>,
+        throughout <strong>Montgomery County, PA</strong>, and the selected PA and NJ ZIP codes
+        below.
+      </p>
+      <p>
+        <strong>{business.hours} · Eastern Time</strong>
+        <br />
+        Mobile service only. No shop, drop-off location, appliance sales or retail parts counter.
+      </p>
+      <a class="text-link" href={business.smsHref}>
+        Text your ZIP and appliance problem →
+      </a>
+    </div>
+    <div class="territory-codes">
+      <h3>Montgomery County, PA</h3>
+      <p>
+        All of Montgomery County is covered, including ZIP codes beyond the individual list below.
+      </p>
+      {Object.entries(postalCodes).map(([state, codes]) => (
+        <div>
+          <h3>{state === 'PA' ? 'Additional Pennsylvania ZIP codes' : 'New Jersey ZIP codes'}</h3>
+          <ul aria-label={`${state} service ZIP codes`}>
+            {codes.map((code) => (
+              <li>{code}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      <p>
+        Call or text to arrange an appointment. Service is at your home; please do not travel to the
+        business.
+      </p>
+    </div>
+  </div>
+</section>

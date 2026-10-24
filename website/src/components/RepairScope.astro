@@ -1,0 +1,47 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+const exclusions = [
+  {
+    icon: 'bag',
+    title: 'No appliance sales',
+    text: 'We repair the appliance you already own. We do not sell new or used appliances.',
+  },
+  {
+    icon: 'parts',
+    title: 'No retail parts sales',
+    text: 'We are not a parts store. Parts for an agreed repair are discussed with that service.',
+  },
+  {
+    icon: 'commercial',
+    title: 'No commercial repairs',
+    text: 'Household appliances only. No restaurant, laundromat, or commercial refrigeration equipment.',
+  },
+];
+---
+
+{compact ? (
+  <p class="scope-note">
+    <Icon name="check" size={20} />
+    <span>
+      <strong>Residential appliance repair only</strong>
+      <br />
+      No appliance sales · No retail parts sales · No commercial repairs
+    </span>
+  </p>
+) : (
+  <div class="scope-grid">
+    {exclusions.map((item) => (
+      <div class="scope-card" data-reveal>
+        <span class="scope-icon">
+          <Icon name={item.icon} size={35} />
+        </span>
+        <h3>{item.title}</h3>
+        <p>{item.text}</p>
+      </div>
+    ))}
+  </div>
+)}

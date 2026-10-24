@@ -1,0 +1,146 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { business } from '../data/business';
+const path = Astro.url.pathname;
+const links = [
+  { href: '/services/', text: 'Our services' },
+  { href: '/service-areas/', text: 'Service areas' },
+  { href: '/about/', text: 'About us' },
+  { href: '/reviews/', text: 'Reviews' },
+  { href: '/blog/', text: 'Blog' },
+];
+---
+
+<div class="topbar">
+  <div class="container topbar-inner">
+    <span>
+      <Icon name="pin" size={14} />
+      <span class="topbar-long">In-home repair · Daily 7 AM–8 PM ET</span>
+      <span class="topbar-short">Daily 7 AM–8 PM ET</span>
+    </span>
+    <a
+      href={business.mapsUrl}
+      title={`Google rating checked ${business.reviewedOn}; open Google for the latest`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span class="stars" data-google-stars aria-hidden="true">
+        ★★★★★
+      </span>{' '}
+      <b data-google-rating>5.0</b> on Google{' '}
+      <span class="topbar-reviews">
+        · <span data-review-count>{business.reviewCount}</span> reviews
+      </span>
+    </a>
+  </div>
+</div>
+<header class="site-header">
+  <div class="container header-inner">
+    <Logo />
+    <nav class="desktop-nav" aria-label="Main navigation">
+      {links.map((link) => (
+        <a href={link.href} aria-current={path.startsWith(link.href) ? 'page' : undefined}>
+          {link.text}
+        </a>
+      ))}
+    </nav>
+    <a class="header-call" href={business.phoneHref} data-track="phone_click">
+      <Icon name="phone" size={19} />
+      <span>
+        <strong>{business.phone}</strong>
+        <small>Free call. No obligation.</small>
+      </span>
+    </a>
+    <button
+      class="menu-toggle"
+      id="menu-open"
+      type="button"
+      hidden
+      aria-label="Open navigation"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+    >
+      <Icon name="menu" />
+    </button>
+  </div>
+</header>
+<noscript>
+  <nav class="container no-script-nav" aria-label="Navigation without JavaScript">
+    <a href="/services/">Services</a>
+    <a href="/service-areas/">Service areas</a>
+    <a href="/contact/">Contact</a>
+  </nav>
+</noscript>
+<dialog id="mobile-menu" class="mobile-menu" aria-label="Navigation">
+  <div class="drawer-head">
+    <Logo />
+    <button id="menu-close" type="button" aria-label="Close navigation">
+      <Icon name="close" />
+    </button>
+  </div>
+  <nav aria-label="Mobile navigation">
+    {links.map((link) => (
+      <a href={link.href} aria-current={path.startsWith(link.href) ? 'page' : undefined}>
+        {link.text}
+        <Icon name="diagonal" size={23} />
+      </a>
+    ))}
+    <a href="/contact/">
+      Get in touch
+      <Icon name="diagonal" size={23} />
+    </a>
+  </nav>
+  <a class="button button-yellow" href={business.phoneHref}>
+    <Icon name="phone" size={18} /> Call for free
+  </a>
+  <a class="text-link drawer-sms" href={business.smsHref}>
+    <Icon name="chat" size={18} /> Text the same number
+  </a>
+  <p class="drawer-note">
+    Tell us what needs fixing.
+    <br />
+    We’ll figure out the next step together.
+  </p>
+</dialog>
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('#mobile-menu');
+  const openButton = document.querySelector<HTMLButtonElement>('#menu-open');
+  const closeButton = document.querySelector<HTMLButtonElement>('#menu-close');
+  openButton?.addEventListener('click', () => {
+    dialog?.showModal();
+    openButton.setAttribute('aria-expanded', 'true');
+  });
+  closeButton?.addEventListener('click', () => dialog?.close());
+  const desktop = window.matchMedia('(min-width: 951px)');
+  dialog?.addEventListener('close', () => {
+    openButton?.setAttribute('aria-expanded', 'false');
+    if (desktop.matches) document.querySelector<HTMLAnchorElement>('.site-header .brand')?.focus();
+    else openButton?.focus();
+  });
+  desktop.addEventListener('change', (event) => {
+    if (event.matches && dialog?.open) dialog.close();
+  });
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog && event.clientX < dialog.getBoundingClientRect().left)
+      dialog.close();
+  });
+  dialog?.addEventListener('keydown', (event) => {
+    if (event.key !== 'Tab' || !dialog.open) return;
+    const controls = Array.from(
+      dialog.querySelectorAll<HTMLAnchorElement | HTMLButtonElement>(
+        'a[href], button:not([disabled])',
+      ),
+    ).filter((control) => control.getClientRects().length > 0);
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last?.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first?.focus();
+    }
+  });
+  if (openButton) openButton.hidden = false;
+</script>

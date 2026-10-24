@@ -1,0 +1,251 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { serviceAreaSchema } from '../data/territory';
+import { business } from '../data/business';
+import { getReleaseSettings } from '../../release-config.mjs';
+import '../styles/global.css';
+import '../styles/journal.css';
+import '../styles/accessibility.css';
+import '../styles/conversion.css';
+import '../styles/refresh.css';
+import '../styles/appliance.css';
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  socialImage?: string;
+  socialImageAlt?: string;
+  socialImageHeight?: number;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+}
+const {
+  title,
+  description,
+  schema,
+  noindex = false,
+  socialImage = '/images/5va-social.png',
+  socialImageAlt = '5VA residential appliance repair in Philadelphia, Pennsylvania and New Jersey',
+  socialImageHeight = 630,
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const { isProduction } = getReleaseSettings();
+const base = new URL('/', Astro.site).href;
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': `${base}#business`,
+  name: business.name,
+  url: base,
+  telephone: '+1-267-704-8588',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+1-267-704-8588',
+    contactType: 'customer service',
+    availableLanguage: ['English', 'Russian'],
+  },
+  description:
+    'Mobile residential appliance repair in Philadelphia 19115 and 19116, Montgomery County PA and selected PA/NJ ZIP codes. Open daily 7 AM–8 PM Eastern. No appliance sales, retail parts sales, or commercial repairs.',
+  areaServed: serviceAreaSchema,
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: '07:00',
+      closes: '20:00',
+    },
+  ],
+  sameAs: [business.mapsUrl],
+  hasMap: business.mapsUrl,
+  logo: new URL('/brand-mark.svg', Astro.site).href,
+  image: new URL('/images/work/technician-1200.webp', Astro.site).href,
+};
+// The service-area business has no customer-facing address. Never invent one for rich results.
+// Google reviews stay visible, dated excerpts, without self-serving Review/AggregateRating markup.
+const suppliedSchemas: Record<string, unknown>[] = (
+  schema ? (Array.isArray(schema) ? schema : [schema]) : []
+).map((item) => ({
+  ...item,
+  ...(['Article', 'Service'].includes(String(item['@type'])) && !item['@id']
+    ? { '@id': `${canonical.href}#${String(item['@type']).toLowerCase()}` }
+    : {}),
+}));
+const mainEntity = suppliedSchemas.find((item) =>
+  ['Article', 'Service'].includes(String(item['@type'])),
+);
+const webPageTypes: Record<string, string> = {
+  '/about/': 'AboutPage',
+  '/contact/': 'ContactPage',
+  '/blog/': 'CollectionPage',
+  '/services/': 'CollectionPage',
+  '/service-areas/': 'CollectionPage',
+};
+const schemas: Record<string, unknown>[] = [
+  organization,
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${base}#website`,
+    url: base,
+    name: business.name,
+    inLanguage: 'en-US',
+    publisher: { '@id': `${base}#business` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': webPageTypes[Astro.url.pathname] || 'WebPage',
+    '@id': `${canonical.href}#webpage`,
+    url: canonical.href,
+    name: title,
+    description,
+    inLanguage: 'en-US',
+    isPartOf: { '@id': `${base}#website` },
+    about: { '@id': `${base}#business` },
+    primaryImageOfPage: {
+      '@type': 'ImageObject',
+      url: new URL(socialImage, Astro.site).href,
+      width: 1200,
+      height: socialImageHeight,
+    },
+    ...(mainEntity ? { mainEntity: { '@id': mainEntity['@id'] } } : {}),
+  },
+  ...suppliedSchemas,
+];
+if (
+  Astro.url.pathname !== '/' &&
+  !noindex &&
+  !suppliedSchemas.some((item) => item['@type'] === 'BreadcrumbList')
+) {
+  const labels: Record<string, string> = {
+    services: 'Our services',
+    'service-areas': 'Service areas',
+    blog: 'Blog',
+    about: 'About 5VA',
+    contact: 'Contact',
+    reviews: 'Customer reviews',
+    privacy: 'Privacy',
+  };
+  const segments = Astro.url.pathname.split('/').filter(Boolean);
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: base },
+      ...segments.map((segment, index) => ({
+        '@type': 'ListItem',
+        position: index + 2,
+        name: labels[segment] || title.split('|')[0].trim(),
+        item: new URL(`/${segments.slice(0, index + 1).join('/')}/`, Astro.site).href,
+      })),
+    ],
+  });
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#193b35" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="robots"
+      content={
+        isProduction && !noindex ? 'index, follow, max-image-preview:large' : 'noindex, nofollow'
+      }
+    />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/fonts/inter-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta
+      property="og:type"
+      content={suppliedSchemas.some((item) => item['@type'] === 'Article') ? 'article' : 'website'}
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(socialImage, Astro.site)} />
+    <meta
+      property="og:image:type"
+      content={socialImage.endsWith('.png') ? 'image/png' : 'image/webp'}
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content={String(socialImageHeight)} />
+    <meta property="og:image:alt" content={socialImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(socialImage, Astro.site)} />
+    <meta name="twitter:image:alt" content={socialImageAlt} />
+    {schemas.map((data) => (
+      <script type="application/ld+json" set:html={JSON.stringify(data).replace(/</g, '\\u003c')} />
+    ))}
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      if (
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        'IntersectionObserver' in window
+      ) {
+        const observer = new IntersectionObserver(
+          (entries) =>
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            }),
+          { threshold: 0.08 },
+        );
+        document.querySelectorAll('[data-reveal]').forEach((element) => {
+          element.classList.add('will-reveal');
+          observer.observe(element);
+        });
+      }
+      document.addEventListener('click', (event) => {
+        const target =
+          event.target instanceof Element
+            ? event.target.closest<HTMLAnchorElement>(
+                'a[href^="tel:"],a[href^="sms:"],a[data-conversion]',
+              )
+            : null;
+        if (target)
+          window.dispatchEvent(
+            new CustomEvent('5va:conversion', {
+              detail: {
+                event:
+                  target.protocol === 'tel:'
+                    ? 'phone_click'
+                    : target.protocol === 'sms:'
+                      ? 'sms_click'
+                      : target.dataset.conversion,
+                path: location.pathname,
+                placement: target.dataset.placement || 'site',
+              },
+            }),
+          );
+      });
+    </script>
+  </body>
+</html>

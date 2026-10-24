@@ -1,0 +1,70 @@
+---
+import { business, reviews } from '../data/business';
+import Icon from './Icon.astro';
+---
+
+<section class="section reviews-section">
+  <div class="container">
+    <div class="section-heading">
+      <div>
+        <h2>
+          See what our
+          <br />
+          customers say
+        </h2>
+      </div>
+      <div class="google-score">
+        <div>
+          <span class="google-g" aria-hidden="true">
+            G
+          </span>
+          <strong data-google-rating>{business.rating}</strong>
+          <span class="stars" data-google-stars role="img" aria-label="5 out of 5 stars">
+            ★★★★★
+          </span>
+        </div>
+        <a href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
+          Based on <span data-review-count>{business.reviewCount}</span> Google reviews{' '}
+          <Icon name="diagonal" size={14} />
+        </a>
+      </div>
+    </div>
+    <div class="review-grid" data-review-grid>
+      {reviews.map((review) => (
+        <article class="review-card" data-reveal>
+          <div class="review-card-top">
+            <span class="stars" role="img" aria-label="5 out of 5 stars">
+              ★★★★★
+            </span>
+            <span class="google-g small" aria-hidden="true">
+              G
+            </span>
+          </div>
+          <blockquote>“{review.text}”</blockquote>
+          <div class="review-author">
+            <span class:list={['avatar', review.color]}>{review.initials}</span>
+            <div>
+              <strong>{review.author}</strong>
+              <small>{review.service}</small>
+            </div>
+          </div>
+          <a
+            href={business.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="review-source"
+          >
+            Read the full Google review <Icon name="diagonal" size={12} />
+          </a>
+        </article>
+      ))}
+    </div>
+    <p class="review-disclosure" data-review-note>
+      Selected English excerpts, checked {business.reviewedOn}. Rating and review count reflect that
+      date.{' '}
+      <a href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
+        See all reviews on Google.
+      </a>
+    </p>
+  </div>
+</section>

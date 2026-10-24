@@ -1,0 +1,87 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import JournalCard from '../../components/JournalCard.astro';
+import CTA from '../../components/CTA.astro';
+import { articles } from '../../data/journal';
+---
+
+<Layout
+  title="Appliance Repair Blog | Philadelphia Tips & Planning | 5VA"
+  description="Practical household appliance guides: refrigerator cooling, washer drainage, dryer heat, dishwasher problems, and planning repair in Philadelphia, PA, and NJ."
+>
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <span>Blog</span>
+      </div>
+      <h1>The appliance repair blog</h1>
+      <p class="lead">
+        Clear next steps for kitchen and laundry problems. Learn what to record safely, how to
+        prepare for a visit, and when to discuss a residential appliance repair.
+      </p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="journal-toolbar">
+        <div class="filter-bar" id="journal-filters" role="group" aria-label="Filter guides" hidden>
+          <button
+            type="button"
+            data-guide-filter="all"
+            aria-pressed="true"
+            aria-controls="journal-grid"
+          >
+            All guides <span>{articles.length}</span>
+          </button>
+          {(['kitchen', 'laundry', 'planning'] as const).map((group) => (
+            <button
+              type="button"
+              data-guide-filter={group}
+              aria-pressed="false"
+              aria-controls="journal-grid"
+            >
+              {group === 'kitchen'
+                ? 'Kitchen'
+                : group === 'laundry'
+                  ? 'Laundry'
+                  : 'Repair planning'}
+              <span>{articles.filter((article) => article.group === group).length}</span>
+            </button>
+          ))}
+        </div>
+        <p id="guide-count" role="status" aria-live="polite">
+          {articles.length} practical appliance guides
+        </p>
+      </div>
+      <div class="journal-grid story-grid" id="journal-grid">
+        {articles.map((article) => (
+          <JournalCard article={article} />
+        ))}
+      </div>
+    </div>
+  </section>
+  <CTA />
+  <script>
+    const filters = document.querySelector<HTMLElement>('#journal-filters');
+    if (filters) filters.hidden = false;
+    document.querySelectorAll<HTMLButtonElement>('[data-guide-filter]').forEach((button) =>
+      button.addEventListener('click', () => {
+        document
+          .querySelectorAll('[data-guide-filter]')
+          .forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+        let count = 0;
+        document.querySelectorAll<HTMLElement>('[data-guide-category]').forEach((card) => {
+          card.hidden =
+            button.dataset.guideFilter !== 'all' &&
+            card.dataset.guideCategory !== button.dataset.guideFilter;
+          if (!card.hidden) count++;
+        });
+        const output = document.querySelector('#guide-count');
+        if (output)
+          output.textContent = `${count} ${count === 1 ? 'guide' : 'guides'}${button.dataset.guideFilter === 'all' ? ' for household appliances' : ` in ${button.dataset.guideFilter}`}`;
+      }),
+    );
+  </script>
+</Layout>

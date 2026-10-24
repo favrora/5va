@@ -1,0 +1,57 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import CTA from '../../components/CTA.astro';
+import RepairScope from '../../components/RepairScope.astro';
+import { services } from '../../data/content';
+---
+
+<Layout
+  title="Household Appliance Repair Services | Philadelphia | 5VA"
+  description="Residential refrigerator, washer, dryer, oven, dishwasher, freezer, microwave and ice maker repair. Philadelphia, PA & NJ inquiries. Call or text 5VA."
+>
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <span>Services</span>
+      </div>
+      <h1>
+        Household appliances
+        <br />
+        One clear place to start
+      </h1>
+      <p class="lead">
+        Choose the appliance that needs attention. Tell us its model, symptoms, and your ZIP code so
+        we can confirm the right assessment.
+      </p>
+      <RepairScope compact />
+    </div>
+  </section>
+  <section class="repair-section">
+    <div class="container">
+      <div class="appliance-grid">
+        {services.map((service) => (
+          <a class="appliance-card" href={`/services/${service.slug}/`}>
+            <span class="appliance-card-icon">
+              <Icon name={service.icon} size={34} />
+            </span>
+            <h2 style="font-size:21px;margin:19px 0 12px">{service.title}</h2>
+            <p>{service.description}</p>
+            <span class="appliance-card-link">
+              Repair details <Icon name="arrow" size={17} />
+            </span>
+          </a>
+        ))}
+      </div>
+      <p class="repair-inline-help">
+        Philadelphia is our primary focus. For{' '}
+        <a href="/service-areas/pennsylvania/">Pennsylvania</a> or{' '}
+        <a href="/service-areas/new-jersey/">New Jersey</a>, confirm travel by ZIP code before
+        booking.
+      </p>
+    </div>
+  </section>
+  <CTA />
+</Layout>

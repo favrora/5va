@@ -1,0 +1,30 @@
+---
+import Icon from './Icon.astro';
+import type { JournalArticle } from '../data/journal';
+interface Props {
+  article: JournalArticle;
+  heading?: 'h2' | 'h3';
+}
+const { article, heading: Heading = 'h2' } = Astro.props;
+---
+
+<a class="story-card" href={`/blog/${article.slug}/`} data-guide-category={article.group}>
+  <div class="story-image">
+    <img
+      src={article.image}
+      srcset={`/images/blog/${article.slug}-600.webp 600w, ${article.image} 1200w`}
+      sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 33vw"
+      alt={article.imageAlt}
+      width="1200"
+      height="800"
+      loading="lazy"
+    />
+  </div>
+  <div class="story-copy">
+    <Heading>{article.title}</Heading>
+    <p>{article.description}</p>
+    <span class="text-link">
+      Read the guide <Icon name="arrow" size={18} />
+    </span>
+  </div>
+</a>

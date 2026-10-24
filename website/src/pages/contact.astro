@@ -1,0 +1,110 @@
+---
+import Coverage from '../components/Coverage.astro';
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/business';
+---
+
+<Layout
+  title="Call or Text for Appliance Repair | 5VA Philadelphia"
+  description="Call or text 5VA at +1 (267) 704-8588 for in-home appliance repair. Daily 7 AM–8 PM Eastern in selected Philadelphia, PA and NJ ZIP codes. Free initial call."
+>
+  <section class="page-hero call-contact-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <span>Contact 5VA</span>
+      </div>
+      <div class="phone-contact-grid">
+        <div class="phone-contact-intro">
+          <h1>
+            Your appliance repair
+            <br />
+            starts with a call
+          </h1>
+          <p class="lead">
+            Tell us which household appliance needs repair, what it is doing, and your ZIP code. We
+            cover Philadelphia 19115 and 19116, Montgomery County, PA, and selected PA/NJ ZIP codes.
+          </p>
+        </div>
+        <div class="phone-contact-panel">
+          <a class="contact-big-number" href={business.phoneHref} data-placement="contact-main">
+            <Icon name="phone" size={30} />
+            {business.phone}
+          </a>
+          <p class="call-panel-promise">
+            <Icon name="check" size={17} />
+            US phone number · Free call. No obligation to book.
+          </p>
+          <p>
+            We don’t charge for the conversation. Visit, diagnostic, materials and work fees are
+            discussed separately.
+          </p>
+          <a class="button button-yellow" href={business.phoneHref} data-placement="contact-main">
+            <Icon name="phone" size={19} />
+            Call about your appliance
+          </a>
+          <a class="contact-text-link" href={business.smsHref} data-placement="contact-text">
+            <Icon name="chat" size={19} />
+            Prefer to text? Open your messaging app <Icon name="arrow" size={16} />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container phone-location-grid">
+      <div class="call-ready">
+        <h2>
+          Just tell us
+          <br />
+          what’s going on
+        </h2>
+        <ul>
+          <li>
+            <span>01</span>
+            <div>
+              <strong>Your ZIP code</strong>
+              <p>We’ll confirm service at your address.</p>
+            </div>
+          </li>
+          <li>
+            <span>02</span>
+            <div>
+              <strong>The appliance and symptom</strong>
+              <p>Have the appliance type, brand, model, and any error code handy.</p>
+            </div>
+          </li>
+          <li>
+            <span>03</span>
+            <div>
+              <strong>A photo, if it helps</strong>
+              <p>Send it from your own messaging app to the same number.</p>
+            </div>
+          </li>
+        </ul>
+        <p class="call-ready-note">
+          Household repairs only. We do not sell appliances or retail parts, and we do not repair
+          commercial equipment.
+        </p>
+        <p class="call-ready-note">
+          Open daily 7 AM–8 PM Eastern. We come to your home by appointment. No public shop or
+          customer drop-off location.
+        </p>
+        <a class="text-link" href="/service-areas/">
+          Explore service areas <Icon name="arrow" size={17} />
+        </a>
+      </div>
+      <div class="map-consent">
+        <h2>Find 5VA on Google</h2>
+        <p>Read the latest reviews and check our original business listing.</p>
+        <a class="text-link" href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
+          Open the Google listing <Icon name="diagonal" size={16} />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Coverage />
+</Layout>

@@ -1,0 +1,16 @@
+---
+interface Props {
+  light?: boolean;
+}
+const { light = false } = Astro.props;
+---
+
+<a class:list={['brand', { 'brand-light': light }]} href="/" aria-label="5VA Appliance Repair home">
+  <img
+    class="official-logo"
+    src="/brand-mark.svg"
+    alt="5VA Appliance Repair"
+    width="700"
+    height="700"
+  />
+</a>

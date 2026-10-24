@@ -1,0 +1,50 @@
+---
+import Coverage from '../../components/Coverage.astro';
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import CTA from '../../components/CTA.astro';
+import { areas } from '../../data/content';
+---
+
+<Layout
+  title="Appliance Repair Service Areas | Philadelphia, PA & NJ | 5VA"
+  description="5VA appliance repair coverage: Philadelphia 19115/19116, all Montgomery County PA, and 35 selected PA/NJ ZIP codes. View the exact in-home service territory."
+>
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <span>Service areas</span>
+      </div>
+      <h1>
+        Philadelphia first
+        <br />
+        PA &amp; NJ by appointment
+      </h1>
+      <p class="lead">
+        We come to your home in Philadelphia 19115 and 19116, all of Montgomery County, PA, and the
+        selected Pennsylvania and New Jersey ZIP codes listed below. Daily 7 AM–8 PM Eastern; no
+        shop or appliance drop-off.
+      </p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      {areas.map((area) => (
+        <a class="area-card" href={`/service-areas/${area.slug}/`}>
+          <h2>{area.name}</h2>
+          <p>{area.intro}</p>
+          <Icon name="diagonal" size={24} />
+        </a>
+      ))}
+      <p class="notice">
+        Call or text before planning a visit. We confirm travel, the particular household appliance,
+        appointments, and any visit fee. A state page does not guarantee an available appointment at
+        every address.
+      </p>
+    </div>
+  </section>
+  <Coverage />
+  <CTA title={'Your appliance and your ZIP code\nLet’s confirm the next step'} />
+</Layout>

@@ -1,0 +1,57 @@
+// Owner-confirmed Google Ads territory, checked October 24, 2026. ZIPs remain strings.
+export const postalCodes = {
+  PA: [
+    '18901',
+    '18914',
+    '18925',
+    '18929',
+    '18938',
+    '18940',
+    '18954',
+    '18966',
+    '18974',
+    '18976',
+    '19041',
+    '19047',
+    '19053',
+    '19054',
+    '19056',
+    '19067',
+    '19085',
+    '19087',
+    '19115',
+    '19116',
+    '19301',
+    '19312',
+    '19333',
+    '19355',
+  ],
+  NJ: [
+    '08520',
+    '08525',
+    '08534',
+    '08535',
+    '08536',
+    '08540',
+    '08542',
+    '08550',
+    '08618',
+    '08648',
+    '08691',
+  ],
+} as const;
+export const serviceAreaSchema = [
+  { '@type': 'AdministrativeArea', name: 'Montgomery County, Pennsylvania, US' },
+  ...Object.entries(postalCodes).flatMap(([state, codes]) =>
+    codes.map((code) => ({
+      '@type': 'Place',
+      name: `${code}, ${state}, US`,
+      address: {
+        '@type': 'PostalAddress',
+        postalCode: code,
+        addressRegion: state,
+        addressCountry: 'US',
+      },
+    })),
+  ),
+];

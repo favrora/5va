@@ -1,0 +1,127 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import CTA from '../components/CTA.astro';
+import RepairScope from '../components/RepairScope.astro';
+import { business } from '../data/business';
+---
+
+<Layout
+  title="About 5VA Appliance Repair | Philadelphia Residential Service"
+  description="Meet 5VA Appliance Repair: residential service at your home in Philadelphia 19115/19116, Montgomery County and selected PA/NJ ZIPs. Call or text directly."
+>
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <span>About 5VA</span>
+      </div>
+      <h1>
+        Focused on the appliances
+        <br />
+        your home depends on
+      </h1>
+      <p class="lead">
+        5VA Appliance Repair helps households with kitchen and laundry appliance problems. We visit
+        Philadelphia 19115 and 19116, all of Montgomery County, PA, and selected nearby PA/NJ ZIP
+        codes by appointment.
+      </p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container about-grid">
+      <div class="about-visual">
+        <img
+          src="/images/work/technician-1200.webp"
+          alt="5VA technician working on a household refrigerator, from our Google Business Profile"
+          width="1241"
+          height="931"
+          loading="lazy"
+        />
+      </div>
+      <div class="about-copy">
+        <h2>
+          Household repair
+          <br />A clear next step
+        </h2>
+        <p>
+          Tell us the appliance, model, and what changed. We discuss suitability, travel, available
+          appointments, and any visit or diagnostic fee before booking. After assessment, review the
+          proposed work and expected cost before deciding.
+        </p>
+        <p style="margin-top:20px">
+          We work at customers’ homes, daily 7 AM–8 PM Eastern. There is no shop or customer
+          drop-off location. We do not sell appliances or retail parts.
+        </p>
+        <RepairScope compact />
+        <a class="text-link" style="margin-top:25px" href="/services/">
+          Explore appliance services <Icon name="arrow" size={17} />
+        </a>
+      </div>
+    </div>
+  </section>
+  <section class="section about-band">
+    <div class="container">
+      <h2>
+        Prepare less
+        <br />
+        Understand more
+      </h2>
+      <div class="process-grid" style="margin-top:35px">
+        {[
+          {
+            icon: 'chat',
+            title: 'Describe the symptom',
+            text: 'A short history, error code, and model help us prepare. You do not need to diagnose the fault yourself.',
+          },
+          {
+            icon: 'pin',
+            title: 'Confirm the address',
+            text: 'Philadelphia is our focus. Share a PA or NJ ZIP code to discuss travel and a suitable appointment.',
+          },
+          {
+            icon: 'tools',
+            title: 'Agree on the work',
+            text: 'Ask about the assessment, proposed repair, and expected cost. Approve work after the plan is clear.',
+          },
+        ].map((item) => (
+          <div class="process-step">
+            <div class="process-top">
+              <Icon name={item.icon} size={28} />
+            </div>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container detail-grid">
+      <div class="prose">
+        <h2>See the original Google listing</h2>
+        <p>
+          Our Google listing showed a 5.0 rating from 39 reviews when checked on October 24, 2026.
+          Selected English excerpts link to the original source. Check Google for the latest reviews
+          and business information.
+        </p>
+        <a href="/reviews/">Read customer review excerpts</a>
+        <p>
+          Planning a visit? Our{' '}
+          <a href="/blog/appliance-repair-visit-checklist/">appliance repair checklist</a> explains
+          model photos, safe access, and authorization.
+        </p>
+      </div>
+      <aside class="info-panel">
+        <Icon name="pin" size={28} />
+        <h2>Find 5VA on Google</h2>
+        <p>The same business name and phone number, with the original reviews and photos.</p>
+        <a class="text-link" href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
+          Open Google Maps <Icon name="diagonal" size={16} />
+        </a>
+      </aside>
+    </div>
+  </section>
+  <CTA />
+</Layout>

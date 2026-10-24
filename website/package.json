@@ -1,0 +1,30 @@
+{
+  "name": "5va-appliance-repair",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 4321",
+    "build": "astro check && astro build && node scripts/check-build.mjs",
+    "preview": "astro preview --host 127.0.0.1 --port 4321",
+    "package:github-preview": "node scripts/package-github-preview.mjs",
+    "check": "astro check",
+    "test": "node --test tests/*.test.mjs",
+    "validate:html": "node scripts/validate-html.mjs",
+    "format:check": "prettier --check \"src/**/*.{astro,ts,css}\" \"scripts/*.mjs\" \"tests/*.mjs\" astro.config.mjs package.json tsconfig.json",
+    "format": "prettier --write \"src/**/*.{astro,ts,css}\" \"scripts/*.mjs\" \"tests/*.mjs\" astro.config.mjs package.json tsconfig.json"
+  },
+  "dependencies": {
+    "astro": "7.4.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "html-validate": "^11.16.2",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
+    "typescript": "~5.9.3"
+  }
+}

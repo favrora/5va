@@ -1,0 +1,85 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { business } from '../data/business';
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <Logo light />
+        <p>
+          Household appliances. Local repair.
+          <br />
+          Residential appliance repair
+          <br />
+          Philadelphia ZIPs 19115 &amp; 19116 · Selected PA &amp; NJ ZIPs.
+          <br />
+          {business.hours} · Eastern Time
+          <br />
+          We come to your home · No customer drop-off.
+        </p>
+      </div>
+      <div>
+        <h2>Explore</h2>
+        <a href="/services/">Our services</a>
+        <a href="/about/">Meet 5VA</a>
+        <a href="/reviews/">Customer reviews</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div>
+        <h2>Service areas</h2>
+        <a href="/service-areas/philadelphia/">Philadelphia</a>
+        <a href="/service-areas/northeast-philadelphia/">Northeast Philadelphia</a>
+        <a href="/service-areas/feasterville-trevose/">Feasterville-Trevose</a>
+        <a href="/service-areas/pennsylvania/">Pennsylvania</a>
+        <a href="/service-areas/new-jersey/">New Jersey</a>
+        <a href="/service-areas/">Check your ZIP code</a>
+      </div>
+      <div class="footer-contact">
+        <h2>Call or text</h2>
+        <a class="footer-phone" href={business.phoneHref}>
+          {business.phone}
+        </a>
+        <a class="text-link" href={business.smsHref}>
+          Send an SMS <Icon name="chat" size={16} />
+        </a>
+        <p>
+          US phone number · Free call. No obligation to book.
+          <br />
+          Visit and repair fees discussed separately.
+        </p>
+        <a class="text-link" href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
+          Find us on Google <Icon name="diagonal" size={15} />
+        </a>
+      </div>
+    </div>
+    <p class="footer-scope">
+      Residential appliance repair only. No appliance sales. No retail parts sales. No commercial
+      repairs.
+    </p>
+    <div class="footer-bottom">
+      <span>
+        © {new Date().getFullYear()} {business.name}. All rights reserved.
+      </span>
+      <div>
+        <a href="/privacy/">Privacy</a>
+        <a href="/contact/">Contact</a>
+        <span>Made for a home that works.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+<div class="mobile-call-bar">
+  <a href={business.phoneHref} data-track="phone_click">
+    <Icon name="phone" size={18} />
+    <span>
+      Call 5VA <small>Free call</small>
+    </span>
+  </a>
+  <a href={business.smsHref} data-placement="mobile-bar">
+    <Icon name="chat" size={18} />
+    <span>Text 5VA</span>
+  </a>
+</div>

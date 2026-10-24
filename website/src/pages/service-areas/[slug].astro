@@ -1,0 +1,149 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import CTA from '../../components/CTA.astro';
+import RepairScope from '../../components/RepairScope.astro';
+import ApplianceArt from '../../components/ApplianceArt.astro';
+import { areas, services } from '../../data/content';
+import { serviceAreaSchema } from '../../data/territory';
+import { business } from '../../data/business';
+export function getStaticPaths() {
+  return areas.map((area) => ({ params: { slug: area.slug }, props: { area } }));
+}
+const { area } = Astro.props;
+const areaPostalSchema = serviceAreaSchema.filter(
+  (item) => 'address' in item && area.zips.includes(item.address.postalCode),
+);
+const descriptions: Record<string, string> = {
+  philadelphia:
+    'In-home appliance repair in Philadelphia ZIPs 19115 and 19116. Call or text 5VA for household kitchen and laundry repairs, daily 7 AM–8 PM Eastern.',
+  'northeast-philadelphia':
+    'Household appliance repair in Northeast Philadelphia ZIPs 19115 and 19116. 5VA visits your home by appointment. Call or text +1 (267) 704-8588.',
+  'feasterville-trevose':
+    'In-home appliance repair in Feasterville-Trevose ZIP 19053. Refrigerator, washer, dryer and kitchen appliance service. Call or text 5VA, 7 AM–8 PM daily.',
+  'montgomery-county':
+    'Residential appliance repair throughout Montgomery County, PA. 5VA comes to your home, daily 7 AM–8 PM Eastern. Call or text +1 (267) 704-8588.',
+  pennsylvania:
+    'In-home appliance repair throughout Montgomery County and 24 selected PA ZIP codes, including Philadelphia 19115 and 19116. Check 5VA service coverage.',
+  'new-jersey':
+    'In-home residential appliance repair in 11 selected New Jersey ZIP codes. View coverage and call or text 5VA with your appliance problem, daily 7 AM–8 PM.',
+};
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: `Residential appliance repair in ${area.name}`,
+  serviceType: 'Household appliance repair',
+  provider: { '@id': new URL('/#business', Astro.site).href },
+  areaServed:
+    area.slug === 'montgomery-county'
+      ? [serviceAreaSchema[0]]
+      : area.slug === 'pennsylvania'
+        ? [serviceAreaSchema[0], ...areaPostalSchema]
+        : areaPostalSchema,
+  url: new URL(Astro.url.pathname, Astro.site).href,
+  description: area.intro,
+};
+---
+
+<Layout
+  title={`Appliance Repair in ${area.name} | Residential Service | 5VA`}
+  description={descriptions[area.slug]}
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <a href="/service-areas/">Service areas</a>
+        <span>/</span>
+        <span>{area.name}</span>
+      </div>
+      <h1>
+        Appliance repair
+        <br />
+        in {area.name}
+      </h1>
+      <p class="lead">{area.intro}</p>
+      <div class="repair-actions">
+        <a class="button button-yellow" href={business.phoneHref}>
+          <Icon name="phone" size={18} /> Call {business.phone}
+        </a>
+        <a class="button button-outline" href={business.smsHref}>
+          <Icon name="chat" size={18} /> Text your ZIP code
+        </a>
+      </div>
+      <p class="free-call">Free initial call. Visit and repair fees are separate.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container detail-grid">
+      <div class="prose">
+        <h2>A visit planned around your address</h2>
+        <p>{area.localNote}</p>
+        <h2>Kitchen and laundry appliances</h2>
+        <p>
+          Tell us what stopped working, the brand and model if available, and when the problem
+          began. We assess residential appliances and discuss proposed work before repair approval.
+        </p>
+        <div class="mini-services">
+          {services.map((service) => (
+            <a href={`/services/${service.slug}/`}>{service.shortTitle}</a>
+          ))}
+        </div>
+        <RepairScope compact />
+        <h2>Location details that help</h2>
+        <ul class="check-list">
+          {area.neighborhoods.map((name) => (
+            <li>
+              <Icon name="pin" size={17} />
+              <span>{name}</span>
+            </li>
+          ))}
+        </ul>
+        <p>
+          These references help orient your request. Travel and available appointments are confirmed
+          for your exact address; they are not a guarantee of service at every location.
+        </p>
+        <h2>Get ready without moving the appliance</h2>
+        <p>
+          Use our <a href="/blog/appliance-repair-visit-checklist/">appliance visit checklist</a>{' '}
+          for model, access, and authorization details. The{' '}
+          <a href="/blog/appliance-repair-philadelphia/">Philadelphia repair booking guide</a>{' '}
+          explains the first conversation and questions to ask about the assessment.
+        </p>
+        <h2>Other service areas</h2>
+        <div class="mini-services">
+          {areas
+            .filter((item) => item.slug !== area.slug)
+            .map((item) => (
+              <a href={`/service-areas/${item.slug}/`}>{item.name}</a>
+            ))}
+        </div>
+      </div>
+      <aside class="info-panel">
+        <ApplianceArt />
+        <h2>
+          Call or text
+          <br />
+          about your appliance
+        </h2>
+        <p>
+          Mobile service only · Daily 7 AM–8 PM Eastern. Philadelphia 19115 and 19116, Montgomery
+          County, and selected PA/NJ ZIPs.
+        </p>
+        <a class="button button-yellow" href={business.phoneHref}>
+          {business.phone}
+        </a>
+        <small>US phone number · Free initial call</small>
+        <a class="text-link" href={business.smsHref}>
+          Send an SMS <Icon name="chat" size={17} />
+        </a>
+        <a class="text-link" href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
+          View our Google listing <Icon name="diagonal" size={15} />
+        </a>
+      </aside>
+    </div>
+  </section>
+  <CTA />
+</Layout>

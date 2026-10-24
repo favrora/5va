@@ -1,0 +1,205 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import CTA from '../../components/CTA.astro';
+import FAQ from '../../components/FAQ.astro';
+import ServiceBrief from '../../components/ServiceBrief.astro';
+import RepairScope from '../../components/RepairScope.astro';
+import { preparation } from '../../data/projects';
+import { services } from '../../data/content';
+import { articles } from '../../data/journal';
+import { serviceAreaSchema } from '../../data/territory';
+import { business } from '../../data/business';
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+const { service } = Astro.props;
+const searchDescriptions: Record<string, string> = {
+  'refrigerator-repair':
+    'Fridge not cooling or leaking? In-home refrigerator repair in Philadelphia 19115/19116, Montgomery County and selected PA/NJ ZIPs. Call or text 5VA.',
+  'washer-repair':
+    'Washer not draining or spinning? In-home washing machine repair in Philadelphia 19115/19116 and selected PA/NJ areas. Call or text 5VA with your model.',
+  'dryer-repair':
+    'Dryer not heating or starting? Residential dryer repair in Philadelphia 19115/19116, Montgomery County and selected PA/NJ ZIPs. Call or text 5VA.',
+  'oven-stove-repair':
+    'Oven not heating or cooktop burner trouble? In-home oven and stove repair in Philadelphia 19115/19116 and selected PA/NJ areas. Call or text 5VA.',
+  'dishwasher-repair':
+    'Dishwasher not draining, leaking or cleaning well? In-home repair in Philadelphia 19115/19116, Montgomery County and selected PA/NJ ZIPs. Contact 5VA.',
+  'freezer-repair':
+    'Freezer warming up or icing over? Household freezer repair in Philadelphia 19115/19116 and selected PA/NJ ZIPs. Call or text 5VA with the model.',
+  'microwave-repair':
+    'Microwave not heating or controls not working? Household microwave repair in Philadelphia 19115/19116 and selected PA/NJ areas. Discuss your model with 5VA.',
+  'ice-maker-repair':
+    'No ice, small cubes or leaks? Household ice maker repair in Philadelphia 19115/19116, Montgomery County and selected PA/NJ ZIPs. Call or text 5VA.',
+};
+const base = new URL('/', Astro.site).href;
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: `${service.title} in Philadelphia`,
+    serviceType: service.title,
+    description: service.description,
+    provider: { '@id': `${base}#business` },
+    areaServed: serviceAreaSchema,
+    url: new URL(Astro.url.pathname, Astro.site).href,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: base },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Services',
+        item: new URL('/services/', Astro.site).href,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: service.title,
+        item: new URL(Astro.url.pathname, Astro.site).href,
+      },
+    ],
+  },
+];
+---
+
+<Layout
+  title={`${service.title} in Philadelphia | 5VA`}
+  description={searchDescriptions[service.slug]}
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <a href="/services/">Services</a>
+        <span>/</span>
+        <span>{service.title}</span>
+      </div>
+      <div class="service-hero-grid">
+        <div>
+          <div class="page-icon">
+            <Icon name={service.icon} size={37} />
+          </div>
+          <h1>
+            {service.title}
+            <br />
+            in Philadelphia
+          </h1>
+          <p class="lead">{service.description}</p>
+          <div class="service-hero-actions">
+            <a class="button button-yellow" href={business.phoneHref} data-placement="service-hero">
+              <Icon name="phone" size={18} /> Call {business.phone}
+            </a>
+            <a class="button button-outline" href={business.smsHref}>
+              Text us <Icon name="arrow" size={17} />
+            </a>
+          </div>
+          <span class="free-call">Free call. No obligation to book.</span>
+        </div>
+        <ServiceBrief slug={service.slug} symptoms={service.symptoms} icon={service.icon} />
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container detail-grid">
+      <div class="prose">
+        <RepairScope compact />
+        <h2>A practical place to start</h2>
+        <p>{service.intro}</p>
+        <p>
+          We visit homes in <a href="/service-areas/philadelphia/">Philadelphia 19115 and 19116</a>,
+          <a href="/service-areas/montgomery-county/">Montgomery County</a>, and selected
+          <a href="/service-areas/pennsylvania/">Pennsylvania</a> and
+          <a href="/service-areas/new-jersey/">New Jersey</a> ZIP codes. Call or text to arrange an
+          appointment.
+        </p>
+        <h2>Sound familiar?</h2>
+        <ul class="check-list">
+          {service.symptoms.map((symptom) => (
+            <li>
+              <Icon name="check" size={17} />
+              <span>{symptom}</span>
+            </li>
+          ))}
+        </ul>
+        {service.details.map((detail) => (
+          <div class="details-block">
+            <h3>{detail.title}</h3>
+            <p>{detail.text}</p>
+          </div>
+        ))}
+        <section class="project-prep" id="project-preparation" aria-labelledby="prep-title">
+          <h2 id="prep-title">Three things to send us</h2>
+          <ol>
+            {preparation[service.slug].items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ol>
+          <p class="prep-photo">
+            <Icon name="chat" size={19} />
+            <span>
+              <strong>Helpful photos:</strong> {preparation[service.slug].photo}
+            </span>
+          </p>
+          <a class="text-link" href={business.smsHref} data-placement="service-checklist">
+            Text us about this appliance <Icon name="arrow" size={17} />
+          </a>
+        </section>
+        <h2>Your questions, answered</h2>
+        <FAQ items={service.faqs} />
+        <h2>Related appliance guides</h2>
+        <div class="mini-services">
+          {articles
+            .filter(
+              (article) =>
+                article.relatedServices.includes(service.slug) ||
+                (['dryer-repair', 'dishwasher-repair'].includes(service.slug) &&
+                  article.slug === 'appliance-repair-or-replace'),
+            )
+            .slice(0, 3)
+            .map((article) => (
+              <a href={`/blog/${article.slug}/`}>{article.title}</a>
+            ))}
+        </div>
+        <h2>Other household appliance repairs</h2>
+        <div class="mini-services">
+          {services
+            .filter((item) => item.slug !== service.slug)
+            .slice(0, 5)
+            .map((item) => (
+              <a href={`/services/${item.slug}/`}>{item.shortTitle}</a>
+            ))}
+        </div>
+        <p style="margin-top:25px">
+          <a href="/service-areas/">Check your service area</a> or browse the{' '}
+          <a href="/blog/">appliance repair blog</a> for practical preparation advice.
+        </p>
+      </div>
+      <aside class="info-panel">
+        <Icon name="chat" size={30} />
+        <h2>
+          Let’s talk about
+          <br />
+          your appliance
+        </h2>
+        <p>
+          Tell us what’s going on, your ZIP code, and the result you’re looking for. We’ll confirm
+          the scope and next steps.
+        </p>
+        <a class="button button-yellow" href={business.phoneHref}>
+          <Icon name="phone" size={17} /> {business.phone}
+        </a>
+        <small>No fee to call. Visit and work fees discussed separately.</small>
+        <a class="text-link" href={business.smsHref}>
+          Text your appliance details <Icon name="arrow" size={16} />
+        </a>
+      </aside>
+    </div>
+  </section>
+  <CTA />
+</Layout>

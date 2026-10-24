@@ -1,0 +1,52 @@
+name: Deploy 5VA production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fiveva-production
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    if: github.repository == 'favrora/5va' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment:
+      name: production
+      url: https://5varepair.com
+    env:
+      SITE_ENV: production
+      SITE_URL: https://5varepair.com
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22.22.0
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+      - name: Install dependencies
+        working-directory: website
+        run: npm ci
+      - name: Test deployment receiver
+        run: python3 -m unittest discover -s infra/deploy -p 'test_*.py'
+      - name: Validate website and build production
+        working-directory: website
+        run: |
+          npm test
+          npm run build
+          npm run validate:html
+          node scripts/check-release-mode.mjs
+          node --test ../infra/cloudfront-function.test.mjs
+      - name: Upload and activate isolated production release
+        env:
+          FIVEVA_DEPLOY_KEY: ${{ secrets.FIVEVA_DEPLOY_KEY }}
+          FIVEVA_KNOWN_HOSTS: ${{ secrets.FIVEVA_KNOWN_HOSTS }}
+        run: bash infra/deploy/upload-release.sh "$GITHUB_SHA" website/dist

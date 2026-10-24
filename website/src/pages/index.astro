@@ -1,0 +1,371 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import CTA from '../components/CTA.astro';
+import FAQ from '../components/FAQ.astro';
+import RepairScope from '../components/RepairScope.astro';
+import { business, reviews } from '../data/business';
+import { services } from '../data/content';
+const cues: Record<string, string> = {
+  'refrigerator-repair': 'Not cooling · Leaking · Unusual noise',
+  'washer-repair': 'Not draining · Not spinning · Leaking',
+  'dryer-repair': 'No heat · Long cycles · Not starting',
+  'oven-stove-repair': 'No heat · Burner issues · Error codes',
+  'dishwasher-repair': 'Standing water · Poor cleaning · Leaks',
+  'freezer-repair': 'Warming up · Heavy frost · Door issues',
+  'microwave-repair': 'Not heating · Controls · Door problems',
+  'ice-maker-repair': 'No ice · Small cubes · Water leaks',
+};
+const photos = [
+  {
+    name: 'dishwasher',
+    large: 'dishwasher-1200.webp',
+    title: 'Household dishwasher service',
+    alt: 'Dishwasher in a genuine photo from the 5VA Google Business Profile',
+    width: 1200,
+    height: 1600,
+  },
+  {
+    name: 'refrigerator',
+    large: 'refrigerator-800.webp',
+    title: 'Refrigerator service',
+    alt: 'Stainless steel refrigerator with a 5VA tool bag nearby',
+    width: 609,
+    height: 812,
+  },
+  {
+    name: 'laundry',
+    large: 'laundry-800.webp',
+    title: 'Laundry appliances',
+    alt: 'Washer and dryer pictured on the 5VA Google Business Profile',
+    width: 609,
+    height: 812,
+  },
+  {
+    name: 'range',
+    large: 'range-800.webp',
+    title: 'Kitchen appliances',
+    alt: 'Double-oven range pictured on the 5VA Google Business Profile',
+    width: 773,
+    height: 580,
+  },
+];
+const faqs = [
+  {
+    q: 'Is the first call free?',
+    a: 'Yes. The initial conversation is free, with no obligation to book. Visits, diagnosis, parts and repair work are charged separately. Repair pricing is determined after an on-site inspection. Your carrier’s normal call or SMS terms apply.',
+  },
+  {
+    q: 'Which areas do you visit?',
+    a: 'Philadelphia ZIP codes 19115 and 19116, all of Montgomery County, PA, and selected PA and NJ ZIP codes. Check the service-area page for the full list. We come to your home; there is no shop or appliance drop-off.',
+  },
+  {
+    q: 'What should I send by text?',
+    a: 'Send your ZIP code, appliance type, model if available, and a short description of the problem. A photo of the accessible model label or error code can help. Leave the appliance installed and do not remove panels.',
+  },
+];
+---
+
+<Layout
+  title="Appliance Repair Philadelphia | 5VA"
+  description="In-home appliance repair in Philadelphia 19115 &amp; 19116, Montgomery County and select PA/NJ ZIPs. Call or text 5VA. Free initial call."
+>
+  <section class="repair-hero repair-hero-simple">
+    <div class="container repair-hero-grid">
+      <div class="repair-hero-copy">
+        <h1>
+          Appliance repair
+          <br />
+          in <span>Philadelphia</span>
+        </h1>
+        <p class="repair-hero-lead">Kitchen and laundry appliances repaired at your home.</p>
+        <p class="repair-hero-hours">
+          <Icon name="clock" size={17} /> Daily 7 AM–8 PM Eastern
+        </p>
+        <div class="repair-actions">
+          <a class="button button-yellow" href={business.phoneHref} data-placement="home-hero">
+            <Icon name="phone" size={20} /> Call {business.phone}
+          </a>
+          <a class="button repair-text-button" href={business.smsHref} data-placement="home-hero">
+            <Icon name="chat" size={20} /> Text us
+          </a>
+        </div>
+        <p class="repair-call-note">
+          <strong>Free initial call · No obligation to book</strong>
+          <br />
+          Visit and repair fees are separate
+        </p>
+        <a class="repair-hero-area" href="/service-areas/">
+          <Icon name="pin" size={16} /> Philadelphia 19115 &amp; 19116 · Montgomery County
+          <Icon name="arrow" size={15} />
+        </a>
+      </div>
+      <div class="repair-hero-media">
+        <figure class="repair-photo-main">
+          <img
+            src="/images/work/technician-1200.webp"
+            srcset="/images/work/technician-480.webp 480w, /images/work/technician-1200.webp 1200w"
+            sizes="(max-width: 800px) 90vw, 640px"
+            alt="5VA technician repairing a household refrigerator with diagnostic tools"
+            width="1200"
+            height="900"
+            fetchpriority="high"
+          />
+          <figcaption>Real 5VA in-home repair</figcaption>
+        </figure>
+        <a
+          class="repair-google-proof"
+          href={business.mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={`Google snapshot checked ${business.reviewedOn}`}
+        >
+          <strong>
+            {business.rating}
+            <span class="stars" role="img" aria-label="5 out of 5 stars">
+              ★★★★★
+            </span>
+          </strong>
+          <span>
+            {business.reviewCount} Google reviews <Icon name="diagonal" size={14} />
+          </span>
+          <small>Checked {business.reviewedOn}</small>
+        </a>
+      </div>
+    </div>
+  </section>
+  <section class="repair-section" id="services">
+    <div class="container">
+      <div class="repair-section-heading">
+        <div>
+          <h2>Which appliance needs help?</h2>
+          <p>Refrigerators, laundry, cooking appliances and more — all at your home.</p>
+        </div>
+        <a class="text-link" href="/services/">
+          All repair services <Icon name="arrow" size={18} />
+        </a>
+      </div>
+      <div class="appliance-grid">
+        {services.map((service) => (
+          <a class="appliance-card" href={`/services/${service.slug}/`} data-reveal>
+            <span class="appliance-card-icon">
+              <Icon name={service.icon} size={34} />
+            </span>
+            <h3>{service.shortTitle}</h3>
+            <p>{cues[service.slug]}</p>
+            <span class="appliance-card-link">
+              Repair details <Icon name="arrow" size={17} />
+            </span>
+          </a>
+        ))}
+      </div>
+      <p class="repair-inline-help">
+        Not sure where your appliance fits?{' '}
+        <a href={business.smsHref}>Text the model and a photo</a> — we’ll discuss suitability first.
+      </p>
+    </div>
+  </section>
+  <section class="repair-section repair-scope-section repair-home-scope" id="repair-only">
+    <div class="container">
+      <div class="repair-section-heading">
+        <div>
+          <h2>Residential repairs only</h2>
+        </div>
+      </div>
+      <RepairScope />
+    </div>
+  </section>
+  <section class="repair-section repair-proof-section repair-home-proof">
+    <div class="container">
+      <div class="repair-section-heading">
+        <div>
+          <h2>Real work from our Google profile</h2>
+          <p>Household appliances, genuine job photos and customer feedback.</p>
+        </div>
+        <a class="text-link" href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
+          Our Google profile <Icon name="diagonal" size={17} />
+        </a>
+      </div>
+      <div class="work-gallery">
+        {photos.map((photo) => (
+          <a
+            class="work-photo"
+            href={`/images/work/${photo.large}`}
+            data-work-photo
+            data-caption={photo.title}
+          >
+            <img
+              src={`/images/work/${photo.large}`}
+              srcset={`/images/work/${photo.name}-480.webp 480w, /images/work/${photo.large} ${photo.width}w`}
+              sizes="(max-width: 600px) 44vw, (max-width: 800px) 44vw, 280px"
+              alt={photo.alt}
+              width={photo.width}
+              height={photo.height}
+              loading="lazy"
+            />
+            <span>
+              <strong>{photo.title}</strong>
+              <Icon name="diagonal" size={19} />
+            </span>
+          </a>
+        ))}
+      </div>
+      <p class="work-source">
+        Source:{' '}
+        <a href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
+          5VA’s Google photos
+        </a>
+        , checked {business.reviewedOn}. Tap a photo to enlarge.
+      </p>
+      <div class="repair-review-row">
+        {reviews.slice(0, 2).map((review) => (
+          <figure>
+            <span class="stars" role="img" aria-label="5 out of 5 stars">
+              ★★★★★
+            </span>
+            <blockquote>“{review.text}”</blockquote>
+            <figcaption>
+              {review.author} · {review.service}
+            </figcaption>
+          </figure>
+        ))}
+        <a class="text-link" href="/reviews/">
+          Read the Google review excerpts <Icon name="arrow" size={17} />
+        </a>
+      </div>
+    </div>
+  </section>
+  <section class="repair-section repair-plan-section">
+    <div class="container repair-plan-grid">
+      <div>
+        <h2>A simple way to arrange a repair</h2>
+        <ol class="repair-steps">
+          <li>
+            <span>1</span>
+            <div>
+              <h3>Call or text the details</h3>
+              <p>Tell us the appliance, problem and ZIP code. A model photo can help.</p>
+            </div>
+          </li>
+          <li>
+            <span>2</span>
+            <div>
+              <h3>Confirm the visit</h3>
+              <p>We confirm your appliance, service area, appointment and any visit fee.</p>
+            </div>
+          </li>
+          <li>
+            <span>3</span>
+            <div>
+              <h3>Review the proposed repair</h3>
+              <p>After the on-site inspection, review the price and approve the work.</p>
+            </div>
+          </li>
+        </ol>
+        <a class="text-link" href="/blog/appliance-repair-visit-checklist/">
+          Your visit checklist <Icon name="arrow" size={17} />
+        </a>
+      </div>
+      <div class="repair-coverage">
+        <Icon name="pin" size={30} />
+        <h2>We come to your home</h2>
+        <p>
+          Philadelphia 19115 and 19116, all of Montgomery County, PA, and selected PA and NJ ZIP
+          codes. Daily 7 AM–8 PM Eastern. No shop or appliance drop-off.
+        </p>
+        <div class="repair-area-links">
+          <a href="/service-areas/philadelphia/">Philadelphia</a>
+          <a href="/service-areas/montgomery-county/">Montgomery County</a>
+          <a href="/service-areas/pennsylvania/">Pennsylvania</a>
+          <a href="/service-areas/new-jersey/">New Jersey</a>
+        </div>
+        <a class="button button-yellow" href="/service-areas/">
+          Check all service ZIP codes <Icon name="arrow" size={18} />
+        </a>
+      </div>
+    </div>
+  </section>
+  <section class="repair-section">
+    <div class="container repair-faq-grid">
+      <div>
+        <h2>Before you call</h2>
+        <p>Simple answers to help you decide.</p>
+        <a class="text-link" href="/blog/">
+          Appliance advice &amp; guides <Icon name="arrow" size={17} />
+        </a>
+      </div>
+      <FAQ items={faqs} />
+    </div>
+  </section>
+  <CTA title={'Let’s talk about\nyour appliance repair'} />
+  <dialog class="work-dialog" id="work-dialog" aria-labelledby="work-dialog-title">
+    <button id="work-dialog-close" type="button" aria-label="Close photo">
+      <Icon name="close" size={24} />
+    </button>
+    <h2 id="work-dialog-title">5VA Google photo</h2>
+    <img
+      src="/images/work/refrigerator-800.webp"
+      alt="Appliance photo from the 5VA Google profile"
+      width="609"
+      height="812"
+      loading="lazy"
+    />
+    <a href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
+      View the source on Google <Icon name="diagonal" size={15} />
+    </a>
+  </dialog>
+  <script>
+    const photoDialog = document.querySelector<HTMLDialogElement>('#work-dialog');
+    let photoTrigger: HTMLAnchorElement | null = null;
+    document.querySelectorAll<HTMLAnchorElement>('[data-work-photo]').forEach((link) =>
+      link.addEventListener('click', (event) => {
+        if (!photoDialog || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+          return;
+        event.preventDefault();
+        photoTrigger = link;
+        const image = photoDialog.querySelector<HTMLImageElement>('img');
+        const source = link.querySelector('img');
+        if (image && source) {
+          image.src = link.href;
+          image.alt = source.alt;
+          image.width = Number(source.getAttribute('width'));
+          image.height = Number(source.getAttribute('height'));
+        }
+        const title = photoDialog.querySelector('h2');
+        if (title) title.textContent = link.dataset.caption || '5VA Google photo';
+        photoDialog.showModal();
+      }),
+    );
+    document
+      .querySelector('#work-dialog-close')
+      ?.addEventListener('click', () => photoDialog?.close());
+    photoDialog?.addEventListener('close', () => photoTrigger?.focus());
+    photoDialog?.addEventListener('keydown', (event) => {
+      if (event.key !== 'Tab' || !photoDialog.open) return;
+      const controls = Array.from(
+        photoDialog.querySelectorAll<HTMLAnchorElement | HTMLButtonElement>('a[href],button'),
+      ).filter((control) => control.getClientRects().length > 0);
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    });
+    photoDialog?.addEventListener('click', (event) => {
+      if (event.target === photoDialog) {
+        const rect = photoDialog.getBoundingClientRect();
+        if (
+          event.clientX < rect.left ||
+          event.clientX > rect.right ||
+          event.clientY < rect.top ||
+          event.clientY > rect.bottom
+        )
+          photoDialog.close();
+      }
+    });
+  </script>
+</Layout>

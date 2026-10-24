@@ -1,0 +1,333 @@
+/* Comfortable reading and clear next steps on both small and large screens. */
+.guide-hero h1 {
+  max-width: 1000px;
+  font-size: clamp(38px, 4.4vw, 60px);
+}
+.guide-byline {
+  margin-top: 24px;
+  font-size: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.article-layout {
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 74px;
+}
+.guide-body {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+.article-sidebar {
+  grid-column: 2;
+  grid-row: 1;
+  position: sticky;
+  top: 120px;
+  align-self: start;
+}
+.article-sidebar .article-toc {
+  position: static;
+  padding-left: 22px;
+}
+.article-toc a {
+  font-size: 13px;
+  line-height: 1.65;
+  margin: 15px 0;
+  padding: 2px 0;
+}
+.article-toc h2 {
+  font-size: 11px;
+}
+.guide-summary {
+  border-left: 4px solid var(--yellow);
+  background: #eef0e5;
+  padding: 25px 28px;
+  margin-bottom: 44px;
+  border-radius: 0 10px 10px 0;
+}
+.guide-summary .eyebrow {
+  font-size: 11px;
+  margin-bottom: 12px;
+}
+.guide-summary p {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--ink);
+}
+.guide-body > section > h2 {
+  font-size: 32px;
+  margin-top: 46px;
+  line-height: 1.25;
+}
+.guide-body > section > p {
+  font-size: 16px;
+  line-height: 1.95;
+}
+.guide-body .article-sources h2 {
+  font-size: 24px;
+}
+.guide-body .article-sources p,
+.guide-body .article-sources li {
+  font-size: 14px;
+}
+.guide-contact {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  padding: 25px;
+  margin-top: 32px;
+  border-radius: 12px;
+}
+.guide-contact h2 {
+  font-size: 25px;
+  margin: 14px 0 12px;
+}
+.guide-contact p {
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+.guide-contact > a {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+.guide-contact small {
+  display: block;
+  font-size: 12px;
+  margin-top: 5px;
+  color: var(--muted);
+}
+.prose .project-prompt {
+  background: #e9edde;
+  border-radius: 12px;
+  padding: 28px;
+  margin: 40px 0;
+}
+.prose .project-prompt h2 {
+  font-size: 27px;
+  line-height: 1.25;
+  margin: 0 0 16px;
+}
+.prose .project-prompt .eyebrow {
+  font-size: 10px;
+  margin-bottom: 15px;
+}
+.prose .project-prompt p {
+  font-size: 15px;
+  margin-bottom: 22px;
+}
+.project-prompt-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.prose .project-prompt a {
+  text-decoration: none;
+}
+.project-prompt .button {
+  font-size: 15px;
+  padding: 16px 20px;
+}
+.project-prompt small {
+  display: block;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted);
+  margin-top: 17px;
+}
+.guide-questions {
+  margin-top: 48px;
+}
+.guide-body .faq-item > p {
+  font-size: 15px;
+}
+.guide-services {
+  margin-top: 50px;
+}
+.guide-services .eyebrow {
+  font-size: 11px;
+  margin-bottom: 16px;
+}
+.guide-body .guide-services h2 {
+  margin-top: 0;
+}
+.guide-service-links {
+  display: grid;
+  gap: 10px;
+  margin: 25px 0;
+}
+.prose .guide-service-links > a {
+  display: flex;
+  gap: 17px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+  text-decoration: none;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+.guide-service-links > a:hover {
+  background: #eef0e5;
+  transform: translateX(3px);
+}
+.guide-service-links > a > span {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+}
+.guide-service-links small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 4px;
+  color: var(--muted);
+}
+.guide-related-links {
+  display: grid;
+  gap: 12px;
+}
+.prose .guide-related-links > a {
+  display: grid;
+  grid-template-columns: 1fr 20px;
+  gap: 9px 15px;
+  border-bottom: 1px solid var(--line);
+  padding: 16px 0;
+  text-decoration: none;
+}
+.guide-related-links span {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: 12px;
+}
+.guide-related-links strong {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.5;
+}
+.guide-related-links > a:hover strong {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.journal-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+}
+.journal-toolbar .filter-bar {
+  margin: 0;
+}
+.journal-toolbar > p {
+  font-size: 13px;
+}
+.filter-bar button > span {
+  display: inline-block;
+  margin-left: 5px;
+  opacity: 0.75;
+}
+.journal-grid .journal-card h2 {
+  font-size: 25px;
+  line-height: 1.3;
+}
+.journal-description {
+  font-size: 14px;
+  line-height: 1.85;
+  margin: 15px 0 20px;
+}
+
+@media (max-width: 950px) {
+  .article-layout {
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: 36px;
+  }
+  .guide-contact {
+    padding: 20px;
+  }
+  .guide-contact h2 {
+    font-size: 23px;
+  }
+  .guide-contact > a {
+    font-size: 19px;
+  }
+}
+@media (max-width: 700px) {
+  .article-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .article-sidebar {
+    position: static;
+    width: 100%;
+  }
+  .article-sidebar .article-toc {
+    padding: 22px;
+    margin: 0;
+  }
+  .article-toc a {
+    margin: 10px 0;
+    padding: 5px 0;
+    font-size: 14px;
+  }
+  .guide-contact {
+    display: none;
+  }
+  .guide-body {
+    width: 100%;
+  }
+  .guide-body > section > h2 {
+    font-size: 28px;
+    margin-top: 37px;
+  }
+  .guide-body > section > p {
+    font-size: 16px;
+  }
+  .guide-summary {
+    padding: 23px;
+    margin-bottom: 35px;
+  }
+  .guide-summary p {
+    font-size: 16px;
+  }
+  .prose .project-prompt {
+    padding: 24px 20px;
+  }
+  .prose .project-prompt h2 {
+    font-size: 26px;
+  }
+  .project-prompt-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .project-prompt-actions .button {
+    width: 100%;
+  }
+  .project-prompt-actions .text-link {
+    font-size: 14px;
+  }
+  .guide-service-links > a {
+    padding: 17px 14px;
+    gap: 13px;
+  }
+  .guide-service-links > a > span {
+    font-size: 15px;
+  }
+  .journal-toolbar {
+    align-items: flex-start;
+  }
+}
+
+@media (min-width: 1050px) {
+  .article-layout {
+    grid-template-columns: minmax(0, 72ch) 260px;
+    justify-content: center;
+    gap: 64px;
+  }
+}
