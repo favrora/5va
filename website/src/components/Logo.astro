@@ -8,9 +8,11 @@ const { light = false } = Astro.props;
 <a class:list={['brand', { 'brand-light': light }]} href="/" aria-label="5VA Appliance Repair home">
   <img
     class="official-logo"
-    src="/brand-mark.svg"
+    src={light ? '/brand-wordmark-light.svg' : '/brand-wordmark.svg'}
     alt="5VA Appliance Repair"
     width="700"
     height="700"
+    loading={light ? 'lazy' : 'eager'}
+    decoding="async"
   />
 </a>

@@ -900,8 +900,7 @@
   height: 78px;
   object-fit: cover;
   object-position: center;
-  border-radius: 8px;
-  background: white;
+  background: transparent;
 }
 .brand {
   gap: 0;
