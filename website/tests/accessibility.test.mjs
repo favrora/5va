@@ -280,7 +280,10 @@ function runClient(source) {
     }
     showModal() {
       this.open = true;
-      this.controls?.find((control) => control.getClientRects().length)?.focus();
+      (
+        this.controls?.find((control) => control.autofocus && control.getClientRects().length) ||
+        this.controls?.find((control) => control.getClientRects().length)
+      )?.focus();
     }
     close() {
       this.open = false;
@@ -310,6 +313,9 @@ function runClient(source) {
     control.hidden = false;
     control.disabled = false;
   }
+  elements.get('#menu-close').autofocus = /<button\b[^>]*id="menu-close"[^>]*\bautofocus/.test(
+    header,
+  );
   elements.get('#mobile-menu').controls = dialogControls;
   elements.get('#mobile-menu').open = false;
   const serviceButton = new Element();
@@ -377,7 +383,12 @@ test('the real drawer script wraps Tab at both visible ends without trapping oth
   assert.ok(keydown, 'Drawer needs the keyboard boundary handler');
   result.elements.get('#menu-open').handlers.get('click')();
   assert.equal(dialog.open, true);
-  assert.equal(result.activeElement, first, 'Opening starts at the first visible drawer link');
+  assert.equal(
+    result.activeElement,
+    result.elements.get('#menu-close'),
+    'Opening focuses the explicit close control',
+  );
+  first.focus();
 
   function press(key = 'Tab', shiftKey = false) {
     let prevented = false;

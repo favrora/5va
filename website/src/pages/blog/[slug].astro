@@ -140,27 +140,33 @@ const schema = {
                 <p>{paragraph}</p>
               ))}
               {section.table && (
-                <section class="guide-table-wrap" tabindex="0" aria-label={section.table.caption}>
-                  <table class="guide-table">
-                    <caption>{section.table.caption}</caption>
-                    <thead>
-                      <tr>
-                        {section.table.headings.map((heading) => (
-                          <th scope="col">{heading}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {section.table.rows.map((row) => (
+                <div class="guide-comparison">
+                  <p class="guide-table-title">{section.table.caption}</p>
+                  {section.table.headings.length === 3 && (
+                    <p class="guide-table-hint">Swipe to compare all columns</p>
+                  )}
+                  <section class="guide-table-wrap" tabindex="0" aria-label={section.table.caption}>
+                    <table class="guide-table">
+                      <caption class="visually-hidden">{section.table.caption}</caption>
+                      <thead>
                         <tr>
-                          {row.map((cell, index) =>
-                            index === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>,
-                          )}
+                          {section.table.headings.map((heading) => (
+                            <th scope="col">{heading}</th>
+                          ))}
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </section>
+                      </thead>
+                      <tbody>
+                        {section.table.rows.map((row) => (
+                          <tr>
+                            {row.map((cell, index) =>
+                              index === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>,
+                            )}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </section>
+                </div>
               )}
               {section.links && (
                 <ul class="guide-context-links">

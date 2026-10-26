@@ -227,7 +227,7 @@ const newGuides: JournalInput[] = [
       {
         heading: 'At-home microwave repair in the confirmed service area',
         paragraphs: [
-          'Call or text 5VA Appliance Repair at +1 (267) 704-8588 daily, 7 AM–8 PM Eastern. Philadelphia service covers ZIP codes 19115 and 19116. The territory also includes all of Montgomery County, Pennsylvania, and the specifically listed nearby PA and New Jersey ZIP codes. Check the service-area list and confirm your address and appliance before booking. A nearby town name does not by itself establish coverage.',
+          'Call or text 5VA Appliance Repair at +1 (267) 704-8588 every day, 7am–8pm. Philadelphia service covers ZIP codes 19115 and 19116. The territory also includes all of Montgomery County, Pennsylvania, and the specifically listed nearby PA and New Jersey ZIP codes. Check the service-area list and confirm your address and appliance before booking. A nearby town name does not by itself establish coverage.',
           '5VA visits customers at home for residential appliance repair. There is no shop counter, appliance drop-off, appliance sales or retail spare-parts service. Commercial and restaurant equipment are outside the service. If your household microwave is no longer heating, a clear description and the correct location are the best starting point for discussing an assessment.',
         ],
         links: [
@@ -412,7 +412,7 @@ const newGuides: JournalInput[] = [
       {
         heading: 'Arrange residential washer repair in the covered area',
         paragraphs: [
-          'Call or text +1 (267) 704-8588 daily, 7 AM–8 PM Eastern, with the washer details and ZIP code. 5VA Appliance Repair comes to customers’ homes. Philadelphia coverage is 19115 and 19116; service also includes all Montgomery County, PA, and the specifically listed nearby Pennsylvania and New Jersey ZIP codes. Confirm your exact address and appointment before planning around a visit.',
+          'Call or text +1 (267) 704-8588 every day, 7am–8pm, with the washer details and ZIP code. 5VA Appliance Repair comes to customers’ homes. Philadelphia coverage is 19115 and 19116; service also includes all Montgomery County, PA, and the specifically listed nearby Pennsylvania and New Jersey ZIP codes. Confirm your exact address and appointment before planning around a visit.',
           'The service is for residential household appliances. Laundromat and other commercial equipment, appliance sales, retail parts sales and customer drop-off are not offered. If your washer repeatedly misses the spin stage, a clear symptom history and model information let you discuss an appropriate assessment without dismantling the machine first.',
         ],
         links: [

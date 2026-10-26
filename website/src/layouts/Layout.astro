@@ -226,44 +226,48 @@ if (
           observer.observe(element);
         });
       }
-      document.addEventListener('click', (event) => {
-        const target =
-          event.target instanceof Element
-            ? event.target.closest<HTMLAnchorElement>(
-                'a[href^="tel:"],a[href^="sms:"],a[data-conversion]',
-              )
-            : null;
-        if (target)
-          window.dispatchEvent(
-            new CustomEvent('5va:conversion', {
-              detail: {
-                event:
-                  target.protocol === 'tel:'
-                    ? 'phone_click'
-                    : target.protocol === 'sms:'
-                      ? 'sms_click'
-                      : target.dataset.conversion,
-                path: location.pathname,
-                placement:
-                  target.dataset.placement ||
-                  target.closest<HTMLElement>('[data-tracking-region]')?.dataset.trackingRegion ||
-                  (target.closest('header')
-                    ? 'header'
-                    : target.closest('footer')
-                      ? 'footer'
-                      : target.closest('dialog')
-                        ? 'mobile-menu'
-                        : target.closest('.mobile-contact')
-                          ? 'mobile-sticky'
-                          : target.closest('article')
-                            ? 'article-body'
-                            : target.closest('.info-panel')
-                              ? 'service-sidebar'
-                              : 'page-content'),
-              },
-            }),
-          );
-      });
+      document.addEventListener(
+        'click',
+        (event) => {
+          const target =
+            event.target instanceof Element
+              ? event.target.closest<HTMLAnchorElement>(
+                  'a[href^="tel:"],a[href^="sms:"],a[data-conversion]',
+                )
+              : null;
+          if (target)
+            window.dispatchEvent(
+              new CustomEvent('5va:conversion', {
+                detail: {
+                  event:
+                    target.protocol === 'tel:'
+                      ? 'phone_click'
+                      : target.protocol === 'sms:'
+                        ? 'sms_click'
+                        : target.dataset.conversion,
+                  path: location.pathname,
+                  placement:
+                    target.dataset.placement ||
+                    target.closest<HTMLElement>('[data-tracking-region]')?.dataset.trackingRegion ||
+                    (target.closest('header')
+                      ? 'header'
+                      : target.closest('footer')
+                        ? 'footer'
+                        : target.closest('dialog')
+                          ? 'mobile-menu'
+                          : target.closest('.mobile-contact')
+                            ? 'mobile-sticky'
+                            : target.closest('article')
+                              ? 'article-body'
+                              : target.closest('.info-panel')
+                                ? 'service-sidebar'
+                                : 'page-content'),
+                },
+              }),
+            );
+        },
+        { capture: true },
+      );
     </script>
   </body>
 </html>

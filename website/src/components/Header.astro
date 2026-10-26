@@ -16,8 +16,8 @@ const links = [
   <div class="container topbar-inner">
     <span>
       <Icon name="pin" size={14} />
-      <span class="topbar-long">In-home repair · Daily 7 AM–8 PM ET</span>
-      <span class="topbar-short">Daily 7 AM–8 PM ET</span>
+      <span class="topbar-long">In-home repair · Every day, 7am–8pm</span>
+      <span class="topbar-short">Every day, 7am–8pm</span>
     </span>
     <a
       href={business.mapsUrl}
@@ -50,11 +50,15 @@ const links = [
       href={business.phoneHref}
       data-track="phone_click"
       data-placement="header"
+      aria-label={`Call 5VA Appliance Repair at ${business.phone}`}
     >
       <Icon name="phone" size={19} />
-      <span>
+      <span class="header-call-desktop">
         <strong>{business.phone}</strong>
-        <small>Free call. No obligation.</small>
+        <small>Free initial call</small>
+      </span>
+      <span class="header-call-mobile" aria-hidden="true">
+        Call 5VA
       </span>
     </a>
     <button
@@ -80,32 +84,41 @@ const links = [
 <dialog id="mobile-menu" class="mobile-menu" aria-label="Navigation">
   <div class="drawer-head">
     <Logo />
-    <button id="menu-close" type="button" aria-label="Close navigation">
+    <button id="menu-close" type="button" aria-label="Close navigation" autofocus>
       <Icon name="close" />
     </button>
   </div>
   <nav aria-label="Mobile navigation">
     {links.map((link) => (
       <a href={link.href} aria-current={path.startsWith(link.href) ? 'page' : undefined}>
-        {link.text}
-        <Icon name="diagonal" size={23} />
+        <span>{link.text}</span>
       </a>
     ))}
     <a href="/contact/">
-      Get in touch
-      <Icon name="diagonal" size={23} />
+      <span>Get in touch</span>
     </a>
   </nav>
-  <a class="button button-yellow" href={business.phoneHref} data-placement="mobile-menu">
-    <Icon name="phone" size={18} /> Call for free
-  </a>
-  <a class="text-link drawer-sms" href={business.smsHref} data-placement="mobile-menu">
-    <Icon name="chat" size={18} /> Text 5VA directly
-  </a>
+  <div class="drawer-contact">
+    <p>Appliance trouble? Let’s talk.</p>
+    <a
+      class="button button-dark"
+      href={business.phoneHref}
+      data-placement="mobile-menu"
+      aria-label={`Call 5VA Appliance Repair at ${business.phone}`}
+    >
+      <Icon name="phone" size={19} /> Call for repair
+    </a>
+    <a
+      class="button button-outline drawer-sms"
+      href={business.smsHref}
+      data-placement="mobile-menu"
+    >
+      <Icon name="chat" size={19} /> Send a text
+    </a>
+    <small>Free initial call · Visit and repair fees are separate</small>
+  </div>
   <p class="drawer-note">
-    Tell us what needs fixing.
-    <br />
-    We’ll figure out the next step together.
+    <Icon name="clock" size={16} /> Every day, 7am–8pm · Home visits
   </p>
 </dialog>
 <script>

@@ -50,7 +50,7 @@ export const localGuides = [
       ],
       [
         'Book residential washer service in the covered area',
-        '5VA Appliance Repair visits customers at home daily, 7 AM–8 PM Eastern. In Philadelphia, service covers ZIP codes 19115 and 19116. Coverage also includes listed nearby Pennsylvania and New Jersey ZIP codes and all of Montgomery County, PA; confirm the exact address before booking. We repair household appliances and do not offer laundromat equipment repair, appliance sales, retail parts sales, or a customer drop-off location. The initial call is free; any visit, diagnostic, parts, and repair charges are separate and discussed for the job.',
+        '5VA Appliance Repair visits customers at home every day, 7am–8pm. In Philadelphia, service covers ZIP codes 19115 and 19116. Coverage also includes listed nearby Pennsylvania and New Jersey ZIP codes and all of Montgomery County, PA; confirm the exact address before booking. We repair household appliances and do not offer laundromat equipment repair, appliance sales, retail parts sales, or a customer drop-off location. The initial call is free; any visit, diagnostic, parts, and repair charges are separate and discussed for the job.',
       ],
     ],
     [
@@ -106,7 +106,7 @@ export const localGuides = [
       ],
       [
         'Arrange an at-home refrigerator assessment',
-        'Call or text 5VA Appliance Repair at +1 (267) 704-8588 with the symptoms and ZIP code. Residential visits are available daily, 7 AM–8 PM Eastern, subject to appointment availability. Philadelphia coverage is ZIP codes 19115 and 19116, alongside listed nearby PA and NJ ZIP codes and all Montgomery County, PA. Confirm your address before booking. We do not repair commercial refrigeration or sell refrigerators or retail spare parts. The first conversation is free; on-site diagnosis, parts, and repair are separately priced after the job is assessed.',
+        'Call or text 5VA Appliance Repair at +1 (267) 704-8588 with the symptoms and ZIP code. Residential visits are available every day, 7am–8pm, subject to appointment availability. Philadelphia coverage is ZIP codes 19115 and 19116, alongside listed nearby PA and NJ ZIP codes and all Montgomery County, PA. Confirm your address before booking. We do not repair commercial refrigeration or sell refrigerators or retail spare parts. The first conversation is free; on-site diagnosis, parts, and repair are separately priced after the job is assessed.',
       ],
     ],
     [

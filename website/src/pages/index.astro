@@ -70,49 +70,77 @@ const faqs = [
   title="Appliance Repair Philadelphia | 5VA"
   description="In-home appliance repair in Philadelphia 19115 &amp; 19116, Montgomery County and select PA/NJ ZIPs. Call or text 5VA. Free initial call."
 >
-  <section class="repair-hero repair-hero-simple">
+  <section class="repair-hero repair-hero-simple repair-hero-editorial">
     <div class="container repair-hero-grid">
       <div class="repair-hero-copy">
         <h1>
-          Appliance repair
-          <br />
-          in <span>Philadelphia</span>
+          Appliance repair <span>in Philadelphia</span>
         </h1>
-        <p class="repair-hero-lead">Kitchen and laundry appliances repaired at your home.</p>
-        <p class="repair-hero-hours">
-          <Icon name="clock" size={17} /> Daily 7 AM–8 PM Eastern
+        <p class="repair-hero-lead">
+          Kitchen or laundry trouble? We repair your appliances right at home.
         </p>
         <div class="repair-actions">
-          <a class="button button-yellow" href={business.phoneHref} data-placement="home-hero">
-            <Icon name="phone" size={20} /> Call {business.phone}
+          <a
+            class="button button-dark hero-call-action"
+            href={business.phoneHref}
+            data-placement="home-hero"
+            aria-label={`Call 5VA Appliance Repair at ${business.phone}`}
+          >
+            <Icon name="phone" size={20} />
+            <span class="hero-call-desktop">Call {business.phone}</span>
+            <span class="hero-call-mobile" aria-hidden="true">
+              Call for repair
+            </span>
           </a>
-          <a class="button repair-text-button" href={business.smsHref} data-placement="home-hero">
+          <a
+            class="button button-outline repair-text-button"
+            href={business.smsHref}
+            data-placement="home-hero"
+          >
             <Icon name="chat" size={20} /> Text us
           </a>
         </div>
         <p class="repair-call-note">
-          <strong>Free initial call · No obligation to book</strong>
+          <strong>Free initial call. No obligation.</strong>
           <br />
           Visit and repair fees are separate
         </p>
-        <a class="repair-hero-area" href="/service-areas/">
-          <Icon name="pin" size={16} /> Philadelphia 19115 &amp; 19116 · Montgomery County
-          <Icon name="arrow" size={15} />
-        </a>
+        <p class="repair-hero-hours">
+          <Icon name="clock" size={17} /> Every day, 7am–8pm
+        </p>
+        <nav class="hero-appliance-links" aria-label="Popular appliance repairs">
+          <a href="/services/refrigerator-repair/">
+            <Icon name="fridge" size={23} />
+            <span>Refrigerators</span>
+          </a>
+          <a href="/services/washer-repair/">
+            <Icon name="washer" size={23} />
+            <span>Laundry</span>
+          </a>
+          <a href="/services/oven-stove-repair/">
+            <Icon name="oven" size={23} />
+            <span>Cooking</span>
+          </a>
+        </nav>
       </div>
       <div class="repair-hero-media">
         <figure class="repair-photo-main">
           <img
             src="/images/work/technician-1200.webp"
-            srcset="/images/work/technician-480.webp 480w, /images/work/technician-800.webp 800w, /images/work/technician-1200.webp 1200w"
-            sizes="(max-width: 800px) 90vw, 640px"
+            srcset="/images/work/technician-480.webp 480w, /images/work/technician-640-v2.webp 640w, /images/work/technician-800.webp 800w, /images/work/technician-1200.webp 1200w"
+            sizes="(max-width: 400px) calc(100vw - 34px), (max-width: 700px) calc(100vw - 42px), (max-width: 800px) 550px, (max-width: 1280px) calc(46.15vw - 40px), 550px"
             alt="5VA technician repairing a household refrigerator with diagnostic tools"
             width="1200"
             height="900"
             fetchpriority="high"
             decoding="async"
           />
-          <figcaption>Real 5VA in-home repair</figcaption>
+          <figcaption>
+            <span class="hero-caption-icon">
+              <Icon name="tools" size={19} />
+            </span>
+            Real 5VA in-home repair
+          </figcaption>
         </figure>
         <a
           class="repair-google-proof"
@@ -127,12 +155,17 @@ const faqs = [
               ★★★★★
             </span>
           </strong>
-          <span>
-            {business.reviewCount} Google reviews <Icon name="diagonal" size={14} />
-          </span>
+          <span>{business.reviewCount} reviews on Google</span>
           <small>Checked {business.reviewedOn}</small>
         </a>
       </div>
+      <a class="repair-hero-area" href="/service-areas/">
+        <Icon name="pin" size={19} />
+        <span>Philadelphia 19115 &amp; 19116 · Montgomery County · Selected PA &amp; NJ ZIPs</span>
+        <span class="hero-area-link">
+          Check your ZIP <Icon name="arrow" size={16} />
+        </span>
+      </a>
     </div>
   </section>
   <section class="repair-section" id="services">
@@ -194,14 +227,16 @@ const faqs = [
             href={`/images/work/${photo.large}`}
             data-work-photo
             data-caption={photo.title}
+            data-image-width={photo.width}
+            data-image-height={photo.height}
           >
             <img
-              src={`/images/work/${photo.large}`}
-              srcset={`/images/work/${photo.name}-320.webp 320w, /images/work/${photo.name}-480.webp 480w, /images/work/${photo.large} ${photo.width}w`}
-              sizes="(max-width: 600px) 44vw, (max-width: 800px) 44vw, 280px"
+              src={`/images/work/${photo.name}-card-320.webp`}
+              srcset={`/images/work/${photo.name}-card-160.webp 160w, /images/work/${photo.name}-card-320.webp 320w, /images/work/${photo.name}-card-480.webp 480w`}
+              sizes="(max-width: 400px) calc(50vw - 25px), (max-width: 700px) calc(50vw - 29px), (max-width: 800px) calc(50vw - 51px), (max-width: 1280px) calc(25vw - 35.5px), 285px"
               alt={photo.alt}
-              width={photo.width}
-              height={photo.height}
+              width="480"
+              height="640"
               loading="lazy"
               decoding="async"
             />
@@ -273,7 +308,7 @@ const faqs = [
         <h2>We come to your home</h2>
         <p>
           Philadelphia 19115 and 19116, all of Montgomery County, PA, and selected PA and NJ ZIP
-          codes. Daily 7 AM–8 PM Eastern. No shop or appliance drop-off.
+          codes. Every day, 7am–8pm. No shop or appliance drop-off.
         </p>
         <div class="repair-area-links">
           <a href="/service-areas/philadelphia/">Philadelphia</a>
@@ -331,8 +366,8 @@ const faqs = [
         if (image && source) {
           image.src = link.href;
           image.alt = source.alt;
-          image.width = Number(source.getAttribute('width'));
-          image.height = Number(source.getAttribute('height'));
+          image.width = Number(link.dataset.imageWidth || source.getAttribute('width'));
+          image.height = Number(link.dataset.imageHeight || source.getAttribute('height'));
         }
         const title = photoDialog.querySelector('h2');
         if (title) title.textContent = link.dataset.caption || '5VA Google photo';
