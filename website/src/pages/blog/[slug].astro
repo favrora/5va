@@ -80,6 +80,18 @@ const schema = {
           </>
         )}
       </p>
+      <figure class="guide-cover">
+        <img
+          src={article.image}
+          srcset={`/images/blog/${article.slug}-600.webp 600w, ${article.image} 1200w, /images/blog/${article.slug}-1536.webp 1536w`}
+          sizes="(max-width: 400px) calc(100vw - 32px), (max-width: 700px) calc(100vw - 40px), (max-width: 1100px) calc(100vw - 56px), (max-width: 1280px) calc(100vw - 80px), 1200px"
+          alt={article.imageAlt}
+          width="1200"
+          height="800"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </figure>
     </div>
   </section>
   <section class="section guide-section">
@@ -136,20 +148,6 @@ const schema = {
                 </ul>
               )}
             </section>
-            {i === 0 && (
-              <figure class="guide-cover">
-                <img
-                  src={article.image}
-                  srcset={`/images/blog/${article.slug}-600.webp 600w, ${article.image} 1200w, /images/blog/${article.slug}-1536.webp 1536w`}
-                  sizes="(max-width: 800px) calc(100vw - 40px), 780px"
-                  alt={article.imageAlt}
-                  width="1200"
-                  height="800"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </figure>
-            )}
           </>
         ))}
         {article.faqs.length > 0 && (
