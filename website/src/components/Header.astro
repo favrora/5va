@@ -133,8 +133,11 @@ const links = [
   const desktop = window.matchMedia('(min-width: 951px)');
   dialog?.addEventListener('close', () => {
     openButton?.setAttribute('aria-expanded', 'false');
-    if (desktop.matches) document.querySelector<HTMLAnchorElement>('.site-header .brand')?.focus();
-    else openButton?.focus();
+    if (desktop.matches)
+      document
+        .querySelector<HTMLAnchorElement>('.site-header .brand')
+        ?.focus({ preventScroll: true });
+    else openButton?.focus({ preventScroll: true });
   });
   desktop.addEventListener('change', (event) => {
     if (event.matches && dialog?.open) dialog.close();
@@ -162,3 +165,4 @@ const links = [
   });
   if (openButton) openButton.hidden = false;
 </script>
+<script src="../scripts/mobile-header.ts"></script>

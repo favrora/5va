@@ -44,10 +44,7 @@ import { business } from '../data/business';
         />
       </div>
       <div class="about-copy">
-        <h2>
-          Household repair
-          <br />A clear next step
-        </h2>
+        <h2>Repair service at your home</h2>
         <p>
           Tell us the appliance, model, and what changed. We discuss suitability, travel, available
           appointments, and any visit or diagnostic fee before booking. After assessment, review the
@@ -55,7 +52,7 @@ import { business } from '../data/business';
         </p>
         <p style="margin-top:20px">
           We work at customers’ homes every day, 7am–8pm. There is no shop or customer drop-off
-          location. We do not sell appliances or retail parts.
+          location.
         </p>
         <RepairScope compact />
         <a class="text-link" style="margin-top:25px" href="/services/">
@@ -64,66 +61,24 @@ import { business } from '../data/business';
       </div>
     </div>
   </section>
-  <section class="section about-band">
-    <div class="container">
-      <h2>
-        Prepare less
-        <br />
-        Understand more
-      </h2>
-      <div class="process-grid" style="margin-top:35px">
-        {[
-          {
-            icon: 'chat',
-            title: 'Describe the symptom',
-            text: 'A short history, error code, and model help us prepare. You do not need to diagnose the fault yourself.',
-          },
-          {
-            icon: 'pin',
-            title: 'Confirm the address',
-            text: 'Philadelphia is our focus. Share a PA or NJ ZIP code to discuss travel and a suitable appointment.',
-          },
-          {
-            icon: 'tools',
-            title: 'Agree on the work',
-            text: 'Ask about the assessment, proposed repair, and expected cost. Approve work after the plan is clear.',
-          },
-        ].map((item) => (
-          <div class="process-step">
-            <div class="process-top">
-              <Icon name={item.icon} size={28} />
-            </div>
-            <h3>{item.title}</h3>
-            <p>{item.text}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
   <section class="section">
-    <div class="container detail-grid">
+    <div class="container">
       <div class="prose">
-        <h2>See the original Google listing</h2>
+        <h2>See our work and customer feedback</h2>
         <p>
-          Our Google listing showed a 5.0 rating from 39 reviews when checked on October 24, 2026.
-          Selected English excerpts link to the original source. Check Google for the latest reviews
-          and business information.
+          The repair photo above comes from our Google Business Profile. Visit the original listing
+          for work photos and current reviews, or read the dated English excerpts on our{' '}
+          <a href="/reviews/">customer reviews page</a>.
         </p>
-        <a href="/reviews/">Read customer review excerpts</a>
+        <a class="text-link" href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
+          View 5VA on Google <Icon name="diagonal" size={16} />
+        </a>
         <p>
           Planning a visit? Our{' '}
           <a href="/blog/appliance-repair-visit-checklist/">appliance repair checklist</a> explains
           model photos, safe access, and authorization.
         </p>
       </div>
-      <aside class="info-panel">
-        <Icon name="pin" size={28} />
-        <h2>Find 5VA on Google</h2>
-        <p>The same business name and phone number, with the original reviews and photos.</p>
-        <a class="text-link" href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
-          Open Google Maps <Icon name="diagonal" size={16} />
-        </a>
-      </aside>
     </div>
   </section>
   <CTA />

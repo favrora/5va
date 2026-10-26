@@ -3,7 +3,6 @@ import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import CTA from '../../components/CTA.astro';
 import RepairScope from '../../components/RepairScope.astro';
-import ApplianceArt from '../../components/ApplianceArt.astro';
 import { areas, services } from '../../data/content';
 import { serviceAreaSchema } from '../../data/territory';
 import { business } from '../../data/business';
@@ -79,58 +78,43 @@ const schema = {
   <section class="section">
     <div class="container detail-grid">
       <div class="prose">
-        <h2>A visit planned around your address</h2>
+        <h2>Planning your home visit</h2>
         <p>{area.localNote}</p>
         <h2>Kitchen and laundry appliances</h2>
-        <p>
-          Tell us what stopped working, the brand and model if available, and when the problem
-          began. We assess residential appliances and discuss proposed work before repair approval.
-        </p>
         <div class="mini-services">
           {services.map((service) => (
             <a href={`/services/${service.slug}/`}>{service.shortTitle}</a>
           ))}
         </div>
         <RepairScope compact />
-        <h2>Location details that help</h2>
-        <ul class="check-list">
+        <h2>{area.zips.length ? 'Service ZIP codes' : 'County coverage'}</h2>
+        <ul class="area-postal-list" aria-label={`${area.name} service coverage`}>
           {area.neighborhoods.map((name) => (
             <li>
-              <Icon name="pin" size={17} />
               <span>{name}</span>
             </li>
           ))}
         </ul>
-        <p>
-          These references help orient your request. Travel and available appointments are confirmed
-          for your exact address; they are not a guarantee of service at every location.
-        </p>
         <h2>Get ready without moving the appliance</h2>
         <p>
           Use our <a href="/blog/appliance-repair-visit-checklist/">appliance visit checklist</a>{' '}
-          for model, access, and authorization details. The{' '}
-          <a href="/blog/appliance-repair-philadelphia/">Philadelphia repair booking guide</a>{' '}
-          explains the first conversation and questions to ask about the assessment.
+          for model photos, access and permission to approve the work. Repair pricing follows the
+          on-site inspection.
         </p>
-        <h2>Other service areas</h2>
-        <div class="mini-services">
-          {areas
-            .filter((item) => item.slug !== area.slug)
-            .map((item) => (
-              <a href={`/service-areas/${item.slug}/`}>{item.name}</a>
-            ))}
-        </div>
+        <p>
+          Another address? <a href="/service-areas/">View the full PA and NJ service territory</a>.
+        </p>
       </div>
       <aside class="info-panel">
-        <ApplianceArt />
+        <Icon name="pin" size={30} />
         <h2>
           Call or text
           <br />
           about your appliance
         </h2>
         <p>
-          Mobile service only · Every day, 7am–8pm. Philadelphia 19115 and 19116, Montgomery County,
-          and selected PA/NJ ZIPs.
+          Every day, 7am–8pm. Share the appliance, symptom and ZIP code. We confirm appointments and
+          any visit fee before booking.
         </p>
         <a class="button button-yellow" href={business.phoneHref}>
           {business.phone}
@@ -147,3 +131,21 @@ const schema = {
   </section>
   <CTA />
 </Layout>
+
+<style>
+  .area-postal-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 18px 0 32px;
+  }
+  .area-postal-list li {
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    padding: 8px 12px;
+    background: var(--white);
+    font-variant-numeric: tabular-nums;
+  }
+</style>

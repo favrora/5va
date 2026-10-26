@@ -14,6 +14,7 @@ export interface JournalArticle {
   description: string;
   sections: JournalSection[];
   publishedOn?: string;
+  updatedOn?: string;
   sources: { title: string; url: string }[];
   primaryKeyword: string;
   relatedServices: string[];
@@ -55,7 +56,7 @@ const titles: Record<string, string> = {
   'washer-leaking-water-philadelphia': 'Washer Leaking Water? Philadelphia Repair Guide | 5VA',
   'refrigerator-making-noise-philadelphia':
     'Refrigerator Making Noise? Philadelphia Repair Guide | 5VA',
-  'appliance-repair-philadelphia': 'Appliance Repair in Philadelphia: Booking Guide | 5VA',
+  'appliance-repair-philadelphia': 'Booking Appliance Repair in Philadelphia | 5VA',
   'dryer-not-heating-philadelphia': 'Dryer Not Heating? Philadelphia Repair Guide | 5VA',
   'dishwasher-not-draining': 'Dishwasher Not Draining? What to Record | 5VA',
   'oven-not-heating': 'Oven Not Heating? Prepare for Repair | 5VA',
@@ -198,7 +199,7 @@ const newGuides: JournalInput[] = [
         heading: 'Compare a repair assessment with the full replacement decision',
         paragraphs: [
           'A no-heat symptom alone does not tell you whether repair makes financial sense. Consider the appliance’s condition, installation, past performance and the role it serves in your kitchen. If you are comparing replacement, include the practical work around it: dimensions, fit, delivery, removal and any installation requirements. A low advertised appliance price is not automatically the complete cost of returning the kitchen to use.',
-          'For repair, ask how any visit or diagnostic charge is explained, what the assessment will cover and how the proposed work will be presented. The initial phone conversation with 5VA is free and carries no obligation to book. On-site diagnosis, parts and repair charges are separate. There is no fixed repair price in this guide because the technician needs to inspect the appliance before discussing suitable work. You can review the proposal and decide before authorizing the repair.',
+          'For repair, ask how any visit or diagnostic charge is explained, what the assessment will cover and how the proposed work will be presented. The initial phone conversation with 5VA is free and carries no obligation to book. On-site diagnosis, parts and repair charges are separate. The repair price follows an on-site inspection. Review the proposal before authorizing the work.',
         ],
         links: [
           {
@@ -387,7 +388,7 @@ const newGuides: JournalInput[] = [
         heading: 'Ask the right questions about diagnosis and repair cost',
         paragraphs: [
           'A wet load cannot produce a reliable fixed repair quote. Ask what a visit or diagnostic fee covers, how findings will be explained and when you can review the proposed work. A useful assessment distinguishes the complaint from the cause and considers the appliance’s condition and installation. It may show that a repair is unsuitable or that another issue needs attention first. Do not buy a pump or belt simply because another household had a similar symptom.',
-          'The first call to 5VA is free, with no obligation to book. Any on-site diagnosis, parts and repair charges are separate and discussed for the specific job. There is no universal price or warranty promise in this guide. If you are considering replacement, compare the proposed repair with the complete alternative, including delivery, installation, removal and fit. 5VA repairs appliances and does not sell replacement machines or retail spare parts.',
+          'The first call to 5VA is free, with no obligation to book. Any on-site diagnosis, parts and repair charges are separate and discussed for the specific job. Ask which charges and repair terms apply to your appliance. If you are considering replacement, compare the proposed repair with the complete alternative, including delivery, installation, removal and fit. 5VA repairs appliances and does not sell replacement machines or retail spare parts.',
         ],
         links: [
           {
@@ -468,7 +469,11 @@ const newGuides: JournalInput[] = [
 const inputs: JournalInput[] = [
   ...newGuides,
   ...localGuides,
-  ...existingArticles.map((article) => ({ ...article, ...metadata[article.slug], faqs: [] })),
+  ...existingArticles.map((article) => ({
+    ...article,
+    ...metadata[article.slug],
+    faqs: article.faqs || [],
+  })),
 ];
 export const articles: JournalArticle[] = inputs.map((article) => {
   const words = [

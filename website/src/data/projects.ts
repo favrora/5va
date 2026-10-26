@@ -46,32 +46,32 @@ export const preparation: Record<string, { items: string[]; photo: string; note:
   },
   'freezer-repair': {
     items: [
-      'Brand, model, and installation type',
-      'Symptoms, error messages, and when they began',
-      'Your ZIP code and any access restrictions',
+      'Model and whether it is upright, chest or part of a refrigerator',
+      'Temperature reading, visible frost and when food began softening',
+      'Any power interruption, door problem or recent change before the fault',
     ],
     photo:
-      'The accessible model label, controls, and an overview of the installation. Leave the appliance in place.',
-    note: 'Household appliances only. Confirm the model and address before booking; proposed work follows assessment.',
+      'The accessible model label and visible frost or door gap. Leave covers and the appliance in place.',
+    note: 'Protect stored food separately while arranging an appliance assessment.',
   },
   'microwave-repair': {
     items: [
-      'Brand, model, and installation type',
-      'Symptoms, error messages, and when they began',
-      'Your ZIP code and any access restrictions',
+      'Model and whether it is countertop, built in or over the range',
+      'Whether it starts, runs without heat or stops during use',
+      'Any error code, door damage, sparking or recent change',
     ],
     photo:
-      'The accessible model label, controls, and an overview of the installation. Leave the appliance in place.',
-    note: 'Household appliances only. Confirm the model and address before booking; proposed work follows assessment.',
+      'The accessible label, controls and entire installation. Do not unmount the microwave or remove covers.',
+    note: 'Confirm model and repair suitability before booking a microwave visit.',
   },
   'ice-maker-repair': {
     items: [
-      'Brand, model, and installation type',
-      'Symptoms, error messages, and when they began',
-      'Your ZIP code and any access restrictions',
+      'Model and whether the ice maker is inside a refrigerator or a household unit',
+      'Whether ice is not being made, will not dispense or is leaking',
+      'Whether cooling is normal and whether a filter or water-supply change came first',
     ],
     photo:
-      'The accessible model label, controls, and an overview of the installation. Leave the appliance in place.',
-    note: 'Household appliances only. Confirm the model and address before booking; proposed work follows assessment.',
+      'The model label, display and visible ice or water problem. Leave the mechanism and water connections in place.',
+    note: 'Residential ice makers only; no commercial ice-machine service.',
   },
 };

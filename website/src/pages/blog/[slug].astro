@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import CTA from '../../components/CTA.astro';
 import FAQ from '../../components/FAQ.astro';
 import Icon from '../../components/Icon.astro';
 
@@ -23,8 +22,9 @@ const schema = {
   inLanguage: 'en-US',
   wordCount: article.wordCount,
   articleSection: article.category,
-  ...(article.publishedOn
-    ? { datePublished: article.publishedOn, dateModified: article.publishedOn }
+  ...(article.publishedOn ? { datePublished: article.publishedOn } : {}),
+  ...(article.updatedOn || article.publishedOn
+    ? { dateModified: article.updatedOn || article.publishedOn }
     : {}),
   mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).href,
   author: {
@@ -57,80 +57,36 @@ const schema = {
         <a href="/">Home</a>
         <span>/</span>
         <a href="/blog/">Blog</a>
-        <span>/</span>
-        <span>Guide</span>
       </div>
       <h1>{article.title}</h1>
-      <p class="lead">{article.description}</p>
       <p class="guide-byline">
-        5VA Appliance Repair <span aria-hidden="true">·</span> Philadelphia, Pennsylvania
-        {article.publishedOn && (
+        5VA Appliance Repair
+        {(article.updatedOn || article.publishedOn) && (
           <>
             {' '}
             <span aria-hidden="true">·</span>{' '}
-            <time datetime={article.publishedOn}>
-              {new Date(`${article.publishedOn}T12:00:00Z`).toLocaleDateString('en-US', {
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric',
-                timeZone: 'UTC',
-              })}
+            <time datetime={article.updatedOn || article.publishedOn}>
+              {article.updatedOn && 'Updated '}
+              {new Date(`${article.updatedOn || article.publishedOn}T12:00:00Z`).toLocaleDateString(
+                'en-US',
+                {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                  timeZone: 'UTC',
+                },
+              )}
             </time>
           </>
         )}
       </p>
-      <figure class="guide-cover">
-        <img
-          src={article.image}
-          srcset={`/images/blog/${article.slug}-600.webp 600w, ${article.image} 1200w, /images/blog/${article.slug}-1536.webp 1536w`}
-          sizes="(max-width: 1100px) 100vw, 1060px"
-          alt={article.imageAlt}
-          width="1200"
-          height="800"
-          fetchpriority="high"
-          decoding="async"
-        />
-      </figure>
     </div>
   </section>
   <section class="section guide-section">
-    <div class="container article-layout">
-      <aside class="article-sidebar">
-        <nav class="article-toc" aria-label="Article sections">
-          <h2>In this guide</h2>
-          <a class="guide-skip" href="#guide-body">
-            The quick answer
-          </a>
-          {article.sections.map((section, i) => (
-            <a href={`#section-${i}`}>{section.heading}</a>
-          ))}
-          {article.faqs.length > 0 && <a href="#guide-questions">Common questions</a>}
-          <a href="#related-services">Get appliance repair help</a>
-        </nav>
-        <div class="guide-contact">
-          <Icon name="chat" size={25} />
-          <h2>Need appliance repair?</h2>
-          <p>Tell us the appliance, symptom, and ZIP code.</p>
-          <a href={business.phoneHref} data-placement="article-sidebar">
-            {business.phone}
-          </a>
-          <a href={business.smsHref} class="text-link" data-placement="article-sidebar">
-            Prefer a text? Send an SMS <Icon name="arrow" size={16} />
-          </a>
-          <small>Free call. No obligation to book.</small>
-        </div>
-      </aside>
+    <div class="container article-layout article-reading-layout">
       <article class="prose guide-body" id="guide-body">
         <div class="guide-summary">
           <p>{article.takeaway}</p>
-          <div class="guide-contact-actions">
-            <a class="text-link" href={business.phoneHref} data-placement="article-summary">
-              <Icon name="phone" size={18} /> Call {business.phone}
-            </a>
-            <a class="text-link" href={business.smsHref} data-placement="article-summary">
-              <Icon name="chat" size={18} /> Text 5VA
-            </a>
-          </div>
         </div>
         {article.sections.map((section, i) => (
           <>
@@ -180,12 +136,19 @@ const schema = {
                 </ul>
               )}
             </section>
-            {i === 1 && (
-              <p class="context-reading">
-                For related symptoms and planning, read{' '}
-                <a href={`/blog/${recommended[0].slug}/`}>{recommended[0].title}</a> and{' '}
-                <a href={`/blog/${recommended[1].slug}/`}>{recommended[1].title}</a>.
-              </p>
+            {i === 0 && (
+              <figure class="guide-cover">
+                <img
+                  src={article.image}
+                  srcset={`/images/blog/${article.slug}-600.webp 600w, ${article.image} 1200w, /images/blog/${article.slug}-1536.webp 1536w`}
+                  sizes="(max-width: 800px) calc(100vw - 40px), 780px"
+                  alt={article.imageAlt}
+                  width="1200"
+                  height="800"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
             )}
           </>
         ))}
@@ -196,19 +159,12 @@ const schema = {
           </section>
         )}
         <section id="related-services" class="guide-services">
-          <h2>Find the right service for your home</h2>
-          <p>
-            Explore the work, see what information helps us prepare, and call for free to discuss
-            your household appliance problem.
-          </p>
+          <h2>Repair services</h2>
           <div class="guide-service-links">
             {relevantServices.map((service) => (
               <a href={`/services/${service.slug}/`}>
                 <Icon name={service.icon} size={23} />
-                <span>
-                  {service.title}
-                  <small>Residential appliance repair</small>
-                </span>
+                <span>{service.title}</span>
                 <Icon name="arrow" size={18} />
               </a>
             ))}
@@ -220,10 +176,6 @@ const schema = {
         {article.sources.length > 0 && (
           <section class="article-sources">
             <h2>Sources and further reading</h2>
-            <p>
-              Manufacturer and public guidance can help with planning. Follow instructions for your
-              particular product and situation.
-            </p>
             <ul>
               {article.sources.map((source) => (
                 <li>
@@ -241,7 +193,7 @@ const schema = {
             {recommended.map((item) => (
               <a href={`/blog/${item.slug}/`}>
                 <strong>{item.title}</strong>
-                <Icon name="diagonal" size={18} />
+                <Icon name="arrow" size={18} />
               </a>
             ))}
           </div>
@@ -249,5 +201,4 @@ const schema = {
       </article>
     </div>
   </section>
-  <CTA />
 </Layout>

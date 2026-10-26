@@ -217,10 +217,12 @@ assert.equal(blogFiles.length, articles.length, 'Every article needs a built pag
 for (const file of blogFiles) {
   const html = await readFile(file, 'utf8');
   assert.match(html, /class="guide-cover"/, `${file}: missing editorial cover`);
-  assert.ok(
-    (html.match(/class="context-reading"/g) || []).length === 1,
-    `${file}: contextual article links missing`,
+  const contextualLinks = new Set(
+    [...html.matchAll(/<ul\b[^>]*class="guide-context-links"[^>]*>([\s\S]*?)<\/ul>/g)]
+      .flatMap((block) => [...block[1].matchAll(/href="(\/[^"#]+)"/g)])
+      .map((link) => link[1]),
   );
+  assert.ok(contextualLinks.size >= 2, `${file}: useful contextual links missing`);
 }
 const robots = await readFile(join(dist, 'robots.txt'), 'utf8');
 assert.equal(

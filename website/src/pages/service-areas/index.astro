@@ -4,6 +4,14 @@ import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import CTA from '../../components/CTA.astro';
 import { areas } from '../../data/content';
+const coverageNotes: Record<string, string> = {
+  philadelphia: 'Home visits in ZIP codes 19115 and 19116',
+  'northeast-philadelphia': 'Kitchen and laundry repair in 19115 and 19116',
+  'feasterville-trevose': 'Home visits in ZIP code 19053',
+  'montgomery-county': 'All of Montgomery County, Pennsylvania',
+  pennsylvania: 'Montgomery County and 24 listed Pennsylvania ZIPs',
+  'new-jersey': '11 listed New Jersey ZIP codes',
+};
 ---
 
 <Layout
@@ -24,8 +32,7 @@ import { areas } from '../../data/content';
       </h1>
       <p class="lead">
         We come to your home in Philadelphia 19115 and 19116, all of Montgomery County, PA, and the
-        selected Pennsylvania and New Jersey ZIP codes listed below. Daily 7 AM–8 PM Eastern; no
-        shop or appliance drop-off.
+        selected Pennsylvania and New Jersey ZIP codes below. Every day, 7am–8pm.
       </p>
     </div>
   </section>
@@ -34,14 +41,13 @@ import { areas } from '../../data/content';
       {areas.map((area) => (
         <a class="area-card" href={`/service-areas/${area.slug}/`}>
           <h2>{area.name}</h2>
-          <p>{area.intro}</p>
-          <Icon name="diagonal" size={24} />
+          <p>{coverageNotes[area.slug]}</p>
+          <Icon name="arrow" size={24} />
         </a>
       ))}
       <p class="notice">
-        Call or text before planning a visit. We confirm travel, the particular household appliance,
-        appointments, and any visit fee. A state page does not guarantee an available appointment at
-        every address.
+        Call or text to confirm an appointment and any visit fee. We come to your home; there is no
+        shop or appliance drop-off.
       </p>
     </div>
   </section>

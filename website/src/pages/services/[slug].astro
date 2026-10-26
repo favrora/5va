@@ -14,6 +14,16 @@ export function getStaticPaths() {
   return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
 }
 const { service } = Astro.props;
+const relatedServiceSlugs: Record<string, string[]> = {
+  'refrigerator-repair': ['freezer-repair', 'ice-maker-repair'],
+  'washer-repair': ['dryer-repair'],
+  'dryer-repair': ['washer-repair'],
+  'oven-stove-repair': ['microwave-repair', 'dishwasher-repair'],
+  'dishwasher-repair': ['refrigerator-repair', 'oven-stove-repair'],
+  'freezer-repair': ['refrigerator-repair', 'ice-maker-repair'],
+  'microwave-repair': ['oven-stove-repair'],
+  'ice-maker-repair': ['refrigerator-repair', 'freezer-repair'],
+};
 const searchDescriptions: Record<string, string> = {
   'refrigerator-repair':
     'Fridge not cooling or leaking? In-home refrigerator repair in Philadelphia 19115/19116, Montgomery County and selected PA/NJ ZIPs. Call or text 5VA.',
@@ -109,24 +119,14 @@ const schema = [
     <div class="container detail-grid">
       <div class="prose">
         <RepairScope compact />
-        <h2>A practical place to start</h2>
+        <h2>{service.overviewTitle}</h2>
         <p>{service.intro}</p>
         <p>
           We visit homes in <a href="/service-areas/philadelphia/">Philadelphia 19115 and 19116</a>,
           <a href="/service-areas/montgomery-county/">Montgomery County</a>, and selected
           <a href="/service-areas/pennsylvania/">Pennsylvania</a> and
-          <a href="/service-areas/new-jersey/">New Jersey</a> ZIP codes. Call or text to arrange an
-          appointment.
+          <a href="/service-areas/new-jersey/">New Jersey</a> ZIP codes.
         </p>
-        <h2>Sound familiar?</h2>
-        <ul class="check-list">
-          {service.symptoms.map((symptom) => (
-            <li>
-              <Icon name="check" size={17} />
-              <span>{symptom}</span>
-            </li>
-          ))}
-        </ul>
         {service.details.map((detail) => (
           <div class="details-block">
             <h3>{detail.title}</h3>
@@ -171,18 +171,17 @@ const schema = [
               <a href={`/blog/${article.slug}/`}>{article.title}</a>
             ))}
         </div>
-        <h2>Other household appliance repairs</h2>
+        <h2>Related repair services</h2>
         <div class="mini-services">
           {services
-            .filter((item) => item.slug !== service.slug)
-            .slice(0, 5)
+            .filter((item) => relatedServiceSlugs[service.slug].includes(item.slug))
             .map((item) => (
               <a href={`/services/${item.slug}/`}>{item.shortTitle}</a>
             ))}
         </div>
         <p style="margin-top:25px">
-          <a href="/service-areas/">Check your service area</a> or browse the{' '}
-          <a href="/blog/">appliance repair blog</a> for practical preparation advice.
+          <a href="/services/">See all appliance repairs</a> or{' '}
+          <a href="/blog/appliance-repair-visit-checklist/">prepare for your visit</a>.
         </p>
       </div>
       <aside class="info-panel" data-tracking-region="service-sidebar">
@@ -193,8 +192,8 @@ const schema = [
           your appliance
         </h2>
         <p>
-          Tell us what’s going on, your ZIP code, and the result you’re looking for. We’ll confirm
-          the scope and next steps.
+          Share the model, symptom and ZIP code. We confirm the visit and any diagnostic fee; the
+          repair price follows an on-site inspection.
         </p>
         <a class="button button-yellow" href={business.phoneHref}>
           <Icon name="phone" size={17} /> {business.phone}

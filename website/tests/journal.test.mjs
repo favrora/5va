@@ -97,6 +97,9 @@ test('new local guides have navigable sections, useful FAQ data, and primary-sou
     'whirlpool.com',
     'nfpa.org',
     'foodsafety.gov',
+    'cpsc.gov',
+    'fsis.usda.gov',
+    'pseg.com',
   ]);
   for (const slug of Object.keys(localTopics)) {
     const article = articles.find((item) => item.slug === slug);

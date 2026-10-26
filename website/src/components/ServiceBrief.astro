@@ -1,14 +1,11 @@
 ---
 import Icon from './Icon.astro';
-import { preparation } from '../data/projects';
-import { business } from '../data/business';
 interface Props {
   slug: string;
   symptoms: string[];
   icon: string;
 }
-const { slug, symptoms, icon } = Astro.props;
-const prep = preparation[slug];
+const { symptoms, icon } = Astro.props;
 ---
 
 <div class="service-brief">
@@ -17,11 +14,7 @@ const prep = preparation[slug];
       <Icon name={icon} size={35} />
     </span>
   </div>
-  <h2>
-    Let’s start with
-    <br />
-    what needs fixing
-  </h2>
+  <h2>Common symptoms</h2>
   <ul>
     {symptoms.slice(0, 3).map((symptom) => (
       <li>
@@ -30,14 +23,4 @@ const prep = preparation[slug];
       </li>
     ))}
   </ul>
-  <a href={business.phoneHref} class="button button-yellow" data-placement="service-brief">
-    Call about this service <Icon name="arrow" size={18} />
-  </a>
-  <p>Free call. No obligation to book.</p>
-  {prep && (
-    <div class="brief-note">
-      <Icon name="chat" size={19} />
-      <span>{prep.note}</span>
-    </div>
-  )}
 </div>
