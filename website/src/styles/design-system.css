@@ -1,0 +1,1909 @@
+/* 5VA shared design system. Tokens and current page families live together. */
+:root {
+  --ink: #173e35;
+  --muted: #52685f;
+  --paper: #fbfaf6;
+  --cream: #f0f2e9;
+  --yellow: #f7c94d;
+  --line: #dbe2d7;
+  --surface: #ffffff;
+  --surface-soft: #f3f5ee;
+  --forest-deep: #102f29;
+  --on-forest: #d2e0d4;
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-lg: 28px;
+  --shadow-card: 0 4px 20px #153c3106;
+  --shadow-raised: 0 18px 42px #153c3110;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --section-space: clamp(56px, 6vw, 88px);
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+html {
+  scroll-padding-top: 106px;
+}
+body {
+  font-size: 16px;
+  line-height: 1.65;
+  background: var(--paper);
+}
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 800;
+  text-wrap: balance;
+}
+h1,
+h2 {
+  letter-spacing: -0.055em;
+}
+h2 {
+  font-size: clamp(30px, 3.2vw, 42px);
+  line-height: 1.16;
+}
+h3 {
+  letter-spacing: -0.035em;
+  line-height: 1.25;
+}
+p {
+  text-wrap: pretty;
+}
+.container {
+  width: min(1200px, calc(100% - 80px));
+}
+.section,
+.repair-section {
+  padding-block: var(--section-space);
+}
+a,
+button,
+summary {
+  touch-action: manipulation;
+}
+:where(a, button, summary):focus-visible {
+  outline: 3px solid #986000;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 7px var(--paper);
+}
+:where(.repair-hero, .repair-coverage, .site-footer) :is(a, button):focus-visible {
+  outline-color: var(--yellow);
+  box-shadow: 0 0 0 7px var(--forest-deep);
+}
+.button {
+  min-height: 54px;
+  padding: 15px 22px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 700;
+  gap: 10px;
+  transition:
+    background 180ms,
+    border-color 180ms,
+    box-shadow 180ms,
+    transform 220ms var(--ease-out);
+}
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px #0d302517;
+}
+.button:active {
+  transform: translateY(0);
+}
+.button-yellow {
+  background: var(--yellow);
+  color: var(--forest-deep);
+}
+.button-yellow:hover {
+  background: #ffda70;
+}
+.button-dark {
+  background: var(--forest-deep);
+}
+.button-dark:hover {
+  background: #255246;
+}
+.button-outline {
+  background: #ffffff66;
+  border-color: #a9bdb0;
+}
+.button-outline:hover {
+  background: white;
+  border-color: var(--ink);
+}
+.text-link {
+  font-size: 14px;
+  line-height: 1.6;
+  gap: 10px;
+}
+.text-link svg {
+  transition: transform 200ms var(--ease-out);
+}
+.text-link:hover svg {
+  transform: translateX(4px);
+}
+
+/* A compact navigation shell, with a solid fallback for translucent surfaces. */
+.topbar {
+  background: var(--forest-deep);
+}
+.topbar-inner {
+  min-height: 30px;
+  padding-block: 5px;
+}
+.topbar-inner > span,
+.topbar a {
+  font-size: 10px;
+}
+.topbar a {
+  text-underline-offset: 4px;
+}
+.topbar a:hover {
+  color: var(--yellow);
+  text-decoration: underline;
+}
+.site-header {
+  background: #fbfaf6f5;
+  border-bottom: 1px solid #173e3514;
+  box-shadow: 0 4px 20px #173e3504;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+.header-inner {
+  height: 78px;
+  gap: 24px;
+}
+.brand .official-logo {
+  width: 112px;
+  height: 66px;
+  object-fit: cover;
+  background: transparent;
+}
+.desktop-nav {
+  gap: clamp(18px, 2vw, 28px);
+}
+.desktop-nav > a {
+  padding-block: 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.desktop-nav > a:after {
+  height: 2px;
+  background: var(--ink);
+  bottom: 8px;
+}
+.header-call {
+  min-height: 48px;
+  gap: 11px;
+  padding: 8px 14px;
+  border: 1px solid #d9e3d8;
+  background: #edf2e8;
+  border-radius: var(--radius-sm);
+  transition:
+    border-color 180ms,
+    background 180ms;
+}
+.header-call:hover {
+  background: #e4ecdd;
+  border-color: #96ad9b;
+}
+.header-call strong {
+  font-size: 15px;
+  letter-spacing: -0.035em;
+}
+.header-call small {
+  font-size: 10px;
+  line-height: 1.5;
+}
+.menu-toggle {
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: #ffffff99;
+}
+.mobile-menu {
+  background: var(--paper);
+  border-radius: 24px 0 0 24px;
+  padding: 0 0 28px;
+}
+.mobile-menu::backdrop {
+  background: #0d292579;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.drawer-head {
+  padding: 18px 24px 16px;
+  margin-bottom: 12px;
+}
+.drawer-head button {
+  border-radius: 50%;
+  background: #edf1e7;
+}
+.mobile-menu nav {
+  padding-inline: 24px;
+  margin-bottom: 0;
+}
+.mobile-menu nav a {
+  padding-block: 18px;
+  font-size: 20px;
+  line-height: 1.3;
+}
+.mobile-menu nav a:hover,
+.mobile-menu nav a[aria-current] {
+  color: #37654d;
+}
+.mobile-menu > .button {
+  margin: 24px 24px 0;
+  width: calc(100% - 48px);
+}
+.drawer-sms {
+  margin: 18px 24px 0;
+  min-height: 44px;
+}
+.drawer-note {
+  margin: 14px 24px 0;
+  font-size: 13px;
+}
+
+/* The hero uses genuine photography, warm light and one clear action group. */
+.repair-hero {
+  background:
+    radial-gradient(ellipse at 97% 3%, #477c5c33, transparent 55%),
+    linear-gradient(125deg, #12382f, #1b4438 70%, #173e35);
+}
+.repair-hero-simple {
+  padding-block: clamp(40px, 5vw, 72px);
+}
+.repair-hero-simple .repair-hero-grid {
+  gap: clamp(32px, 4vw, 64px);
+  grid-template-columns: 1.08fr 1fr;
+}
+.repair-hero-simple h1 {
+  font-size: clamp(44px, 4.6vw, 64px);
+  line-height: 1.06;
+  max-width: 650px;
+}
+.repair-hero h1 span {
+  color: #f9d16b;
+}
+.repair-hero-simple .repair-hero-lead {
+  font-size: 18px;
+  margin-top: 22px;
+  max-width: 460px;
+  color: #e1ebdf;
+}
+.repair-hero-hours {
+  font-size: 13px;
+  color: var(--on-forest);
+  margin-top: 20px;
+}
+.repair-hero-simple .repair-actions {
+  gap: 12px;
+  margin-top: 28px;
+}
+.repair-hero-simple .repair-actions .button {
+  font-size: 14px;
+  padding-inline: 20px;
+  min-height: 56px;
+}
+.repair-text-button {
+  background: #ffffff08;
+  border-color: #8ca590;
+}
+.repair-text-button:hover {
+  background: #ffffff12;
+  border-color: var(--yellow);
+}
+.repair-hero-simple .repair-call-note {
+  font-size: 12px;
+  margin-top: 16px;
+  line-height: 1.75;
+  color: var(--on-forest);
+}
+.repair-call-note strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+.repair-hero-simple .repair-hero-area {
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--on-forest);
+}
+.repair-hero-simple .repair-hero-media {
+  max-width: 550px;
+  gap: 16px;
+}
+.repair-hero-simple .repair-photo-main {
+  border-radius: 28px;
+  border: 1px solid #ffffff30;
+  box-shadow: 0 18px 44px #061f2330;
+  aspect-ratio: 4 / 3;
+}
+.repair-photo-main img {
+  transition: transform 600ms var(--ease-out);
+}
+@media (hover: hover) {
+  .repair-photo-main:hover img {
+    transform: scale(1.025);
+  }
+}
+.repair-hero-simple .repair-photo-main figcaption {
+  border-radius: 9px;
+  background: #0d3025e8;
+  padding: 8px 12px;
+  font-size: 11px;
+}
+.repair-hero-simple .repair-google-proof {
+  border-radius: 16px;
+  background: #f8f9f0;
+  color: var(--ink);
+  border-color: #ffffff55;
+  padding: 16px 20px;
+  transition:
+    background 180ms,
+    transform 220ms var(--ease-out);
+}
+.repair-hero-simple .repair-google-proof:hover {
+  background: #fff;
+  transform: translateY(-2px);
+}
+.repair-hero-simple .repair-google-proof strong {
+  font-size: 26px;
+}
+.repair-hero-simple .repair-google-proof > span {
+  font-size: 12px;
+  color: var(--ink);
+}
+.repair-hero-simple .repair-google-proof small {
+  color: var(--muted);
+  font-size: 10px;
+}
+.repair-hero-simple .repair-google-proof .stars {
+  color: #936000;
+  font-size: 13px;
+}
+
+/* Cards share geometry, type, elevation and a restrained hover response. */
+.repair-section-heading,
+.section-heading {
+  margin-bottom: 32px;
+  gap: 24px;
+}
+.repair-section-heading p,
+.section-heading > div > p {
+  font-size: 15px;
+  margin-top: 14px;
+  line-height: 1.7;
+}
+.repair-section h2 {
+  font-size: clamp(30px, 3.2vw, 42px);
+}
+.appliance-grid {
+  gap: 18px;
+}
+.appliance-card,
+.service-card,
+.area-card,
+.review-card,
+.story-card {
+  border-color: var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  transition:
+    transform 240ms var(--ease-out),
+    box-shadow 240ms,
+    border-color 180ms;
+}
+.appliance-card {
+  padding: 26px 24px 24px;
+}
+.appliance-card:hover,
+.service-card:hover,
+.area-card:hover,
+.story-card:hover {
+  border-color: #90aa96;
+  box-shadow: var(--shadow-raised);
+  transform: translateY(-4px);
+}
+.appliance-card-icon,
+.service-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: #ecf2e7;
+}
+.appliance-card h3 {
+  font-size: 21px;
+  margin: 20px 0 12px;
+}
+.appliance-card p {
+  font-size: 14px;
+  line-height: 1.75;
+  margin-bottom: 24px;
+}
+.appliance-card-link {
+  font-size: 12px;
+  padding-top: 17px;
+  border-top: 1px solid #e8ece3;
+}
+.repair-inline-help {
+  font-size: 14px;
+  line-height: 1.8;
+  margin-top: 26px;
+}
+.repair-scope-section {
+  background: #f0f2e9;
+  border-color: #e1e6da;
+}
+.scope-grid {
+  gap: 18px;
+}
+.scope-card,
+.repair-home-scope .scope-card {
+  padding: 24px;
+  border-radius: 18px;
+  background: #fbfcf7;
+  border-color: #d9e1d4;
+}
+.scope-card h3,
+.repair-home-scope .scope-card h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.scope-card p {
+  font-size: 14px;
+  line-height: 1.75;
+}
+.scope-icon {
+  color: #79503b;
+}
+.scope-note {
+  font-size: 13px;
+  border-radius: 14px;
+  padding: 20px;
+  line-height: 1.8;
+}
+.work-gallery {
+  gap: 18px;
+}
+.repair-home-proof .work-photo,
+.repair-home-proof .work-photo:first-child {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+}
+.repair-home-proof .work-photo img {
+  aspect-ratio: 4 / 3;
+  height: auto;
+  min-height: 0;
+}
+.repair-home-proof .work-photo > span {
+  padding: 16px;
+  min-height: 66px;
+  gap: 10px;
+}
+.repair-home-proof .work-photo strong {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.work-source {
+  font-size: 12px;
+  line-height: 1.8;
+  margin-top: 20px;
+}
+.repair-review-row {
+  margin-top: 30px;
+  gap: 24px;
+}
+.repair-review-row figure {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: white;
+  padding: 24px;
+}
+.repair-review-row blockquote {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.65;
+  margin: 16px 0;
+}
+.repair-review-row figcaption {
+  font-size: 12px;
+}
+.repair-plan-section,
+.territory-section,
+.about-band {
+  background: #eff3e9;
+  border-color: #dce5d7;
+}
+.repair-plan-grid {
+  gap: 64px;
+  align-items: start;
+}
+.repair-steps {
+  gap: 24px;
+  margin-top: 32px;
+}
+.repair-steps li > span {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: #dfe9d7;
+}
+.repair-steps h3 {
+  font-size: 20px;
+  margin-top: 5px;
+}
+.repair-steps p {
+  font-size: 14px;
+  line-height: 1.75;
+}
+.repair-coverage {
+  padding: 36px;
+  border-radius: 24px;
+  background: linear-gradient(140deg, #153d32, #224d3c);
+}
+.repair-coverage p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--on-forest);
+}
+.repair-area-links a {
+  border-radius: 8px;
+  font-size: 12px;
+  padding: 8px 12px;
+}
+.repair-faq-grid {
+  gap: 64px;
+}
+.faq-item summary {
+  padding-block: 24px;
+  font-size: 15px;
+  line-height: 1.6;
+  gap: 16px;
+}
+.faq-item summary:hover {
+  color: #42704e;
+}
+.faq-item > p {
+  font-size: 15px;
+  padding: 0 30px 24px;
+  line-height: 1.85;
+}
+.faq-number {
+  font-size: 11px;
+  color: var(--muted);
+}
+.faq-plus {
+  font-size: 24px;
+}
+
+/* Interior services, coverage and contact use the same spacing and surfaces. */
+.page-hero {
+  padding-block: 48px 56px;
+  background: radial-gradient(ellipse at 90% 0, #e6edda99, transparent 60%), var(--paper);
+}
+.breadcrumb {
+  font-size: 12px;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.page-hero h1 {
+  font-size: clamp(38px, 4.6vw, 60px);
+  line-height: 1.1;
+  margin-bottom: 24px;
+  max-width: 950px;
+}
+.page-hero .lead {
+  font-size: 17px;
+  line-height: 1.8;
+  max-width: 720px;
+}
+.page-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 17px;
+  margin-bottom: 24px;
+}
+.service-hero-grid {
+  gap: 56px;
+  align-items: center;
+}
+.service-hero-actions {
+  gap: 12px;
+}
+.service-brief {
+  border-radius: 24px;
+  padding: 30px;
+  background: linear-gradient(140deg, #173e35, #28503b);
+}
+/* The icon is also the sole/last span in brief-top: override that caption selector. */
+.service-brief .brief-top .brief-icon {
+  background: var(--yellow);
+  color: var(--forest-deep);
+  text-align: center;
+}
+.service-brief .brief-icon svg {
+  color: inherit;
+}
+.service-brief h2 {
+  font-size: 28px;
+}
+.service-brief li {
+  font-size: 14px;
+}
+.detail-grid {
+  gap: 64px;
+}
+.info-panel {
+  padding: 30px;
+  border-radius: 22px;
+  background: #edf2e5;
+  border-color: #dce5d3;
+}
+.info-panel h2 {
+  font-size: 28px;
+  margin-top: 18px;
+}
+.info-panel > p,
+.about-copy > p {
+  font-size: 16px;
+  line-height: 1.85;
+}
+.info-panel .button {
+  width: 100%;
+  font-size: 14px;
+}
+.info-panel small {
+  line-height: 1.8;
+}
+.about-grid {
+  gap: 64px;
+}
+.about-visual > img {
+  border-radius: 26px;
+}
+.process-grid {
+  gap: 32px;
+}
+.process-top {
+  margin-bottom: 22px;
+  padding-bottom: 22px;
+}
+.process-step h3 {
+  font-size: 23px;
+}
+.process-step > p {
+  font-size: 15px;
+  line-height: 1.8;
+  margin-top: 14px;
+}
+.area-card {
+  padding: 28px;
+}
+.area-card h2 {
+  font-size: 28px;
+}
+.area-card p {
+  font-size: 15px;
+  line-height: 1.8;
+}
+.territory-grid {
+  gap: 56px;
+}
+.territory-codes li {
+  padding: 8px 12px;
+  border-radius: 9px;
+  font-size: 14px;
+}
+.phone-contact-grid {
+  gap: 56px;
+  align-items: center;
+}
+.phone-contact-panel {
+  padding: 32px;
+  border-radius: 24px;
+  background: linear-gradient(140deg, #173e35, #28503b);
+  box-shadow: var(--shadow-raised);
+  border: 1px solid #376348;
+}
+.contact-big-number {
+  font-size: clamp(24px, 2.6vw, 34px);
+  line-height: 1.4;
+}
+.phone-contact-panel > p {
+  font-size: 14px;
+  line-height: 1.8;
+}
+.phone-contact-panel .button {
+  font-size: 14px;
+}
+.contact-text-link {
+  font-size: 14px;
+  line-height: 1.75;
+}
+.phone-location-grid {
+  gap: 64px;
+}
+.map-consent {
+  padding: 32px;
+  border-radius: 24px;
+  background: #edf2e5;
+  border-color: #dbe4d3;
+}
+.map-consent h2 {
+  font-size: 30px;
+}
+.map-consent p {
+  font-size: 15px;
+  margin-bottom: 24px;
+}
+.call-ready li strong {
+  font-size: 17px;
+}
+.call-ready li p,
+.call-ready-note {
+  font-size: 14px;
+  line-height: 1.85;
+}
+.notice {
+  padding: 22px 24px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* Editorial cards and a consistent long-form reading rhythm. */
+.journal-toolbar {
+  margin-bottom: 32px;
+  gap: 20px;
+}
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.filter-bar button {
+  padding: 10px 16px;
+  border: 1px solid #dce4d6;
+  background: white;
+  border-radius: 100px;
+  font-size: 13px;
+}
+.filter-bar button:hover {
+  border-color: #6e9279;
+  background: #f0f5e9;
+}
+.filter-bar button[aria-pressed='true'] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: white;
+}
+.journal-toolbar > p {
+  font-size: 13px;
+}
+.story-grid {
+  gap: 24px;
+}
+.story-image {
+  border-radius: 0;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+.story-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 500ms var(--ease-out);
+}
+.story-card:hover .story-image img {
+  transform: scale(1.035);
+}
+.story-copy {
+  padding: 25px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.story-copy h2,
+.story-copy h3 {
+  font-size: 23px;
+  line-height: 1.3;
+  margin-bottom: 14px;
+}
+.story-copy p {
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+.story-copy .text-link {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #e5eadf;
+  width: 100%;
+  justify-content: space-between;
+  font-size: 13px;
+}
+.guide-hero {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+.guide-hero h1 {
+  max-width: 960px;
+  font-size: clamp(36px, 4.4vw, 58px);
+}
+.guide-hero .lead {
+  max-width: 850px;
+}
+.guide-byline {
+  font-size: 12px;
+  margin-top: 22px;
+  color: var(--muted);
+}
+.guide-cover {
+  max-width: none;
+  margin: 32px 0 0;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #e8ede0;
+}
+.guide-cover img {
+  width: 100%;
+  aspect-ratio: 2.3;
+  object-fit: cover;
+}
+.guide-section {
+  padding-top: 56px;
+}
+.article-layout {
+  grid-template-columns: minmax(0, 72ch) 260px;
+  justify-content: space-between;
+  gap: 64px;
+}
+.article-sidebar {
+  top: 104px;
+}
+.article-sidebar .article-toc {
+  padding: 24px;
+  border: 1px solid var(--line);
+  background: #f0f3e9;
+  border-radius: 18px;
+}
+.article-toc h2 {
+  font-size: 16px;
+  letter-spacing: -0.025em;
+  margin: 0 0 16px;
+}
+.article-toc {
+  max-height: calc(100dvh - 140px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.article-toc a {
+  font-size: 13px;
+  line-height: 1.65;
+  margin: 10px 0;
+  padding: 3px 0;
+}
+.article-toc a:hover {
+  color: #426b4e;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.guide-contact {
+  padding: 24px;
+  border-radius: 18px;
+  background: white;
+  margin-top: 20px;
+}
+.guide-contact h2 {
+  font-size: 24px;
+}
+.guide-contact p {
+  font-size: 14px;
+  line-height: 1.8;
+}
+.guide-contact > a {
+  font-size: 20px;
+}
+.guide-contact small {
+  font-size: 12px;
+  line-height: 1.75;
+}
+.guide-contact-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+.guide-contact-actions .button {
+  width: 100%;
+  padding-inline: 12px;
+  font-size: 13px;
+  min-height: 48px;
+}
+.prose {
+  line-height: 1.85;
+}
+.prose h2 {
+  font-size: 30px;
+  line-height: 1.25;
+  margin: 44px 0 20px;
+}
+.prose h3 {
+  font-size: 23px;
+  line-height: 1.35;
+  margin: 32px 0 16px;
+}
+.prose p,
+.prose ul,
+.prose ol {
+  font-size: 16px;
+  line-height: 1.9;
+  margin: 0 0 20px;
+}
+.prose ul,
+.prose ol {
+  padding-left: 24px;
+}
+.prose li + li {
+  margin-top: 10px;
+}
+.prose section {
+  margin-bottom: 0;
+}
+.prose section + section {
+  margin-top: 44px;
+}
+.prose a {
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+.prose a:hover {
+  color: #426d4d;
+  text-decoration-thickness: 2px;
+}
+.guide-body > section > h2 {
+  font-size: 30px;
+  margin: 0 0 20px;
+  line-height: 1.25;
+}
+.guide-body > section > p {
+  font-size: 17px;
+  line-height: 1.9;
+  margin: 0 0 22px;
+}
+.guide-body > section {
+  margin-top: 44px;
+}
+.guide-summary {
+  border: 1px solid #d8e2cd;
+  border-left: 4px solid #b27a09;
+  border-radius: 0 16px 16px 0;
+  padding: 24px 28px;
+  margin: 0 0 40px;
+  background: #eef3e4;
+}
+.guide-summary p {
+  font-size: 17px;
+  line-height: 1.85;
+  margin: 0;
+}
+.guide-body .context-reading {
+  margin: 28px 0 40px;
+  padding: 20px 24px;
+  background: #f1f3ec;
+  border-radius: 14px;
+  font-size: 15px;
+}
+.guide-context-links {
+  margin: 24px 0 0 !important;
+  padding: 20px 24px 20px 42px !important;
+  background: #f1f4ea;
+  border-radius: 14px;
+}
+.guide-context-links li {
+  font-size: 15px;
+  line-height: 1.8;
+}
+.guide-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 28px 0;
+  border: 1px solid #d5dfd0;
+  border-radius: 14px;
+  -webkit-overflow-scrolling: touch;
+}
+.guide-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.guide-table caption {
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 700;
+  color: var(--ink);
+  background: #edf2e5;
+  font-size: 15px;
+}
+.guide-table th {
+  background: #e3ecd9;
+  color: var(--ink);
+  text-align: left;
+  font-weight: 700;
+}
+.guide-table td,
+.guide-table th {
+  padding: 16px 18px;
+  vertical-align: top;
+  border-bottom: 1px solid #dce4d5;
+}
+.guide-table tbody tr:nth-child(even) {
+  background: #f4f7ef;
+}
+.guide-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.guide-body .guide-services,
+.guide-body .guide-questions,
+.guide-body .article-sources,
+.guide-body .guide-related {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+.guide-body .article-sources h2 {
+  font-size: 24px;
+}
+.guide-body .article-sources :is(p, li) {
+  font-size: 14px;
+  line-height: 1.85;
+}
+.guide-body .article-sources li + li {
+  margin-top: 12px;
+}
+.guide-service-links > a {
+  background: white;
+  border-radius: 14px;
+}
+.guide-service-links > a:hover {
+  background: #eef3e7;
+}
+.guide-related-links strong {
+  font-size: 17px;
+  line-height: 1.6;
+  font-weight: 600;
+}
+.guide-related-links > a {
+  padding-block: 20px;
+}
+
+/* A clear final invitation and a shorter footer with breathing room at dividers. */
+.cta-section {
+  padding-block: 48px;
+  background: radial-gradient(ellipse at 90% 10%, #ffe499, transparent 60%), var(--yellow);
+}
+.cta-inner {
+  gap: 40px;
+}
+.cta-inner h2 {
+  font-size: clamp(30px, 3vw, 40px);
+  line-height: 1.17;
+  margin-bottom: 16px;
+}
+.cta-inner h2 > span {
+  display: block;
+}
+.cta-inner p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #3c5138;
+  max-width: 480px;
+}
+.cta-actions {
+  align-items: flex-start;
+  gap: 14px;
+}
+.cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.cta-buttons .button {
+  font-size: 14px;
+  padding-inline: 20px;
+}
+.cta-text-button {
+  background: #fff6d56b;
+  border-color: #a5852b;
+  color: var(--forest-deep);
+}
+.cta-text-button:hover {
+  background: #fff4c9;
+  border-color: var(--ink);
+}
+.cta-actions > span {
+  font-size: 12px !important;
+  line-height: 1.7;
+  color: #3c5138;
+}
+.site-footer {
+  padding: 44px 0 28px;
+  background: var(--forest-deep);
+  color: #edf3e7;
+}
+.footer-contact {
+  grid-column: auto;
+  display: block;
+}
+.footer-top {
+  grid-template-columns: 1.15fr 0.8fr 1fr 1.1fr;
+  gap: 36px;
+  padding-bottom: 28px;
+}
+.brand-light .official-logo {
+  width: 120px;
+  height: 72px;
+}
+.footer-top > div > p {
+  font-size: 13px;
+  line-height: 1.9;
+  color: #b8ccba;
+  margin-top: 16px;
+  max-width: 290px;
+}
+.footer-top > div > p.footer-service-note {
+  margin-top: 14px;
+  font-size: 12px;
+  color: #b8ccba;
+}
+.footer-top h2 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 12px;
+  margin-bottom: 16px;
+}
+.footer-contact h2 {
+  margin: 12px 0 16px !important;
+}
+.footer-top > div > a:not(.brand) {
+  font-size: 13px;
+  padding-block: 5px;
+  margin-bottom: 4px;
+  min-height: 32px;
+  color: #c9d9c9;
+}
+.footer-top .footer-contact .footer-phone {
+  font-size: clamp(20px, 1.8vw, 25px);
+  line-height: 1.4;
+  letter-spacing: -0.04em;
+  color: #f5f7ee;
+  padding-top: 0;
+}
+.footer-top .footer-contact > p {
+  margin-block: 12px 16px !important;
+  font-size: 12px;
+  line-height: 1.9;
+}
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  color: #f9d46d;
+}
+.footer-scope {
+  margin: 0;
+  padding: 20px 0;
+  border-top: 1px solid #476454;
+  color: #c3d4bf;
+  font-size: 12px;
+  line-height: 1.9;
+}
+.footer-bottom {
+  padding-top: 20px;
+  margin-top: 0;
+  border-color: #385648;
+  font-size: 11px;
+  line-height: 1.9;
+  color: #bdcdb9;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-bottom > div {
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.footer-bottom a,
+.footer-bottom button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+}
+.mobile-call-bar {
+  background: #fbfaf6f7;
+  border-top: 1px solid #d1ddcb;
+  box-shadow: 0 -6px 25px #102f2910;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.mobile-call-bar > a {
+  min-height: 50px;
+  border-radius: 11px;
+  font-size: 14px;
+  gap: 10px;
+}
+.mobile-call-bar > a:first-child {
+  background: var(--ink);
+  color: white;
+}
+.mobile-call-bar > a:last-child {
+  background: #edf2e7;
+  border: 1px solid #bdcdb7;
+}
+.mobile-call-bar > a:last-child {
+  color: var(--ink);
+}
+.mobile-call-bar small {
+  font-size: 10px;
+  color: #d5e3cf;
+}
+
+@media (max-width: 1100px) {
+  .container {
+    width: calc(100% - 56px);
+  }
+  .header-inner {
+    gap: 18px;
+  }
+  .desktop-nav {
+    gap: 16px;
+  }
+  .header-call {
+    padding-inline: 11px;
+    gap: 8px;
+  }
+  .header-call strong {
+    font-size: 14px;
+  }
+  .footer-top {
+    gap: 24px;
+    grid-template-columns: 1fr 0.75fr 1fr 1.15fr;
+  }
+  .repair-plan-grid,
+  .detail-grid,
+  .about-grid,
+  .service-hero-grid,
+  .phone-contact-grid,
+  .phone-location-grid {
+    gap: 40px;
+  }
+  .article-layout {
+    gap: 36px;
+    grid-template-columns: minmax(0, 1fr) 240px;
+  }
+  .guide-contact {
+    padding: 20px;
+  }
+}
+@media (max-width: 950px) {
+  .header-inner {
+    height: 70px;
+  }
+  .site-header .brand .official-logo {
+    width: 102px;
+    height: 60px;
+  }
+  .header-call {
+    margin-left: auto;
+  }
+  .footer-top {
+    grid-template-columns: 1.15fr 1fr 1fr;
+    gap: 24px 32px;
+  }
+  .footer-contact {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    column-gap: 32px;
+    align-items: center;
+  }
+  .footer-contact h2 {
+    grid-column: 1 / -1;
+    margin-top: 0 !important;
+  }
+  .footer-top .footer-contact .footer-phone {
+    font-size: 26px;
+  }
+  .footer-contact > p {
+    grid-column: 2;
+    grid-row: 2 / 4;
+  }
+  .footer-contact > .text-link:last-child {
+    grid-column: 2;
+  }
+  .repair-plan-grid,
+  .repair-faq-grid {
+    gap: 36px;
+  }
+  .info-panel {
+    padding: 24px;
+  }
+}
+@media (max-width: 800px) {
+  .repair-hero-simple .repair-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .repair-hero-simple .repair-hero-media {
+    margin-inline: auto;
+  }
+  .repair-hero-simple h1 {
+    max-width: 680px;
+    font-size: clamp(42px, 7.5vw, 60px);
+  }
+  .repair-hero-simple .repair-hero-lead {
+    max-width: 560px;
+  }
+  .repair-hero-simple .repair-google-proof {
+    padding: 16px 20px;
+  }
+  .appliance-grid {
+    gap: 16px;
+  }
+  .appliance-card {
+    padding: 24px;
+  }
+  .scope-grid {
+    gap: 14px;
+  }
+  .scope-card,
+  .repair-home-scope .scope-card {
+    padding: 20px;
+  }
+  .scope-card p {
+    font-size: 13px;
+  }
+  .repair-home-proof .work-photo img {
+    aspect-ratio: 4 / 3;
+  }
+  .article-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .article-sidebar {
+    width: 100%;
+    position: static;
+  }
+  .article-sidebar .article-toc {
+    padding: 24px;
+    max-height: none;
+    overflow: visible;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 4px 20px;
+  }
+  .article-toc h2,
+  .article-toc .guide-skip {
+    grid-column: 1 / -1;
+  }
+  .article-toc a {
+    display: block;
+    margin: 0;
+    padding-block: 8px;
+    font-size: 13px;
+  }
+  .guide-contact {
+    display: none;
+  }
+  .guide-cover img {
+    aspect-ratio: 16 / 9;
+  }
+  .cta-inner {
+    gap: 28px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cta-actions {
+    align-items: flex-start;
+  }
+}
+@media (max-width: 700px) {
+  .container {
+    width: calc(100% - 40px);
+  }
+  html {
+    scroll-padding-top: 86px;
+  }
+  .section,
+  .repair-section {
+    padding-block: 52px;
+  }
+  .topbar-inner {
+    gap: 8px;
+  }
+  .topbar-inner > span,
+  .topbar a {
+    font-size: 9px;
+    gap: 5px;
+  }
+  .topbar .stars {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+  .header-inner {
+    gap: 10px;
+    height: 66px;
+  }
+  .site-header .brand .official-logo {
+    width: 96px;
+    height: 56px;
+  }
+  .header-call {
+    padding: 6px 9px;
+    min-height: 44px;
+    gap: 7px;
+  }
+  .header-call > svg {
+    width: 16px;
+  }
+  .header-call strong {
+    font-size: 13px;
+  }
+  .header-call small {
+    font-size: 9px;
+  }
+  .menu-toggle {
+    width: 42px;
+    min-width: 42px;
+    min-height: 42px;
+  }
+  .repair-hero-simple {
+    padding-block: 36px;
+  }
+  .repair-hero-simple h1 {
+    font-size: clamp(39px, 9.2vw, 52px);
+  }
+  .repair-hero-simple .repair-hero-lead {
+    font-size: 17px;
+    margin-top: 18px;
+  }
+  .repair-hero-hours {
+    font-size: 12px;
+    margin-top: 18px;
+  }
+  .repair-hero-simple .repair-actions {
+    margin-top: 24px;
+    gap: 10px;
+  }
+  .repair-hero-simple .repair-actions .button {
+    font-size: 13px;
+    padding-inline: 16px;
+    min-height: 54px;
+  }
+  .repair-hero-simple .repair-call-note {
+    font-size: 11px;
+  }
+  .repair-hero-simple .repair-hero-area {
+    font-size: 12px;
+  }
+  .repair-hero-simple .repair-photo-main {
+    border-radius: 20px;
+  }
+  .repair-hero-simple .repair-google-proof {
+    padding: 14px 16px;
+    gap: 3px 12px;
+  }
+  .repair-hero-simple .repair-google-proof strong {
+    font-size: 24px;
+  }
+  .repair-hero-simple .repair-google-proof > span {
+    font-size: 11px;
+  }
+  .repair-hero-simple .repair-google-proof .stars {
+    font-size: 11px;
+  }
+  .repair-section-heading,
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+  .repair-section-heading p,
+  .section-heading > div > p {
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .appliance-card {
+    padding: 20px;
+  }
+  .appliance-card h3 {
+    font-size: 20px;
+  }
+  .appliance-card p {
+    font-size: 13px;
+  }
+  .appliance-card-link {
+    font-size: 12px;
+  }
+  .scope-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .scope-card,
+  .repair-home-scope .scope-card {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    column-gap: 16px;
+    padding: 20px;
+  }
+  .scope-icon,
+  .repair-home-scope .scope-icon {
+    grid-row: 1 / 3;
+    margin: 0;
+  }
+  .scope-icon svg {
+    width: 32px;
+  }
+  .scope-card h3,
+  .repair-home-scope .scope-card h3 {
+    font-size: 19px;
+    margin-bottom: 8px;
+  }
+  .scope-card p {
+    font-size: 14px;
+  }
+  .repair-home-proof .work-gallery {
+    gap: 14px;
+  }
+  .repair-home-proof .work-photo > span {
+    padding: 12px;
+    min-height: 60px;
+  }
+  .repair-home-proof .work-photo strong {
+    font-size: 12px;
+  }
+  .repair-review-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .repair-review-row figure {
+    padding: 22px;
+  }
+  .repair-review-row blockquote {
+    font-size: 17px;
+  }
+  .repair-review-row figcaption {
+    font-size: 12px;
+  }
+  .repair-coverage {
+    padding: 28px;
+  }
+  .repair-coverage h2 {
+    font-size: 30px;
+  }
+  .repair-coverage p,
+  .repair-steps p {
+    font-size: 14px;
+  }
+  .repair-plan-grid,
+  .repair-faq-grid {
+    gap: 32px;
+  }
+  .faq-item summary {
+    font-size: 15px;
+    padding-block: 21px;
+  }
+  .faq-item > p {
+    padding-inline: 28px 8px;
+    font-size: 15px;
+  }
+  .page-hero {
+    padding-block: 32px 40px;
+  }
+  .page-hero h1 {
+    font-size: clamp(36px, 8.5vw, 48px);
+    margin-bottom: 20px;
+  }
+  .page-hero .lead {
+    font-size: 16px;
+    line-height: 1.85;
+  }
+  .breadcrumb {
+    font-size: 11px;
+    margin-bottom: 24px;
+  }
+  .service-hero-grid,
+  .about-grid,
+  .detail-grid,
+  .phone-contact-grid,
+  .phone-location-grid {
+    gap: 32px;
+  }
+  .service-brief,
+  .info-panel,
+  .phone-contact-panel,
+  .map-consent {
+    padding: 24px;
+    border-radius: 20px;
+  }
+  .phone-contact-panel .contact-big-number {
+    font-size: clamp(23px, 6vw, 30px);
+  }
+  .area-card {
+    padding: 24px;
+  }
+  .guide-hero {
+    padding-bottom: 0;
+  }
+  .guide-hero h1 {
+    font-size: clamp(34px, 8.1vw, 46px);
+  }
+  .guide-cover {
+    margin-top: 28px;
+    border-radius: 18px;
+  }
+  .guide-section {
+    padding-top: 32px;
+  }
+  .article-sidebar .article-toc {
+    padding: 22px;
+  }
+  .guide-summary {
+    padding: 22px;
+    margin-bottom: 32px;
+  }
+  .guide-summary p {
+    font-size: 16px;
+    line-height: 1.9;
+  }
+  .guide-body > section {
+    margin-top: 36px;
+  }
+  .guide-body > section > h2,
+  .prose h2 {
+    font-size: 27px;
+    line-height: 1.3;
+    margin-bottom: 18px;
+  }
+  .guide-body > section > p,
+  .prose p,
+  .prose ul,
+  .prose ol {
+    font-size: 16px;
+    line-height: 1.9;
+  }
+  .prose h3 {
+    font-size: 22px;
+  }
+  .guide-body .context-reading {
+    padding: 20px;
+    margin-block: 24px 32px;
+  }
+  .guide-body .guide-services,
+  .guide-body .guide-questions,
+  .guide-body .article-sources,
+  .guide-body .guide-related {
+    margin-top: 36px;
+    padding-top: 28px;
+  }
+  .guide-table td,
+  .guide-table th {
+    padding: 14px;
+  }
+  .guide-context-links {
+    padding: 20px 20px 20px 36px !important;
+  }
+  .story-grid {
+    gap: 20px;
+  }
+  .story-copy {
+    padding: 24px;
+  }
+  .story-copy h2,
+  .story-copy h3 {
+    font-size: 24px;
+  }
+  .story-copy p {
+    font-size: 15px;
+  }
+  .filter-bar {
+    gap: 8px;
+  }
+  .filter-bar button {
+    font-size: 12px;
+    padding-inline: 14px;
+  }
+  .cta-section {
+    padding-block: 36px;
+  }
+  .cta-inner h2 {
+    font-size: 30px;
+  }
+  .cta-inner p {
+    font-size: 15px;
+  }
+  .cta-actions,
+  .cta-buttons {
+    width: 100%;
+  }
+  .cta-buttons .button:first-child {
+    flex: 1;
+  }
+  .site-footer {
+    padding-top: 36px;
+    padding-bottom: 112px;
+  }
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding-bottom: 24px;
+  }
+  .footer-top > div:first-child {
+    grid-column: 1 / -1;
+  }
+  .footer-top > div > p {
+    max-width: 420px;
+    font-size: 13px;
+    margin-top: 14px;
+  }
+  .footer-top h2 {
+    font-size: 14px;
+    margin-top: 0;
+    margin-bottom: 12px;
+  }
+  .brand-light .official-logo {
+    width: 112px;
+    height: 66px;
+  }
+  .footer-top > div > a:not(.brand) {
+    font-size: 13px;
+    min-height: 34px;
+    margin-bottom: 3px;
+  }
+  .footer-contact {
+    grid-column: 1 / -1;
+    display: block;
+    padding-top: 22px;
+    border-top: 1px solid #385648;
+  }
+  .footer-top .footer-contact .footer-phone {
+    font-size: 28px;
+  }
+  .footer-top .footer-contact > p {
+    max-width: none;
+    font-size: 12px;
+  }
+  .footer-scope {
+    padding-block: 20px;
+    font-size: 12px;
+  }
+  .footer-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 18px;
+    gap: 8px;
+    font-size: 11px;
+  }
+  .footer-bottom > div {
+    gap: 20px;
+  }
+  .mobile-call-bar {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 9px 16px calc(9px + env(safe-area-inset-bottom));
+  }
+  .mobile-call-bar > a {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}
+@media (max-width: 400px) {
+  .container {
+    width: calc(100% - 32px);
+  }
+  .header-inner {
+    gap: 7px;
+  }
+  .site-header .brand .official-logo {
+    width: 84px;
+    height: 54px;
+  }
+  .header-call > svg {
+    display: none;
+  }
+  .header-call strong {
+    font-size: 12px;
+  }
+  .header-call {
+    padding-inline: 8px;
+  }
+  .repair-hero-simple h1 {
+    font-size: 37px;
+  }
+  .repair-hero-simple .repair-actions {
+    gap: 8px;
+  }
+  .repair-hero-simple .repair-actions .button {
+    font-size: 12px;
+    padding-inline: 13px;
+  }
+  .appliance-grid {
+    gap: 12px;
+  }
+  .appliance-card {
+    padding: 18px 15px;
+  }
+  .appliance-card h3 {
+    font-size: 19px;
+  }
+  .appliance-card-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+  }
+  .appliance-card-link {
+    font-size: 11px;
+    gap: 7px;
+  }
+  .repair-hero-simple .repair-google-proof {
+    gap: 3px 8px;
+    padding-inline: 13px;
+  }
+  .repair-hero-simple .repair-google-proof strong {
+    font-size: 21px;
+    gap: 7px;
+  }
+  .repair-hero-simple .repair-google-proof .stars {
+    font-size: 10px;
+  }
+  .cta-buttons {
+    flex-direction: column;
+  }
+  .cta-buttons .button {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .will-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-contrast: more) {
+  :root {
+    --muted: #314b3e;
+    --line: #8eaa8e;
+  }
+  .site-header {
+    background: var(--paper);
+  }
+  .appliance-card,
+  .story-card,
+  .area-card {
+    border-width: 2px;
+  }
+}

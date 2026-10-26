@@ -1,8 +1,10 @@
 const TAG_ID = 'AW-18107060066';
 const CONVERSION = `${TAG_ID}/gh8dCJiDvKgdEOKej7pD`;
+export const ANALYTICS_ID = 'G-Y98Z0R2BVN';
 const NUMBER = '+1 (267) 704-8588';
 const PHONE_HREF = 'tel:+12677048588';
-export const CONSENT_KEY = '5va-call-measurement-v1';
+export const CONSENT_KEY = '5va-measurement-v2';
+export const CONSENT_SCOPE = 'analytics-and-ad-calls';
 export const CONSENT_MAX_AGE = 180 * 24 * 60 * 60 * 1000;
 
 type Choice = 'allowed' | 'denied';
@@ -11,7 +13,8 @@ type TagWindow = Window & {
   gtag?: (...parameters: unknown[]) => void;
 };
 
-// Hard-gate the phone tag: Google's built-in Consent Mode support for phone calls is pending.
+// This permission includes Analytics and ad-call measurement. The old call-only permission
+// is intentionally not read. Hard-gate both products, including cookieless Analytics pings.
 export function initCallMeasurement({
   window: browser = window,
   document: page = document,
@@ -69,7 +72,8 @@ export function initCallMeasurement({
       const saved = JSON.parse(raw || 'null');
       const age = now() - saved?.savedAt;
       if (
-        saved?.version === 1 &&
+        saved?.version === 2 &&
+        saved.scope === CONSENT_SCOPE &&
         ['allowed', 'denied'].includes(saved.choice) &&
         typeof saved.savedAt === 'number' &&
         Number.isFinite(age) &&
@@ -98,7 +102,7 @@ export function initCallMeasurement({
     try {
       browser.localStorage.setItem(
         CONSENT_KEY,
-        JSON.stringify({ version: 1, choice, savedAt: now() }),
+        JSON.stringify({ version: 2, scope: CONSENT_SCOPE, choice, savedAt: now() }),
       );
     } catch {
       // An explicit choice still applies to this page when storage is unavailable.
@@ -111,14 +115,27 @@ export function initCallMeasurement({
       }
     }
   }
+  function pageLocation() {
+    return `${browser.location.origin}${browser.location.pathname}`;
+  }
+  function referrerOrigin() {
+    try {
+      const referrer = new URL(page.referrer);
+      return ['http:', 'https:'].includes(referrer.protocol) ? referrer.origin : '';
+    } catch {
+      return '';
+    }
+  }
   function loadTag() {
     if (!allowed || loaded) return;
     loaded = true;
     const target = browser as TagWindow;
     const layer = (target.dataLayer = target.dataLayer || []);
-    const gtag = function (..._parameters: unknown[]) {
-      layer.push(arguments);
-    };
+    const gtag =
+      target.gtag ||
+      function (..._parameters: unknown[]) {
+        layer.push(arguments);
+      };
     target.gtag = gtag;
     gtag('consent', 'default', {
       ad_storage: 'denied',
@@ -130,10 +147,18 @@ export function initCallMeasurement({
       ad_storage: 'granted',
       ad_user_data: 'granted',
       ad_personalization: 'denied',
-      analytics_storage: 'denied',
+      analytics_storage: 'granted',
     });
     gtag('set', 'allow_ad_personalization_signals', false);
+    gtag('set', 'allow_google_signals', false);
     gtag('js', new Date(now()));
+    gtag('config', ANALYTICS_ID, {
+      send_page_view: true,
+      page_location: pageLocation(),
+      page_referrer: referrerOrigin(),
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false,
+    });
     gtag('config', TAG_ID);
     gtag('config', CONVERSION, {
       phone_conversion_number: NUMBER,
@@ -155,9 +180,9 @@ export function initCallMeasurement({
   function showCard(opener?: HTMLButtonElement) {
     returnFocus = opener;
     message!.textContent = allowed
-      ? 'Google ad-call measurement is enabled for this browser. You can turn it off; calls and texts will keep working.'
+      ? 'Google Analytics and ad-call measurement are enabled for this browser. You can turn them off; calls and texts will keep working.'
       : initialMessage;
-    allow!.textContent = allowed ? 'Keep enabled' : 'Allow call measurement';
+    allow!.textContent = allowed ? 'Keep enabled' : 'Allow measurement';
     decline!.textContent = allowed ? 'Turn off measurement' : 'No thanks';
     card!.hidden = false;
     if (opener) allow!.focus({ preventScroll: true });
@@ -169,7 +194,9 @@ export function initCallMeasurement({
       // Google measurement storage may be unavailable or read-only.
     }
     const names = page.cookie.split(';').map((part) => part.split('=')[0].trim());
-    for (const name of names.filter((name) => /^(?:_gcl_|_gac_|gwcc$)/.test(name))) {
+    for (const name of names.filter((name) =>
+      /^(?:_ga(?:_|$)|_gid$|_gat(?:_|$)|_gcl_|_gac_|gwcc$)/.test(name),
+    )) {
       for (const domain of ['', '; Domain=5varepair.com', '; Domain=.5varepair.com'])
         page.cookie = `${name}=; Max-Age=0; Path=/; SameSite=Lax; Secure${domain}`;
     }
@@ -178,6 +205,13 @@ export function initCallMeasurement({
     allowed = false;
     restoreNumber();
     if (loaded) {
+      const target = browser as TagWindow;
+      target.gtag?.('consent', 'update', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+      });
       try {
         clearMeasurementCookies();
       } catch {
@@ -222,12 +256,29 @@ export function initCallMeasurement({
       stopMeasurement();
     }
   });
+  browser.addEventListener('5va:conversion', (event) => {
+    if (!allowed || !loaded) return;
+    const detail = (event as CustomEvent<unknown>).detail;
+    if (!detail || typeof detail !== 'object') return;
+    const { event: name, placement } = detail as Record<string, unknown>;
+    if (name !== 'phone_click' && name !== 'sms_click') return;
+    const safePlacement =
+      typeof placement === 'string' && /^[a-z][a-z0-9-]{0,39}$/.test(placement)
+        ? placement
+        : 'site';
+    // A contact click is intent, never a connected call, submitted SMS or Ads conversion.
+    // Read the current pathname rather than trusting arbitrary custom-event details.
+    (browser as TagWindow).gtag?.('event', name, {
+      send_to: ANALYTICS_ID,
+      page_location: pageLocation(),
+      page_referrer: referrerOrigin(),
+      placement: safePlacement,
+      contact_method: name === 'phone_click' ? 'phone' : 'sms',
+    });
+  });
   const choice = readChoice();
   if (choice === 'allowed') {
     allowed = true;
     loadTag();
-  } else if (!choice) {
-    const query = new URLSearchParams(browser.location.search);
-    if (['gclid', 'gbraid', 'wbraid'].some((key) => query.get(key)?.trim())) showCard();
-  }
+  } else if (!choice) showCard();
 }

@@ -3,18 +3,24 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import {
   initCallMeasurement,
+  ANALYTICS_ID,
   CONSENT_KEY,
+  CONSENT_SCOPE,
   CONSENT_MAX_AGE,
 } from '../src/scripts/call-measurement.ts';
 
 const PHONE = '+1 (267) 704-8588';
 const HREF = 'tel:+12677048588';
-const NOW = Date.UTC(2026, 9, 25);
-const saved = (choice, savedAt = NOW, version = 1) => JSON.stringify({ version, choice, savedAt });
+const NOW = Date.UTC(2026, 9, 26);
+const saved = (choice, savedAt = NOW, version = 2, scope = CONSENT_SCOPE) =>
+  JSON.stringify({ version, scope, choice, savedAt });
 
 function fixture({
   search = '',
+  pathname = '/',
+  referrer = '',
   stored,
+  legacyStored,
   hostname = '5varepair.com',
   protocol = 'https:',
   port = '',
@@ -32,6 +38,7 @@ function fixture({
   const cookies = [];
   const scripts = [];
   const storage = new Map(stored === undefined ? [] : [[CONSENT_KEY, stored]]);
+  if (legacyStored !== undefined) storage.set('5va-call-measurement-v1', legacyStored);
   class Text {
     constructor(value) {
       this.nodeType = 3;
@@ -103,12 +110,13 @@ function fixture({
   const sms = new Element('a', [new Text(`Text ${PHONE}`)]);
   sms.setAttribute('href', 'sms:+12677048588');
   const page = {
+    referrer,
     get activeElement() {
       return activeElement;
     },
     get cookie() {
       if (blockedCookies) throw new Error('Cookies blocked');
-      return '_gcl_aw=example; gwcc=example; unrelated=keep';
+      return '_ga=example; _ga_TEST=example; _gcl_aw=example; gwcc=example; unrelated=keep';
     },
     set cookie(value) {
       cookies.push(value);
@@ -134,6 +142,7 @@ function fixture({
     hostname,
     origin: new URL(`${protocol}//${hostname}${port ? `:${port}` : ''}`).origin,
     search,
+    pathname,
     reload() {
       reloads++;
     },
@@ -180,6 +189,14 @@ function fixture({
     init,
     commands,
     phoneConfig,
+    analyticsConfig: () =>
+      commands().find(
+        ([kind, destination]) => kind === 'config' && destination === ANALYTICS_ID,
+      )?.[2],
+    contact(detail) {
+      browser.fire('5va:conversion', { detail });
+    },
+    events: () => commands().filter(([kind]) => kind === 'event'),
     blockWrites({ removal = false } = {}) {
       writesBlocked = true;
       removalBlocked = removal;
@@ -193,22 +210,25 @@ function fixture({
   };
 }
 
-test('no Google tag or data layer before explicit consent; prompt is limited to ad-click context', () => {
-  for (const [search, prompted] of [
-    ['', false],
-    ['?utm_source=google', false],
-    ['?gclid=', false],
-    ['?gclid=example', true],
-    ['?gbraid=example', true],
-    ['?wbraid=example', true],
+test('all new visitors see a choice without loading Google or saving click identifiers', () => {
+  for (const search of [
+    '',
+    '?utm_source=google',
+    '?gclid=',
+    '?gclid=example',
+    '?gbraid=example',
+    '?wbraid=example',
   ]) {
     const f = fixture({ search });
-    assert.equal(f.card.hidden, !prompted, search);
+    assert.equal(f.card.hidden, false, search);
     assert.equal(f.opener.hidden, false);
     assert.equal(f.activeElement, undefined, 'automatic prompt must not steal focus');
     assert.equal(f.scripts.length, 0);
     assert.equal(f.browser.dataLayer, undefined);
     assert.equal(f.storage.size, 0, 'do not save ad click parameters');
+    f.contact({ event: 'phone_click', placement: 'home-hero' });
+    f.contact({ event: 'sms_click', placement: 'footer' });
+    assert.equal(f.events().length, 0);
     f.decline.fire('click');
     assert.equal(f.scripts.length, 0);
     assert.equal(f.browser.dataLayer, undefined);
@@ -217,7 +237,7 @@ test('no Google tag or data layer before explicit consent; prompt is limited to 
   }
 });
 
-test('manual opt-in loads the verified call tag once and stores only a consent preference', () => {
+test('manual opt-in configures both destinations with one loader and stores only scoped consent', () => {
   const f = fixture({ search: '?gclid=never-store-this-click-id' });
   f.opener.fire('click');
   assert.equal(f.card.hidden, false);
@@ -229,7 +249,8 @@ test('manual opt-in loads the verified call tag once and stores only a consent p
   assert.equal(f.card.hidden, true);
   assert.equal(f.activeElement, f.opener);
   assert.deepEqual(JSON.parse(f.storage.get(CONSENT_KEY)), {
-    version: 1,
+    version: 2,
+    scope: CONSENT_SCOPE,
     choice: 'allowed',
     savedAt: NOW,
   });
@@ -252,10 +273,18 @@ test('manual opt-in loads the verified call tag once and stores only a consent p
       ad_storage: 'granted',
       ad_user_data: 'granted',
       ad_personalization: 'denied',
-      analytics_storage: 'denied',
+      analytics_storage: 'granted',
     },
   ]);
   assert.deepEqual(commands[2], ['set', 'allow_ad_personalization_signals', false]);
+  assert.deepEqual(commands[3], ['set', 'allow_google_signals', false]);
+  assert.deepEqual(f.analyticsConfig(), {
+    send_page_view: true,
+    page_location: 'https://5varepair.com/',
+    page_referrer: '',
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false,
+  });
   assert.ok(
     commands.some(
       ([type, destination]) =>
@@ -272,6 +301,127 @@ test('manual opt-in loads the verified call tag once and stores only a consent p
     1,
     'duplicate interaction or initialization must not load another tag',
   );
+});
+
+test('the old call-only preference never enables Analytics or the expanded permission', () => {
+  for (const choice of ['allowed', 'denied']) {
+    const f = fixture({
+      legacyStored: JSON.stringify({ version: 1, choice, savedAt: NOW }),
+    });
+    assert.equal(f.scripts.length, 0);
+    assert.equal(f.browser.dataLayer, undefined);
+    assert.equal(f.card.hidden, false, 'the expanded scope needs a fresh choice');
+    assert.equal(f.storage.has(CONSENT_KEY), false);
+    f.contact({ event: 'phone_click', placement: 'header' });
+    assert.equal(f.events().length, 0);
+  }
+});
+
+test('page measurement strips queries, fragments and referrer paths before configuration', () => {
+  for (const [referrer, expected] of [
+    [
+      'https://www.google.com/search?q=private-email%40example.com#private',
+      'https://www.google.com',
+    ],
+    ['https://user:password@example.org/private/customer?zip=19115', 'https://example.org'],
+    ['mailto:private@example.com', ''],
+    ['not a URL', ''],
+  ]) {
+    const f = fixture({
+      stored: saved('allowed'),
+      pathname: '/services/washer-repair/',
+      search: '?email=private@example.com&zip=19115#gclid=private',
+      referrer,
+    });
+    assert.equal(
+      f.analyticsConfig().page_location,
+      'https://5varepair.com/services/washer-repair/',
+    );
+    assert.equal(f.analyticsConfig().page_referrer, expected);
+    assert.doesNotMatch(JSON.stringify(f.commands()), /private|password|customer|19115/);
+    assert.equal(
+      f
+        .commands()
+        .filter(([kind, destination]) => kind === 'config' && destination === ANALYTICS_ID).length,
+      1,
+      'only one GA configuration supplies this static page view',
+    );
+  }
+});
+
+test('call and SMS intent events go once to Analytics only after consent, across button placements', () => {
+  const f = fixture({
+    pathname: '/blog/washer-not-draining/',
+    search: '?email=do-not-send@example.com',
+  });
+  f.contact({ event: 'phone_click', placement: 'header' });
+  f.allow.fire('click');
+  assert.equal(f.events().length, 0, 'never replay an interaction from before consent');
+  f.init();
+  for (const placement of [
+    'header',
+    'drawer',
+    'footer',
+    'sticky-call',
+    'home-hero',
+    'article-sidebar',
+  ]) {
+    for (const event of ['phone_click', 'sms_click']) {
+      const before = f.events().length;
+      f.contact({
+        event,
+        placement,
+        path: '/private-path?email=do-not-send@example.com',
+        message: 'Never send appliance or customer details',
+        phone: '+18005550123',
+      });
+      assert.equal(f.events().length, before + 1);
+      assert.deepEqual(f.events().at(-1), [
+        'event',
+        event,
+        {
+          send_to: ANALYTICS_ID,
+          page_location: 'https://5varepair.com/blog/washer-not-draining/',
+          page_referrer: '',
+          placement,
+          contact_method: event === 'phone_click' ? 'phone' : 'sms',
+        },
+      ]);
+    }
+  }
+  assert.doesNotMatch(
+    JSON.stringify(f.events()),
+    /AW-|conversion|generate_lead|private|18005550123/,
+  );
+  const count = f.events().length;
+  f.decline.fire('click');
+  f.contact({ event: 'phone_click', placement: 'footer' });
+  assert.equal(f.events().length, count, 'withdrawal blocks events immediately, before the reload');
+});
+
+test('unrecognized events are ignored and arbitrary placement text cannot leak into Analytics', () => {
+  const f = fixture({ stored: saved('allowed') });
+  for (const detail of [
+    undefined,
+    null,
+    'phone_click',
+    {},
+    { event: 'generate_lead' },
+    { event: 'conversion' },
+  ])
+    f.contact(detail);
+  assert.equal(f.events().length, 0);
+  for (const placement of [
+    'private@example.com',
+    'Call +1 555 123 4567',
+    'x'.repeat(41),
+    undefined,
+    12,
+  ]) {
+    f.contact({ event: 'sms_click', placement });
+    assert.equal(f.events().at(-1)[2].placement, 'site');
+  }
+  assert.doesNotMatch(JSON.stringify(f.events()), /private|555|xxxx/);
 });
 
 test('DNI replaces call text and tel together while preserving icons, CTA labels and direct SMS', () => {
@@ -302,6 +452,8 @@ test('saved, expired, malformed or blocked preferences fail closed and never sto
     saved('allowed', NOW - CONSENT_MAX_AGE),
     saved('allowed', NOW + 1),
     saved('allowed', NOW, 0),
+    saved('allowed', NOW, 1),
+    saved('allowed', NOW, 2, 'calls-only'),
     saved('unknown'),
     saved('allowed', String(NOW)),
     '{broken',
@@ -369,10 +521,19 @@ test('withdrawal restores direct calls, preserves SMS, clears only known first-p
   assert.equal(f.numberText.nodeValue, PHONE);
   assert.equal(f.numberLink.getAttribute('aria-label'), `Call ${PHONE}`);
   assert.equal(f.sms.getAttribute('href'), 'sms:+12677048588');
-  assert.equal(f.cookies.length, 6);
+  assert.equal(f.cookies.length, 12);
   assert.equal(f.storage.has('_gcl_ls'), false);
   assert.equal(f.storage.get('unrelated'), 'keep');
-  assert.ok(f.cookies.every((cookie) => /^(?:_gcl_aw|gwcc)=; Max-Age=0/.test(cookie)));
+  assert.ok(f.cookies.every((cookie) => /^(?:_ga|_ga_TEST|_gcl_aw|gwcc)=; Max-Age=0/.test(cookie)));
+  assert.ok(
+    f
+      .commands()
+      .some(
+        ([kind, operation, state]) =>
+          kind === 'consent' && operation === 'update' && state.analytics_storage === 'denied',
+      ),
+    'withdrawal must immediately deny Analytics as well as clear first-party cookies',
+  );
   callback('+1 (800) 555-0123', '+18005550123');
   assert.equal(f.numberLink.getAttribute('href'), HREF, 'ignore a late callback after withdrawal');
   const deniedReload = fixture({ stored: f.storage.get(CONSENT_KEY) });

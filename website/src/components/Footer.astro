@@ -10,16 +10,14 @@ const { showPrivacyChoices = false } = Astro.props;
     <div class="footer-top">
       <div>
         <Logo light />
-        <p>
-          Household appliances. Local repair.
+        <p class="footer-summary">
+          In-home appliance repair in Philadelphia 19115 &amp; 19116, Montgomery County and selected
+          PA &amp; NJ ZIP codes.
+        </p>
+        <p class="footer-service-note">
+          {business.hours} Eastern
           <br />
-          Residential appliance repair
-          <br />
-          Philadelphia ZIPs 19115 &amp; 19116 · Selected PA &amp; NJ ZIPs.
-          <br />
-          {business.hours} · Eastern Time
-          <br />
-          We come to your home · No customer drop-off.
+          Home visits only · No drop-off
         </p>
       </div>
       <div>
@@ -32,7 +30,7 @@ const { showPrivacyChoices = false } = Astro.props;
       <div>
         <h2>Service areas</h2>
         <a href="/service-areas/philadelphia/">Philadelphia</a>
-        <a href="/service-areas/northeast-philadelphia/">Northeast Philadelphia</a>
+        <a href="/service-areas/montgomery-county/">Montgomery County</a>
         <a href="/service-areas/feasterville-trevose/">Feasterville-Trevose</a>
         <a href="/service-areas/pennsylvania/">Pennsylvania</a>
         <a href="/service-areas/new-jersey/">New Jersey</a>
@@ -40,10 +38,10 @@ const { showPrivacyChoices = false } = Astro.props;
       </div>
       <div class="footer-contact">
         <h2>Call or text</h2>
-        <a class="footer-phone" href={business.phoneHref}>
+        <a class="footer-phone" href={business.phoneHref} data-placement="footer">
           {business.phone}
         </a>
-        <a class="text-link" href={business.smsHref}>
+        <a class="text-link" href={business.smsHref} data-placement="footer">
           Send an SMS <Icon name="chat" size={16} />
         </a>
         <p>
@@ -72,13 +70,12 @@ const { showPrivacyChoices = false } = Astro.props;
           </button>
         )}
         <a href="/contact/">Contact</a>
-        <span>Made for a home that works.</span>
       </div>
     </div>
   </div>
 </footer>
 <div class="mobile-call-bar">
-  <a href={business.phoneHref} data-track="phone_click">
+  <a href={business.phoneHref} data-track="phone_click" data-placement="mobile-bar">
     <Icon name="phone" size={18} />
     <span>
       Call 5VA <small>Free call</small>

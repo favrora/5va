@@ -15,6 +15,10 @@ const localTopics = {
   'freezer-not-freezing': 'freezer-repair',
   'appliance-repair-visit-checklist': 'washer-repair',
 };
+const expandedTopics = {
+  'microwave-not-heating-philadelphia': 'microwave-repair',
+  'washer-not-spinning-philadelphia': 'washer-repair',
+};
 const originalSlugs = [
   'refrigerator-not-cooling',
   'washer-not-draining',
@@ -24,8 +28,8 @@ const normalize = (value) => value.trim().replace(/\s+/g, ' ').toLowerCase();
 const sharesService = (left, right) =>
   left.relatedServices.some((slug) => right.relatedServices.includes(slug));
 
-test('the journal has twelve appliance guides and preserves the three original appliance topics', () => {
-  assert.equal(articles.length, 12);
+test('the journal has fourteen appliance guides and preserves the three original appliance topics', () => {
+  assert.equal(articles.length, 14);
   assert.deepEqual(
     localGuides.map((article) => article.slug).sort(),
     Object.keys(localTopics).sort(),
@@ -35,13 +39,18 @@ test('the journal has twelve appliance guides and preserves the three original a
     [...originalSlugs].sort(),
   );
   assert.deepEqual(
-    articles.slice(0, localGuides.length).map((article) => article.slug),
+    articles
+      .slice(
+        Object.keys(expandedTopics).length,
+        Object.keys(expandedTopics).length + localGuides.length,
+      )
+      .map((article) => article.slug),
     localGuides.map((article) => article.slug),
     'new local guides should be discoverable before the existing general guides',
   );
   assert.deepEqual(
     articles.map((article) => article.slug).sort(),
-    [...Object.keys(localTopics), ...originalSlugs].sort(),
+    [...Object.keys(expandedTopics), ...Object.keys(localTopics), ...originalSlugs].sort(),
   );
   for (const original of originalArticles) {
     const article = articles.find((item) => item.slug === original.slug);
@@ -75,7 +84,7 @@ test('service links resolve and local guides lead to the agreed primary service'
       assert.ok(serviceSlugs.has(slug), `${article.slug}: unknown service ${slug}`);
     }
   }
-  for (const [slug, service] of Object.entries(localTopics)) {
+  for (const [slug, service] of Object.entries({ ...localTopics, ...expandedTopics })) {
     const article = articles.find((item) => item.slug === slug);
     assert.equal(article.relatedServices[0], service, `${slug}: primary CTA destination`);
     assert.ok(['kitchen', 'laundry', 'planning'].includes(article.group));
@@ -130,7 +139,11 @@ test('reading time is derived from the full editorial text, including the quick 
       article.title,
       article.description,
       article.takeaway,
-      ...article.sections.flatMap(({ heading, paragraphs }) => [heading, ...paragraphs]),
+      ...article.sections.flatMap(({ heading, paragraphs, table }) => [
+        heading,
+        ...paragraphs,
+        ...(table ? [table.caption, ...table.headings, ...table.rows.flat()] : []),
+      ]),
       ...article.faqs.flatMap(({ q, a }) => [q, a]),
     ].join(' ');
     const actualWords = visibleText.match(/\S+/g)?.length ?? 0;
@@ -181,5 +194,46 @@ test('guides with a matching service are recommended before unrelated topics', (
         .every((candidate) => sharesService(article, candidate)),
       `${article.slug}: a relevant project guide should appear before unrelated topics`,
     );
+  }
+});
+
+test('expanded symptom guides have useful comparison tables, verified sources and contextual service links', () => {
+  const articleSlugs = new Set(articles.map((article) => article.slug));
+  const serviceSlugs = new Set(services.map((service) => service.slug));
+  const sources = ['geappliances.com', 'panasonic.com', 'fda.gov', 'whirlpool.com', 'samsung.com'];
+  for (const [slug, service] of Object.entries(expandedTopics)) {
+    const article = articles.find((item) => item.slug === slug);
+    assert.equal(article.publishedOn, '2026-10-26');
+    assert.equal(article.relatedServices[0], service);
+    assert.ok(article.sections.length >= 7);
+    assert.ok(article.wordCount >= 1400, `${slug}: substantial editorial guide required`);
+    const tables = article.sections.flatMap((section) => (section.table ? [section.table] : []));
+    assert.ok(tables.length > 0, `${slug}: comparison table required`);
+    for (const table of tables) {
+      assert.ok(table.caption.trim());
+      assert.equal(table.headings.length, 3);
+      assert.ok(table.rows.length >= 3);
+      for (const row of table.rows) {
+        assert.equal(row.length, table.headings.length);
+        assert.ok(row.every((cell) => cell.trim()));
+      }
+    }
+    const links = article.sections.flatMap((section) => section.links || []);
+    assert.ok(links.some((link) => link.href === `/services/${service}/`));
+    assert.ok(links.some((link) => link.href === '/service-areas/'));
+    for (const link of links) {
+      assert.ok(link.label.trim());
+      assert.match(link.href, /^\/(blog|services|service-areas)\//);
+      if (link.href.startsWith('/blog/')) assert.ok(articleSlugs.has(link.href.split('/')[2]));
+      if (link.href.startsWith('/services/')) assert.ok(serviceSlugs.has(link.href.split('/')[2]));
+    }
+    for (const source of article.sources) {
+      const url = new URL(source.url);
+      assert.equal(url.protocol, 'https:');
+      assert.ok(
+        sources.some((domain) => url.hostname === domain || url.hostname.endsWith(`.${domain}`)),
+      );
+    }
+    assert.ok(article.faqs.length >= 3);
   }
 });

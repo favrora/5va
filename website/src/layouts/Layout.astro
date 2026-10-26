@@ -11,6 +11,7 @@ import '../styles/accessibility.css';
 import '../styles/conversion.css';
 import '../styles/refresh.css';
 import '../styles/appliance.css';
+import '../styles/design-system.css';
 interface Props {
   title: string;
   description: string;
@@ -243,7 +244,22 @@ if (
                       ? 'sms_click'
                       : target.dataset.conversion,
                 path: location.pathname,
-                placement: target.dataset.placement || 'site',
+                placement:
+                  target.dataset.placement ||
+                  target.closest<HTMLElement>('[data-tracking-region]')?.dataset.trackingRegion ||
+                  (target.closest('header')
+                    ? 'header'
+                    : target.closest('footer')
+                      ? 'footer'
+                      : target.closest('dialog')
+                        ? 'mobile-menu'
+                        : target.closest('.mobile-contact')
+                          ? 'mobile-sticky'
+                          : target.closest('article')
+                            ? 'article-body'
+                            : target.closest('.info-panel')
+                              ? 'service-sidebar'
+                              : 'page-content'),
               },
             }),
           );

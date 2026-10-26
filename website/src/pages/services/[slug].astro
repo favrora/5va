@@ -91,7 +91,7 @@ const schema = [
             in Philadelphia
           </h1>
           <p class="lead">{service.description}</p>
-          <div class="service-hero-actions">
+          <div class="service-hero-actions" data-tracking-region="service-hero">
             <a class="button button-yellow" href={business.phoneHref} data-placement="service-hero">
               <Icon name="phone" size={18} /> Call {business.phone}
             </a>
@@ -161,6 +161,11 @@ const schema = [
                 (['dryer-repair', 'dishwasher-repair'].includes(service.slug) &&
                   article.slug === 'appliance-repair-or-replace'),
             )
+            .sort(
+              (a, b) =>
+                Number(b.relatedServices[0] === service.slug) -
+                Number(a.relatedServices[0] === service.slug),
+            )
             .slice(0, 3)
             .map((article) => (
               <a href={`/blog/${article.slug}/`}>{article.title}</a>
@@ -180,7 +185,7 @@ const schema = [
           <a href="/blog/">appliance repair blog</a> for practical preparation advice.
         </p>
       </div>
-      <aside class="info-panel">
+      <aside class="info-panel" data-tracking-region="service-sidebar">
         <Icon name="chat" size={30} />
         <h2>
           Let’s talk about

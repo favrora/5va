@@ -1,3 +1,4 @@
+import { articles } from '../src/data/journal.ts';
 import assert from 'node:assert/strict';
 import { cp, mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
@@ -127,7 +128,7 @@ for (const file of (await walk(output)).filter((file) => file.endsWith('.css')))
     styles++;
   }
 }
-assert.equal(pages.length, 35);
+assert.equal(pages.length, 23 + articles.length);
 console.log(
   JSON.stringify(
     {

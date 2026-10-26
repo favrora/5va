@@ -45,7 +45,12 @@ const links = [
         </a>
       ))}
     </nav>
-    <a class="header-call" href={business.phoneHref} data-track="phone_click">
+    <a
+      class="header-call"
+      href={business.phoneHref}
+      data-track="phone_click"
+      data-placement="header"
+    >
       <Icon name="phone" size={19} />
       <span>
         <strong>{business.phone}</strong>
@@ -91,10 +96,10 @@ const links = [
       <Icon name="diagonal" size={23} />
     </a>
   </nav>
-  <a class="button button-yellow" href={business.phoneHref}>
+  <a class="button button-yellow" href={business.phoneHref} data-placement="mobile-menu">
     <Icon name="phone" size={18} /> Call for free
   </a>
-  <a class="text-link drawer-sms" href={business.smsHref}>
+  <a class="text-link drawer-sms" href={business.smsHref} data-placement="mobile-menu">
     <Icon name="chat" size={18} /> Text 5VA directly
   </a>
   <p class="drawer-note">
