@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { articles, relatedArticles } from '../src/data/journal.ts';
 import { articles as originalArticles, services } from '../src/data/content.ts';
 import { localGuides } from '../src/data/local-guides.ts';
-import { autumnGuides } from '../src/data/autumn-guides.ts';
+import { costGuides } from '../src/data/cost-guides.ts';
 
 const localTopics = {
   'washer-leaking-water-philadelphia': 'washer-repair',
@@ -20,12 +20,12 @@ const expandedTopics = {
   'microwave-not-heating-philadelphia': 'microwave-repair',
   'washer-not-spinning-philadelphia': 'washer-repair',
 };
-const autumnTopics = {
-  'ice-maker-not-making-ice-philadelphia': 'ice-maker-repair',
-  'dryer-wont-start-philadelphia': 'dryer-repair',
-  'dishwasher-not-cleaning-dishes': 'dishwasher-repair',
-  'oven-not-reaching-temperature': 'oven-stove-repair',
-  'washer-shaking-during-spin': 'washer-repair',
+const costTopics = {
+  'refrigerator-repair-cost': 'refrigerator-repair',
+  'washing-machine-repair-cost': 'washer-repair',
+  'dryer-repair-cost': 'dryer-repair',
+  'dishwasher-repair-cost': 'dishwasher-repair',
+  'refrigerator-compressor-replacement-cost': 'refrigerator-repair',
 };
 const originalSlugs = [
   'refrigerator-not-cooling',
@@ -39,8 +39,8 @@ const sharesService = (left, right) =>
 test('the journal has nineteen appliance guides and preserves the original appliance topics', () => {
   assert.equal(articles.length, 19);
   assert.deepEqual(
-    autumnGuides.map((article) => article.slug).sort(),
-    Object.keys(autumnTopics).sort(),
+    costGuides.map((article) => article.slug).sort(),
+    Object.keys(costTopics).sort(),
   );
   assert.deepEqual(
     localGuides.map((article) => article.slug).sort(),
@@ -53,8 +53,8 @@ test('the journal has nineteen appliance guides and preserves the original appli
   assert.deepEqual(
     articles
       .slice(
-        autumnGuides.length + Object.keys(expandedTopics).length,
-        autumnGuides.length + Object.keys(expandedTopics).length + localGuides.length,
+        costGuides.length + Object.keys(expandedTopics).length,
+        costGuides.length + Object.keys(expandedTopics).length + localGuides.length,
       )
       .map((article) => article.slug),
     localGuides.map((article) => article.slug),
@@ -63,7 +63,7 @@ test('the journal has nineteen appliance guides and preserves the original appli
   assert.deepEqual(
     articles.map((article) => article.slug).sort(),
     [
-      ...Object.keys(autumnTopics),
+      ...Object.keys(costTopics),
       ...Object.keys(expandedTopics),
       ...Object.keys(localTopics),
       ...originalSlugs,
@@ -104,7 +104,7 @@ test('service links resolve and local guides lead to the agreed primary service'
   for (const [slug, service] of Object.entries({
     ...localTopics,
     ...expandedTopics,
-    ...autumnTopics,
+    ...costTopics,
   })) {
     const article = articles.find((item) => item.slug === slug);
     assert.equal(article.relatedServices[0], service, `${slug}: primary CTA destination`);

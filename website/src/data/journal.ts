@@ -1,6 +1,6 @@
 import { articles as existingArticles, services } from './content.ts';
 import { localGuides } from './local-guides.ts';
-import { autumnGuides } from './autumn-guides.ts';
+import { costGuides } from './cost-guides.ts';
 export interface JournalSection {
   heading: string;
   paragraphs: string[];
@@ -52,12 +52,11 @@ const metadata: Record<
   },
 };
 const titles: Record<string, string> = {
-  'ice-maker-not-making-ice-philadelphia':
-    'Ice Maker Not Making Ice? Philadelphia Repair Guide | 5VA',
-  'dryer-wont-start-philadelphia': 'Dryer Won’t Start? Philadelphia Repair Guide | 5VA',
-  'dishwasher-not-cleaning-dishes': 'Dishwasher Not Cleaning Dishes? Next Steps | 5VA',
-  'oven-not-reaching-temperature': 'Oven Not Reaching Temperature? Repair Guide | 5VA',
-  'washer-shaking-during-spin': 'Washer Shaking During Spin? Philadelphia Guide | 5VA',
+  'refrigerator-repair-cost': 'Refrigerator Repair Cost: Estimates & Decisions | 5VA',
+  'washing-machine-repair-cost': 'Washing Machine Repair Cost: A Complete Guide | 5VA',
+  'dryer-repair-cost': 'Dryer Repair Cost: Parts, Labor & Decisions | 5VA',
+  'dishwasher-repair-cost': 'Dishwasher Repair Cost: Repair or Replace? | 5VA',
+  'refrigerator-compressor-replacement-cost': 'Refrigerator Compressor Replacement Cost | 5VA',
   'washer-not-spinning-philadelphia': 'Washer Not Spinning? Philadelphia Repair Guide | 5VA',
   'microwave-not-heating-philadelphia': 'Microwave Not Heating? Philadelphia Repair Guide | 5VA',
   'washer-leaking-water-philadelphia': 'Washer Leaking Water? Philadelphia Repair Guide | 5VA',
@@ -75,16 +74,15 @@ const titles: Record<string, string> = {
   'appliance-repair-or-replace': 'Repair or Replace an Appliance? Decision Guide | 5VA',
 };
 const imageDescriptions: Record<string, string> = {
-  'ice-maker-not-making-ice-philadelphia':
-    'Household French-door refrigerator with an open freezer drawer and visible ice bin',
-  'dryer-wont-start-philadelphia':
-    'Closed household dryer with an unlit control panel and a basket of towels beside it',
-  'dishwasher-not-cleaning-dishes':
-    'Open household dishwasher with food residue on white plates and cloudy glasses',
-  'oven-not-reaching-temperature':
-    'Closed residential electric range beside a baking tray in a sunlit kitchen',
-  'washer-shaking-during-spin':
-    'Closed front-loading household washer with laundry visible through the door',
+  'refrigerator-repair-cost':
+    'Closed stainless steel household refrigerator beside a notebook on a kitchen counter',
+  'washing-machine-repair-cost':
+    'Front-loading household washer with towels and a notebook in an ivory laundry room',
+  'dryer-repair-cost': 'Closed household tumble dryer beside a laundry basket and notebook',
+  'dishwasher-repair-cost':
+    'Open built-in household dishwasher with dishes beneath a kitchen worktop',
+  'refrigerator-compressor-replacement-cost':
+    'Rear of a household refrigerator showing an intact compressor and cooling tubing',
   'washer-not-spinning-philadelphia':
     'Closed household front-loading washer with laundry visible through the door and a basket nearby',
   'microwave-not-heating-philadelphia':
@@ -484,7 +482,7 @@ const newGuides: JournalInput[] = [
   },
 ];
 const inputs: JournalInput[] = [
-  ...autumnGuides,
+  ...costGuides,
   ...newGuides,
   ...localGuides,
   ...existingArticles.map((article) => ({
