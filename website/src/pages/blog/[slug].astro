@@ -26,14 +26,20 @@ const schema = {
   ...(article.updatedOn || article.publishedOn
     ? { dateModified: article.updatedOn || article.publishedOn }
     : {}),
-  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).href,
+  mainEntityOfPage: { '@id': new URL(`${Astro.url.pathname}#webpage`, Astro.site).href },
   author: {
     '@type': 'Organization',
     name: '5VA Appliance Repair',
     url: new URL('/about/', Astro.site).href,
   },
   publisher: { '@id': new URL('/#business', Astro.site).href },
-  image: new URL(article.image, Astro.site).href,
+  image: {
+    '@type': 'ImageObject',
+    url: new URL(article.image, Astro.site).href,
+    width: 1200,
+    height: 800,
+    caption: article.imageAlt,
+  },
   about: relevantServices.map((service) => ({
     '@type': 'Service',
     name: service.title,
@@ -60,7 +66,7 @@ const schema = {
       </div>
       <h1>{article.title}</h1>
       <p class="guide-byline">
-        5VA Appliance Repair
+        <a href="/about/">5VA Appliance Repair</a>
         {(article.updatedOn || article.publishedOn) && (
           <>
             {' '}
@@ -167,9 +173,15 @@ const schema = {
               </a>
             ))}
           </div>
-          <a class="text-link" href={business.smsHref}>
-            Text us about this appliance <Icon name="arrow" size={17} />
-          </a>
+          <p>
+            <a class="text-link" href={business.phoneHref} data-placement="article-service">
+              <Icon name="phone" size={18} /> Call 5VA about this appliance
+            </a>
+          </p>
+          <p>
+            Prefer a message? <a href={business.smsHref}>Text the model, symptom and ZIP code</a>.
+            The initial call is free; visit and repair charges are separate.
+          </p>
         </section>
         {article.sources.length > 0 && (
           <section class="article-sources">

@@ -73,8 +73,9 @@ const suppliedSchemas: Record<string, unknown>[] = (
     : {}),
 }));
 const mainEntity = suppliedSchemas.find((item) =>
-  ['Article', 'Service'].includes(String(item['@type'])),
+  ['Article', 'Service', 'ItemList'].includes(String(item['@type'])),
 );
+const articleSchema = suppliedSchemas.find((item) => item['@type'] === 'Article');
 const webPageTypes: Record<string, string> = {
   '/about/': 'AboutPage',
   '/contact/': 'ContactPage',
@@ -174,6 +175,12 @@ if (
       content={suppliedSchemas.some((item) => item['@type'] === 'Article') ? 'article' : 'website'}
     />
     <meta property="og:locale" content="en_US" />
+    {articleSchema?.datePublished && (
+      <meta property="article:published_time" content={String(articleSchema.datePublished)} />
+    )}
+    {articleSchema?.dateModified && (
+      <meta property="article:modified_time" content={String(articleSchema.dateModified)} />
+    )}
     <meta property="og:site_name" content={business.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

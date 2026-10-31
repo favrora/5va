@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { articles, relatedArticles } from '../src/data/journal.ts';
 import { articles as originalArticles, services } from '../src/data/content.ts';
 import { localGuides } from '../src/data/local-guides.ts';
+import { autumnGuides } from '../src/data/autumn-guides.ts';
 
 const localTopics = {
   'washer-leaking-water-philadelphia': 'washer-repair',
@@ -19,6 +20,13 @@ const expandedTopics = {
   'microwave-not-heating-philadelphia': 'microwave-repair',
   'washer-not-spinning-philadelphia': 'washer-repair',
 };
+const autumnTopics = {
+  'ice-maker-not-making-ice-philadelphia': 'ice-maker-repair',
+  'dryer-wont-start-philadelphia': 'dryer-repair',
+  'dishwasher-not-cleaning-dishes': 'dishwasher-repair',
+  'oven-not-reaching-temperature': 'oven-stove-repair',
+  'washer-shaking-during-spin': 'washer-repair',
+};
 const originalSlugs = [
   'refrigerator-not-cooling',
   'washer-not-draining',
@@ -28,8 +36,12 @@ const normalize = (value) => value.trim().replace(/\s+/g, ' ').toLowerCase();
 const sharesService = (left, right) =>
   left.relatedServices.some((slug) => right.relatedServices.includes(slug));
 
-test('the journal has fourteen appliance guides and preserves the three original appliance topics', () => {
-  assert.equal(articles.length, 14);
+test('the journal has nineteen appliance guides and preserves the original appliance topics', () => {
+  assert.equal(articles.length, 19);
+  assert.deepEqual(
+    autumnGuides.map((article) => article.slug).sort(),
+    Object.keys(autumnTopics).sort(),
+  );
   assert.deepEqual(
     localGuides.map((article) => article.slug).sort(),
     Object.keys(localTopics).sort(),
@@ -41,8 +53,8 @@ test('the journal has fourteen appliance guides and preserves the three original
   assert.deepEqual(
     articles
       .slice(
-        Object.keys(expandedTopics).length,
-        Object.keys(expandedTopics).length + localGuides.length,
+        autumnGuides.length + Object.keys(expandedTopics).length,
+        autumnGuides.length + Object.keys(expandedTopics).length + localGuides.length,
       )
       .map((article) => article.slug),
     localGuides.map((article) => article.slug),
@@ -50,7 +62,12 @@ test('the journal has fourteen appliance guides and preserves the three original
   );
   assert.deepEqual(
     articles.map((article) => article.slug).sort(),
-    [...Object.keys(expandedTopics), ...Object.keys(localTopics), ...originalSlugs].sort(),
+    [
+      ...Object.keys(autumnTopics),
+      ...Object.keys(expandedTopics),
+      ...Object.keys(localTopics),
+      ...originalSlugs,
+    ].sort(),
   );
   for (const original of originalArticles) {
     const article = articles.find((item) => item.slug === original.slug);
@@ -84,7 +101,11 @@ test('service links resolve and local guides lead to the agreed primary service'
       assert.ok(serviceSlugs.has(slug), `${article.slug}: unknown service ${slug}`);
     }
   }
-  for (const [slug, service] of Object.entries({ ...localTopics, ...expandedTopics })) {
+  for (const [slug, service] of Object.entries({
+    ...localTopics,
+    ...expandedTopics,
+    ...autumnTopics,
+  })) {
     const article = articles.find((item) => item.slug === slug);
     assert.equal(article.relatedServices[0], service, `${slug}: primary CTA destination`);
     assert.ok(['kitchen', 'laundry', 'planning'].includes(article.group));

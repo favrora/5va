@@ -3,11 +3,25 @@ import Layout from '../../layouts/Layout.astro';
 import JournalCard from '../../components/JournalCard.astro';
 import CTA from '../../components/CTA.astro';
 import { articles } from '../../data/journal';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  '@id': new URL('/blog/#guides', Astro.site).href,
+  name: 'Household appliance repair guides',
+  numberOfItems: articles.length,
+  itemListElement: articles.map((article, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: article.title,
+    url: new URL(`/blog/${article.slug}/`, Astro.site).href,
+  })),
+};
 ---
 
 <Layout
   title="Appliance Repair Blog | Philadelphia Tips & Planning | 5VA"
   description="Practical household appliance guides: refrigerator cooling, washer drainage, dryer heat, dishwasher problems, and planning repair in Philadelphia, PA, and NJ."
+  schema={schema}
 >
   <section class="page-hero">
     <div class="container">
