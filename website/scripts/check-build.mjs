@@ -3,6 +3,8 @@ import { existsSync } from 'node:fs';
 import { getReleaseSettings } from '../release-config.mjs';
 import { postalCodes } from '../src/data/territory.ts';
 import { articles } from '../src/data/journal.ts';
+import { pageDates } from '../src/data/page-dates.ts';
+import { routes } from '../src/data/routes.ts';
 import { join, resolve } from 'node:path';
 import assert from 'node:assert/strict';
 if (existsSync('.env')) process.loadEnvFile('.env');
@@ -32,11 +34,19 @@ let largestPageJavaScript = 0;
 for (const file of pages) {
   const html = await readFile(file, 'utf8');
   const label = file.slice(dist.length);
+  const localTool = new Map([
+    ['/service-areas/index.html', 'check-your-zip'],
+    ['/blog/appliance-repair-or-replace/index.html', 'repair-or-replace-calculator'],
+  ]).get(label);
   assert.doesNotMatch(
     html,
-    /<(?:form|input|textarea|select)(?:\s|>)/i,
+    /<(?:form|textarea|select)(?:\s|>)/i,
     `${label}: customer contact must stay phone-only`,
   );
+  for (const [input] of html.matchAll(/<input\b[^>]*>/gi)) {
+    assert.ok(localTool && html.includes(`id="${localTool}"`), `${label}: unexpected input`);
+    assert.doesNotMatch(input, /\sname=/i, `${label}: local calculator inputs must not submit`);
+  }
   for (const phone of html.matchAll(/href="(tel:[^"]+)"/g))
     assert.equal(phone[1], 'tel:+12677048588', `${label}: incorrect phone action`);
   assert.match(html, /href="tel:\+12677048588"/, `${label}: a direct call action is required`);
@@ -240,11 +250,29 @@ assert.deepEqual(
   'Sitemap must match all public page canonicals and exclude 404',
 );
 assert.equal(pages.length, locations.length + 1, 'Content pages plus a noindex 404');
-assert.equal(
-  pages.length,
-  23 + articles.length,
-  'Expected 8 root pages, 8 services, 6 areas, all guides, and 404',
+assert.equal(pages.length, routes.length + 1, 'Every route plus the noindex 404 is built');
+const expectedDates = new Map([
+  ...pageDates,
+  ...articles.map(({ slug, updatedOn, publishedOn }) => [
+    `/blog/${slug}/`,
+    updatedOn ?? publishedOn,
+  ]),
+]);
+const datesInSitemap = new Map(
+  [...sitemap.matchAll(/<url><loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod><\/url>/g)].map(
+    ([, url, date]) => [new URL(url).pathname, date],
+  ),
 );
+assert.deepEqual(datesInSitemap, expectedDates, 'Sitemap dates must reflect editorial revisions');
+for (const [path, date] of expectedDates) {
+  assert.match(date, /^\d{4}-\d{2}-\d{2}$/);
+  assert.equal(new Date(date).toISOString().slice(0, 10), date);
+  const page = await readFile(join(dist, path, 'index.html'), 'utf8');
+  assert.ok(
+    page.includes(`"dateModified":"${date}"`),
+    `${path}: rendered structured data must agree with sitemap lastmod`,
+  );
+}
 const js = files.filter((file) => file.endsWith('.js'));
 let javascriptBytes = 0;
 for (const file of js) javascriptBytes += (await stat(file)).size;

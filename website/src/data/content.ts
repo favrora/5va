@@ -1,3 +1,5 @@
+import { postalCodes } from './territory.ts';
+
 export const services = [
   {
     slug: 'refrigerator-repair',
@@ -366,146 +368,119 @@ export const services = [
   },
 ];
 
-export const areas = [
+interface Area {
+  slug: string;
+  name: string;
+  kind: 'City' | 'AdministrativeArea' | 'State';
+  title: string;
+  description: string;
+  coverage: string;
+  intro: string;
+  localNote: string;
+  zips: readonly string[];
+  includesMontgomeryCounty?: boolean;
+}
+
+export const areas: Area[] = [
   {
     slug: 'philadelphia',
     name: 'Philadelphia',
-    intro:
-      'Residential appliance repair at your home in Philadelphia ZIP codes 19115 and 19116. Call or text the appliance model, symptoms and ZIP code to arrange a visit.',
-    localNote:
-      'We visit addresses in 19115 and 19116. Mention stairs, parking or building-access instructions and whether the appliance is stacked or built in. Leave it installed and clear a safe path to the work area.',
-    neighborhoods: ['Philadelphia 19115', 'Philadelphia 19116'],
     kind: 'City',
+    title: 'In-Home Appliance Repair in Philadelphia, PA',
+    description:
+      'In-home appliance repair in Philadelphia ZIPs 19115 and 19116. Call or text 5VA for household kitchen and laundry repairs, daily 7 AM–8 PM.',
+    coverage: 'Home visits in 19115 and 19116',
+    intro:
+      'We repair household refrigerators, washers, dryers, dishwashers and other kitchen and laundry appliances at your home in Philadelphia ZIP codes 19115 and 19116.',
+    localNote:
+      'Mention stairs, parking or building-access instructions and whether the appliance is stacked or built in. Leave it installed and clear a safe path to the work area.',
     zips: ['19115', '19116'],
   },
   {
     slug: 'northeast-philadelphia',
     name: 'Northeast Philadelphia',
-    intro:
-      'In-home household appliance repair in Northeast Philadelphia ZIP codes 19115 and 19116. Refrigerator, washer, dryer, cooking and dishwasher problems can be discussed by call or text.',
-    localNote:
-      'Check that the service address is in 19115 or 19116. For a rental or shared building, arrange permission and access before booking. Send the appliance model and a photo of the installation if access is tight.',
-    neighborhoods: ['19115', '19116'],
     kind: 'City',
+    title: 'Appliance Repair Visits in Northeast Philadelphia',
+    description:
+      'Planning a home appliance repair visit in Northeast Philadelphia? Check ZIPs 19115 and 19116 and prepare access for stacked, built-in and rental appliances.',
+    coverage: 'Visit and building access in 19115 and 19116',
+    intro:
+      'Arrange in-home appliance repair in Northeast Philadelphia ZIP codes 19115 and 19116. If access involves a building manager, shared entrance or laundry closet, let us know when you call or text.',
+    localNote:
+      'For a rental or shared building, arrange permission and access before booking. If the appliance sits in a closet or under a counter, describe the setup or send a photo without pulling it out.',
     zips: ['19115', '19116'],
-  },
-  {
-    slug: 'feasterville-trevose',
-    name: 'Feasterville-Trevose',
-    intro:
-      'Mobile household appliance repair in Feasterville-Trevose ZIP code 19053. We come to your home; there is no customer intake or appliance drop-off address.',
-    localNote:
-      'Service takes place at your home in 19053. Please leave the appliance installed and text the model and symptom before booking. There is no shop, showroom or appliance drop-off location.',
-    neighborhoods: ['19053'],
-    kind: 'City',
-    zips: ['19053'],
   },
   {
     slug: 'montgomery-county',
     name: 'Montgomery County',
-    intro:
-      'In-home residential appliance repair throughout Montgomery County, Pennsylvania. Call or text your ZIP code, appliance type and symptoms to arrange an appointment.',
-    localNote:
-      'All of Montgomery County, PA is covered, even when your ZIP is not in the separate Pennsylvania list. Share the service address when arranging a visit so travel, access and an available appointment can be confirmed.',
-    neighborhoods: ['All of Montgomery County, Pennsylvania'],
     kind: 'AdministrativeArea',
+    title: 'In-Home Appliance Repair in Montgomery County, PA',
+    description:
+      '5VA repairs home appliances throughout Montgomery County, PA, including Bryn Athyn, Upper Moreland and Abington. Call or text to confirm a visit.',
+    coverage: 'All addresses in Montgomery County, PA',
+    intro:
+      'We come to homes throughout Montgomery County, Pennsylvania, for residential kitchen and laundry appliance repair. County addresses are covered even when their ZIP is not in our separate ZIP list.',
+    localNote:
+      'Share your municipality or service address when arranging a visit so we can confirm coverage, access and an available appointment. Have the appliance type and symptom ready.',
+    includesMontgomeryCounty: true,
     zips: [],
+  },
+  {
+    slug: 'levittown',
+    name: 'Levittown',
+    kind: 'City',
+    title: 'In-Home Appliance Repair in Levittown, PA',
+    description:
+      'Household appliance repair at your home in Levittown, PA ZIP codes 19054 and 19056. Call or text 5VA to confirm coverage and book a visit.',
+    coverage: 'Home visits in 19054 and 19056',
+    intro:
+      '5VA repairs residential kitchen and laundry appliances at your home in Levittown, Pennsylvania ZIP codes 19054 and 19056.',
+    localNote:
+      'Use the ZIP on the address where the appliance is installed. Share the symptom and model, if easy to see. Mention basement stairs, a stacked laundry setup or a built-in appliance when arranging the visit.',
+    zips: ['19054', '19056'],
+  },
+  {
+    slug: 'feasterville-trevose',
+    name: 'Feasterville-Trevose',
+    kind: 'City',
+    title: 'In-Home Appliance Repair in Feasterville-Trevose, PA',
+    description:
+      'In-home appliance repair in Feasterville-Trevose ZIP 19053. Call or text 5VA for refrigerator, washer, dryer and kitchen appliance service.',
+    coverage: 'Home visits in 19053',
+    intro:
+      '5VA visits homes in Feasterville-Trevose ZIP code 19053 for household kitchen and laundry appliance repairs.',
+    localNote:
+      'Leave the appliance installed and share the model and symptom before booking. For a built-in dishwasher or a refrigerator with a water line, let us know about any tight clearances or access limitations.',
+    zips: ['19053'],
   },
   {
     slug: 'pennsylvania',
     name: 'Pennsylvania',
-    intro:
-      'In-home appliance repair in all of Montgomery County and selected Pennsylvania ZIP codes, including Philadelphia 19115 and 19116. Call or text your ZIP code to arrange a visit.',
-    localNote:
-      'Outside Montgomery County, match your service ZIP to the list below. Include the appliance model and symptom when calling or texting. We confirm the appointment and any visit fee before coming to your home.',
-    neighborhoods: [
-      '18901',
-      '18914',
-      '18925',
-      '18929',
-      '18938',
-      '18940',
-      '18954',
-      '18966',
-      '18974',
-      '18976',
-      '19041',
-      '19047',
-      '19053',
-      '19054',
-      '19056',
-      '19067',
-      '19085',
-      '19087',
-      '19115',
-      '19116',
-      '19301',
-      '19312',
-      '19333',
-      '19355',
-    ],
     kind: 'State',
-    zips: [
-      '18901',
-      '18914',
-      '18925',
-      '18929',
-      '18938',
-      '18940',
-      '18954',
-      '18966',
-      '18974',
-      '18976',
-      '19041',
-      '19047',
-      '19053',
-      '19054',
-      '19056',
-      '19067',
-      '19085',
-      '19087',
-      '19115',
-      '19116',
-      '19301',
-      '19312',
-      '19333',
-      '19355',
-    ],
+    title: 'Appliance Repair Coverage in Southeastern Pennsylvania',
+    description:
+      'Check where 5VA offers in-home appliance repair in southeastern PA. Coverage includes all of Montgomery County and 24 listed Pennsylvania ZIP codes.',
+    coverage: 'Montgomery County and 24 listed Pennsylvania ZIPs',
+    intro:
+      'We visit homes throughout Montgomery County and in 24 listed Pennsylvania ZIP codes, including 19115 and 19116 in Philadelphia.',
+    localNote:
+      'If the address is outside Montgomery County, check the service ZIP against the list below. Include the appliance model and symptom when calling or texting so we can confirm coverage, the appointment and any visit fee.',
+    includesMontgomeryCounty: true,
+    zips: postalCodes.PA,
   },
   {
     slug: 'new-jersey',
     name: 'New Jersey',
-    intro:
-      'Residential appliance repair at your home in selected New Jersey ZIP codes. Call or text your ZIP code, appliance model and symptoms to arrange an appointment.',
-    localNote:
-      'Match the service address to one of the 11 ZIP codes below; coverage is not statewide. Tell us the appliance model, symptom and any building-access restrictions before booking a home visit.',
-    neighborhoods: [
-      '08520',
-      '08525',
-      '08534',
-      '08535',
-      '08536',
-      '08540',
-      '08542',
-      '08550',
-      '08618',
-      '08648',
-      '08691',
-    ],
     kind: 'State',
-    zips: [
-      '08520',
-      '08525',
-      '08534',
-      '08535',
-      '08536',
-      '08540',
-      '08542',
-      '08550',
-      '08618',
-      '08648',
-      '08691',
-    ],
+    title: 'Appliance Repair in 11 New Jersey ZIP Codes',
+    description:
+      'Check the 11 New Jersey ZIP codes where 5VA offers in-home household appliance repair. Call or text with your ZIP and appliance problem to confirm a visit.',
+    coverage: '11 listed New Jersey ZIP codes',
+    intro:
+      'We provide residential kitchen and laundry appliance repair at home in the 11 New Jersey ZIP codes below.',
+    localNote:
+      'Check the ZIP on the service address, including the leading zero. Tell us the appliance model, symptom and any building-access restrictions so we can confirm a home visit.',
+    zips: postalCodes.NJ,
   },
 ];
 
@@ -516,6 +491,7 @@ export const articles = [
     category: 'Kitchen care',
     description:
       'Refrigerator warm but the light works? Protect food, separate fresh-food and freezer symptoms, and check normal controls before arranging repair.',
+    publishedOn: '2026-10-24',
     updatedOn: '2026-10-26',
     sections: [
       {
@@ -649,6 +625,7 @@ export const articles = [
     category: 'Laundry care',
     description:
       'Washer left full of water or clothes simply too wet? Separate drainage from a missed spin and gather the details needed for a safe repair assessment.',
+    publishedOn: '2026-10-24',
     updatedOn: '2026-10-26',
     sections: [
       {
@@ -773,6 +750,7 @@ export const articles = [
     category: 'Home decisions',
     description:
       'Repair or replace a broken appliance? Compare the assessed fault, complete costs, installation, condition and timing with a practical decision worksheet.',
+    publishedOn: '2026-10-24',
     updatedOn: '2026-10-26',
     sections: [
       {

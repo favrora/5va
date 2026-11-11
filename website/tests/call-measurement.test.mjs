@@ -349,6 +349,30 @@ test('page measurement strips queries, fragments and referrer paths before confi
   }
 });
 
+test('only the public Google Business Profile campaign is classified after permission', () => {
+  const campaign = '?utm_source=google&utm_medium=organic&utm_campaign=business-profile';
+  const f = fixture({ search: `${campaign}&email=private@example.com&zip=19115` });
+  assert.equal(f.scripts.length, 0);
+  f.allow.fire('click');
+  assert.deepEqual(
+    Object.fromEntries(
+      Object.entries(f.analyticsConfig()).filter(([key]) => key.startsWith('campaign_')),
+    ),
+    { campaign_source: 'google', campaign_medium: 'organic', campaign_name: 'business-profile' },
+  );
+  assert.equal(f.analyticsConfig().page_location, 'https://5varepair.com/');
+  assert.doesNotMatch(JSON.stringify(f.commands()), /private@example|19115/);
+  for (const [search, referrer] of [
+    [campaign.replace('business-profile', 'private'), ''],
+    [`${campaign}&utm_campaign=business-profile`, ''],
+    [`${campaign}&gclid=private`, ''],
+    [campaign, 'https://5varepair.com/services/'],
+  ]) {
+    const other = fixture({ search, referrer, stored: saved('allowed') });
+    assert.equal(other.analyticsConfig().campaign_source, undefined);
+  }
+});
+
 test('call and SMS intent events go once to Analytics only after consent, across button placements', () => {
   const f = fixture({
     pathname: '/blog/washer-not-draining/',

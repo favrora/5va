@@ -38,8 +38,6 @@ const originalSlugs = [
   'appliance-repair-or-replace',
 ];
 const normalize = (value) => value.trim().replace(/\s+/g, ' ').toLowerCase();
-const sharesService = (left, right) =>
-  left.relatedServices.some((slug) => right.relatedServices.includes(slug));
 
 test('the journal has twenty-one appliance guides and preserves the original appliance topics', () => {
   assert.equal(articles.length, 21);
@@ -177,9 +175,10 @@ test('reading time is derived from the full editorial text, including the quick 
       article.title,
       article.description,
       article.takeaway,
-      ...article.sections.flatMap(({ heading, paragraphs, table }) => [
+      ...article.sections.flatMap(({ heading, paragraphs, questions, table }) => [
         heading,
         ...paragraphs,
+        ...(questions || []),
         ...(table ? [table.caption, ...table.headings, ...table.rows.flat()] : []),
       ]),
       ...article.faqs.flatMap(({ q, a }) => [q, a]),
@@ -216,22 +215,31 @@ test('related guides exclude the current page, remain unique, and resolve to rea
   }
 });
 
-test('guides with a matching service are recommended before unrelated topics', () => {
-  for (const article of articles) {
-    const matches = articles.filter(
-      (candidate) => candidate.slug !== article.slug && sharesService(article, candidate),
-    );
-    if (!matches.length) continue;
-    const first = relatedArticles(article.slug, 1);
-    assert.equal(first.length, 1);
-    assert.ok(sharesService(article, first[0]), `${article.slug}: unrelated first recommendation`);
-    const recommendations = relatedArticles(article.slug, articles.length);
+test('top recommendations follow the reader’s appliance and next decision', () => {
+  const relevantPairs = [
+    ['washing-machine-repair-cost', 'washer-not-draining'],
+    ['washer-not-draining', 'washing-machine-repair-cost'],
+    ['dryer-wont-start', 'dryer-repair-cost'],
+    ['dishwasher-not-cleaning', 'dishwasher-not-draining'],
+    ['refrigerator-compressor-replacement-cost', 'refrigerator-repair-cost'],
+    ['appliance-repair-philadelphia', 'appliance-repair-visit-checklist'],
+  ];
+  for (const [slug, next] of relevantPairs) {
+    assert.equal(relatedArticles(slug, 1)[0].slug, next, slug);
+  }
+});
+
+test('published cost guides lead to the comparison worksheet', () => {
+  const calculatorHref = '/blog/appliance-repair-or-replace/#repair-or-replace-calculator';
+  for (const article of costGuides) {
     assert.ok(
-      recommendations
-        .slice(0, matches.length)
-        .every((candidate) => sharesService(article, candidate)),
-      `${article.slug}: a relevant project guide should appear before unrelated topics`,
+      article.sections.some((section) =>
+        section.links?.some((link) => link.href === calculatorHref),
+      ),
+      article.slug,
     );
+    assert.equal(article.publishedOn, '2026-10-31');
+    assert.ok(article.updatedOn > article.publishedOn);
   }
 });
 

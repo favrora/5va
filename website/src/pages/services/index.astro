@@ -4,11 +4,25 @@ import Icon from '../../components/Icon.astro';
 import CTA from '../../components/CTA.astro';
 import RepairScope from '../../components/RepairScope.astro';
 import { services } from '../../data/content';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  '@id': new URL('/services/#appliance-repairs', Astro.site).href,
+  name: 'Household appliance repair services',
+  numberOfItems: services.length,
+  itemListElement: services.map((service, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: service.title,
+    url: new URL(`/services/${service.slug}/`, Astro.site).href,
+  })),
+};
 ---
 
 <Layout
   title="Household Appliance Repair Services | Philadelphia | 5VA"
-  description="Residential refrigerator, washer, dryer, oven, dishwasher, freezer, microwave and ice maker repair. Philadelphia, PA & NJ inquiries. Call or text 5VA."
+  schema={schema}
+  description="In-home refrigerator, washer, dryer, oven, dishwasher, freezer, microwave and ice maker repair in Philadelphia 19115/19116 and covered PA and NJ areas."
 >
   <section class="page-hero">
     <div class="container">
@@ -17,27 +31,25 @@ import { services } from '../../data/content';
         <span>/</span>
         <span>Services</span>
       </div>
-      <h1>
-        Household appliances
-        <br />
-        One clear place to start
-      </h1>
+      <h1>Household appliance repair services</h1>
       <p class="lead">
-        Choose the appliance that needs attention. Tell us its model, symptoms, and your ZIP code so
-        we can confirm the right assessment.
+        Choose the appliance that needs repair. We come to homes in{' '}
+        <a href="/service-areas/philadelphia/">Philadelphia 19115 and 19116</a>,{' '}
+        <a href="/service-areas/montgomery-county/">Montgomery County</a>, and selected PA and NJ
+        ZIP codes. <a href="/service-areas/#check-your-zip">Check your ZIP</a> before booking.
       </p>
       <RepairScope compact />
     </div>
   </section>
   <section class="repair-section">
     <div class="container">
-      <div class="appliance-grid">
+      <div class="appliance-grid" id="appliance-repairs">
         {services.map((service) => (
           <a class="appliance-card" href={`/services/${service.slug}/`}>
             <span class="appliance-card-icon">
               <Icon name={service.icon} size={34} />
             </span>
-            <h2 style="font-size:21px;margin:19px 0 12px">{service.title}</h2>
+            <h2>{service.title}</h2>
             <p>{service.description}</p>
             <span class="appliance-card-link">
               Repair details <Icon name="arrow" size={17} />
@@ -46,12 +58,22 @@ import { services } from '../../data/content';
         ))}
       </div>
       <p class="repair-inline-help">
-        Philadelphia is our primary focus. For{' '}
-        <a href="/service-areas/pennsylvania/">Pennsylvania</a> or{' '}
-        <a href="/service-areas/new-jersey/">New Jersey</a>, confirm travel by ZIP code before
-        booking.
+        See all listed ZIP codes for <a href="/service-areas/pennsylvania/">Pennsylvania</a> and
+        <a href="/service-areas/new-jersey/">New Jersey</a>.
       </p>
     </div>
   </section>
   <CTA />
 </Layout>
+
+<style>
+  .lead a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .appliance-card h2 {
+    margin: 19px 0 12px;
+    font-size: 21px;
+  }
+</style>

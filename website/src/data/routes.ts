@@ -1,5 +1,5 @@
-import { services, areas } from './content';
-import { articles } from './journal';
+import { services, areas } from './content.ts';
+import { articles } from './journal.ts';
 export const routes = [
   '/',
   '/services/',

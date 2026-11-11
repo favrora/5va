@@ -1,0 +1,316 @@
+---
+const costs = [
+  { key: 'repair', label: 'Total repair quote', required: true },
+  { key: 'replacement', label: 'Replacement price', required: true },
+  { key: 'delivery', label: 'Delivery' },
+  { key: 'installation', label: 'Installation' },
+  { key: 'removal', label: 'Haul-away' },
+  { key: 'other', label: 'Tax and other replacement costs' },
+];
+---
+
+<section
+  id="repair-or-replace-calculator"
+  class="repair-cost-calculator"
+  aria-labelledby="repair-cost-heading"
+>
+  <h2 id="repair-cost-heading">Repair or replace cost calculator</h2>
+  <p>
+    Enter the amounts from your quotes in US dollars. Include any visit charge you still owe in the
+    repair total. Add only fees that are separate from the replacement price.
+  </p>
+  <p data-calculator-fallback>
+    Add the replacement price, delivery, installation, haul-away, tax and any other required costs.
+    Subtract the complete repair quote from that total to find the difference.
+  </p>
+  <fieldset class="cost-fields" data-cost-fields hidden>
+    <legend>Enter your quotes</legend>
+    <p class="cost-help">
+      The first two amounts are required. Leave a fee blank if it is included or does not apply.
+    </p>
+    <div class="cost-grid">
+      {costs.map((cost) => (
+        <div class="cost-field">
+          <label for={`repair-cost-${cost.key}`}>{cost.label}</label>
+          <div class="cost-input">
+            <span aria-hidden="true">$</span>
+            <input
+              id={`repair-cost-${cost.key}`}
+              type="number"
+              min="0"
+              max="1000000"
+              step="0.01"
+              inputmode="decimal"
+              autocomplete="off"
+              required={cost.required}
+              data-cost={cost.key}
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+    <div class="cost-actions">
+      <button class="button button-dark" type="button" data-cost-calculate>
+        Compare costs
+      </button>
+      <button class="button button-outline" type="button" data-cost-print>
+        Print worksheet
+      </button>
+    </div>
+  </fieldset>
+  <p class="cost-result" role="status" aria-atomic="true" data-cost-result></p>
+  <dl class="cost-print-values">
+    {costs.map((cost) => (
+      <div>
+        <dt>{cost.label}</dt>
+        <dd data-cost-print-value={cost.key}></dd>
+      </div>
+    ))}
+  </dl>
+  <div class="cost-checklist">
+    <h3>Before you decide</h3>
+    <ul>
+      <li>
+        Confirm the diagnosed fault, what the repair includes and whether any other issue remains.
+      </li>
+      <li>Check that the replacement fits your space, doorway and existing connections.</li>
+      <li>Compare the appliance’s condition, repair history and time without it.</li>
+    </ul>
+    <p>
+      The comparison uses your amounts. It stays in this browser and only compares upfront costs.
+    </p>
+  </div>
+</section>
+
+<script>
+  const calculator = document.querySelector<HTMLElement>('#repair-or-replace-calculator');
+  const fields = calculator?.querySelector<HTMLFieldSetElement>('[data-cost-fields]');
+  const fallback = calculator?.querySelector<HTMLElement>('[data-calculator-fallback]');
+  const result = calculator?.querySelector<HTMLElement>('[data-cost-result]');
+  const printButton = calculator?.querySelector<HTMLButtonElement>('[data-cost-print]');
+  const compareButton = calculator?.querySelector<HTMLButtonElement>('[data-cost-calculate]');
+
+  if (calculator && fields && fallback && result && printButton && compareButton) {
+    const inputs = [...fields.querySelectorAll<HTMLInputElement>('input[data-cost]')];
+    const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+    const formatCents = (cents: number) => currency.format(cents / 100);
+
+    const compareCosts = () => {
+      if (inputs.some((input) => !input.reportValidity())) return false;
+      const [repair, ...replacementCosts] = inputs.map((input) =>
+        input.value ? Math.round(input.valueAsNumber * 100) : 0,
+      );
+      const replacement = replacementCosts.reduce((total, cents) => total + cents, 0);
+      const difference = replacement - repair;
+      let comparison = 'Both options have the same upfront cost.';
+      if (difference !== 0) {
+        const lowerCost = difference > 0 ? 'Repair' : 'Replacement';
+        comparison = `${lowerCost} costs ${formatCents(Math.abs(difference))} less upfront.`;
+      }
+      result.textContent = `Repair: ${formatCents(repair)}. Replacement total: ${formatCents(replacement)}. ${comparison}`;
+      return true;
+    };
+
+    const showComparison = () => {
+      if (!compareCosts()) return;
+      const bar = document.querySelector('.mobile-call-bar')?.getBoundingClientRect();
+      const visibleBottom = bar?.height ? bar.top : window.innerHeight;
+      if (result.getBoundingClientRect().bottom > visibleBottom) {
+        result.scrollIntoView({ block: 'center', behavior: 'instant' });
+      }
+    };
+
+    compareButton.addEventListener('click', showComparison);
+    fields.addEventListener('input', () => {
+      result.textContent = '';
+    });
+    fields.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && event.target instanceof HTMLInputElement) {
+        event.preventDefault();
+        showComparison();
+      }
+    });
+    printButton.addEventListener('click', () => {
+      for (const input of inputs) {
+        const line = calculator.querySelector(`[data-cost-print-value="${input.dataset.cost}"]`);
+        if (line) {
+          line.textContent =
+            input.value && input.validity.valid ? currency.format(input.valueAsNumber) : '';
+        }
+      }
+      if (inputs.every((input) => input.validity.valid)) compareCosts();
+      document.documentElement.setAttribute('data-print-repair-cost', '');
+      window.print();
+    });
+    window.addEventListener('afterprint', () => {
+      document.documentElement.removeAttribute('data-print-repair-cost');
+    });
+
+    fallback.hidden = true;
+    fields.hidden = false;
+  }
+</script>
+
+<style>
+  .repair-cost-calculator {
+    padding: clamp(18px, 4vw, 30px);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--cream);
+  }
+
+  .cost-fields {
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .cost-fields legend {
+    padding: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .cost-fields .cost-help {
+    margin: 6px 0 16px;
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .cost-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .cost-field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cost-field label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+    font-weight: 650;
+  }
+
+  .cost-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 46px;
+    margin-top: auto;
+    padding: 0 11px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+  }
+
+  .cost-input:focus-within {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  .cost-input input {
+    width: 100%;
+    min-width: 0;
+    padding: 8px 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--ink);
+    font-size: 1rem;
+  }
+
+  .cost-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .repair-cost-calculator .cost-result {
+    margin: 0;
+  }
+
+  .repair-cost-calculator .cost-result:not(:empty) {
+    margin-top: 16px;
+    padding: 12px 15px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+    font-weight: 650;
+  }
+
+  .cost-checklist h3 {
+    margin: 24px 0 10px;
+    font-size: 1.2rem;
+  }
+
+  .cost-checklist li,
+  .cost-checklist p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .cost-checklist p {
+    margin-bottom: 0;
+    color: var(--muted);
+  }
+
+  .cost-print-values {
+    display: none;
+  }
+
+  @media (max-width: 360px) {
+    .cost-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+    }
+  }
+
+  @media print {
+    :global(html[data-print-repair-cost] body > :not(main)),
+    :global(html[data-print-repair-cost] main > :not(.guide-section)),
+    :global(html[data-print-repair-cost] .guide-body > :not(#repair-or-replace-calculator)),
+    :global(html[data-print-repair-cost] #repair-or-replace-calculator [data-cost-fields]) {
+      display: none !important;
+    }
+
+    :global(html[data-print-repair-cost] .guide-section) {
+      padding: 0;
+    }
+
+    :global(html[data-print-repair-cost] .guide-section .container) {
+      width: auto;
+      max-width: none;
+    }
+
+    :global(html[data-print-repair-cost]) .repair-cost-calculator {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: black;
+    }
+
+    :global(html[data-print-repair-cost]) .cost-print-values {
+      display: grid;
+      gap: 8px;
+    }
+
+    .cost-print-values > div {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 9rem;
+      gap: 12px;
+    }
+
+    .cost-print-values dd {
+      margin: 0;
+      border-bottom: 1px solid currentColor;
+    }
+  }
+</style>

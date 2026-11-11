@@ -5,6 +5,7 @@ import { symptomGuides } from './symptom-guides.ts';
 export interface JournalSection {
   heading: string;
   paragraphs: string[];
+  questions?: string[];
   links?: { label: string; href: string }[];
   table?: { caption: string; headings: string[]; rows: string[][] };
 }
@@ -74,7 +75,7 @@ const titles: Record<string, string> = {
   'appliance-repair-visit-checklist': 'Appliance Repair Visit Checklist | 5VA',
   'refrigerator-not-cooling': 'Refrigerator Not Cooling? What to Check First | 5VA',
   'washer-not-draining': 'Washer Not Draining? A Practical Checklist | 5VA',
-  'appliance-repair-or-replace': 'Repair or Replace an Appliance? Decision Guide | 5VA',
+  'appliance-repair-or-replace': 'Repair or Replace an Appliance? Cost Calculator | 5VA',
 };
 const imageDescriptions: Record<string, string> = {
   'dishwasher-not-cleaning': 'Open household dishwasher with cups in the upper rack',
@@ -505,6 +506,7 @@ export const articles: JournalArticle[] = inputs.map((article) => {
     ...article.sections.flatMap((s) => [
       s.heading,
       ...s.paragraphs,
+      ...(s.questions || []),
       ...(s.table ? [s.table.caption, ...s.table.headings, ...s.table.rows.flat()] : []),
     ]),
     ...article.faqs.flatMap((f) => [f.q, f.a]),
@@ -514,6 +516,7 @@ export const articles: JournalArticle[] = inputs.map((article) => {
     .split(/\s+/).length;
   return {
     ...article,
+    ...(article.slug === 'appliance-repair-or-replace' ? { updatedOn: '2026-11-11' } : {}),
     seoTitle: titles[article.slug],
     wordCount: words,
     readTime: `${Math.max(1, Math.ceil(words / 200))} min read`,
@@ -528,19 +531,130 @@ export const articles: JournalArticle[] = inputs.map((article) => {
     imageAlt: imageDescriptions[article.slug],
   };
 });
+// Prioritize what a reader of each guide can do next: narrow the symptom,
+// understand a quote or prepare for an assessment.
+const nextGuideSlugs: Readonly<Record<string, readonly string[]>> = {
+  'dishwasher-not-cleaning': [
+    'dishwasher-not-draining',
+    'dishwasher-repair-cost',
+    'appliance-repair-visit-checklist',
+  ],
+  'dryer-wont-start': [
+    'dryer-repair-cost',
+    'dryer-not-heating-philadelphia',
+    'appliance-repair-visit-checklist',
+  ],
+  'refrigerator-repair-cost': [
+    'refrigerator-compressor-replacement-cost',
+    'refrigerator-not-cooling',
+    'appliance-repair-or-replace',
+  ],
+  'washing-machine-repair-cost': [
+    'washer-not-draining',
+    'washer-not-spinning-philadelphia',
+    'appliance-repair-or-replace',
+  ],
+  'dryer-repair-cost': [
+    'dryer-wont-start',
+    'dryer-not-heating-philadelphia',
+    'appliance-repair-or-replace',
+  ],
+  'dishwasher-repair-cost': [
+    'dishwasher-not-draining',
+    'dishwasher-not-cleaning',
+    'appliance-repair-or-replace',
+  ],
+  'refrigerator-compressor-replacement-cost': [
+    'refrigerator-repair-cost',
+    'refrigerator-not-cooling',
+    'appliance-repair-or-replace',
+  ],
+  'microwave-not-heating-philadelphia': [
+    'appliance-repair-or-replace',
+    'appliance-repair-visit-checklist',
+    'appliance-repair-philadelphia',
+  ],
+  'washer-not-spinning-philadelphia': [
+    'washer-not-draining',
+    'washing-machine-repair-cost',
+    'washer-leaking-water-philadelphia',
+  ],
+  'washer-leaking-water-philadelphia': [
+    'washer-not-draining',
+    'washing-machine-repair-cost',
+    'appliance-repair-visit-checklist',
+  ],
+  'refrigerator-making-noise-philadelphia': [
+    'refrigerator-not-cooling',
+    'refrigerator-repair-cost',
+    'appliance-repair-visit-checklist',
+  ],
+  'appliance-repair-philadelphia': [
+    'appliance-repair-visit-checklist',
+    'appliance-repair-or-replace',
+    'washing-machine-repair-cost',
+  ],
+  'dryer-not-heating-philadelphia': [
+    'dryer-repair-cost',
+    'dryer-wont-start',
+    'appliance-repair-visit-checklist',
+  ],
+  'dishwasher-not-draining': [
+    'dishwasher-repair-cost',
+    'dishwasher-not-cleaning',
+    'appliance-repair-visit-checklist',
+  ],
+  'oven-not-heating': [
+    'appliance-repair-visit-checklist',
+    'appliance-repair-or-replace',
+    'appliance-repair-philadelphia',
+  ],
+  'refrigerator-leaking-water': [
+    'refrigerator-repair-cost',
+    'refrigerator-not-cooling',
+    'appliance-repair-visit-checklist',
+  ],
+  'freezer-not-freezing': [
+    'refrigerator-not-cooling',
+    'appliance-repair-visit-checklist',
+    'appliance-repair-or-replace',
+  ],
+  'appliance-repair-visit-checklist': [
+    'appliance-repair-philadelphia',
+    'appliance-repair-or-replace',
+    'washing-machine-repair-cost',
+  ],
+  'refrigerator-not-cooling': [
+    'refrigerator-repair-cost',
+    'freezer-not-freezing',
+    'refrigerator-making-noise-philadelphia',
+  ],
+  'washer-not-draining': [
+    'washing-machine-repair-cost',
+    'washer-not-spinning-philadelphia',
+    'washer-leaking-water-philadelphia',
+  ],
+  'appliance-repair-or-replace': [
+    'appliance-repair-visit-checklist',
+    'washing-machine-repair-cost',
+    'refrigerator-repair-cost',
+  ],
+};
+
 export function relatedArticles(slug: string, limit = 3): JournalArticle[] {
+  const priority = nextGuideSlugs[slug] || [];
   const current = articles.find((article) => article.slug === slug);
+  const rank = (article: JournalArticle) => {
+    const curatedPosition = priority.indexOf(article.slug);
+    return curatedPosition === -1 ? priority.length : curatedPosition;
+  };
+  const relevance = (article: JournalArticle) =>
+    article.relatedServices.filter((service) => current?.relatedServices.includes(service)).length *
+      2 +
+    Number(article.group === current?.group);
+
   return articles
     .filter((article) => article.slug !== slug)
-    .map((article) => ({
-      article,
-      score:
-        article.relatedServices.filter((service) => current?.relatedServices.includes(service))
-          .length *
-          2 +
-        Number(article.group === current?.group),
-    }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
-    .map((item) => item.article);
+    .sort((a, b) => rank(a) - rank(b) || relevance(b) - relevance(a))
+    .slice(0, Math.max(0, limit));
 }

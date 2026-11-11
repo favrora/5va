@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import JournalCard from '../../components/JournalCard.astro';
 import CTA from '../../components/CTA.astro';
+import Icon from '../../components/Icon.astro';
 import { articles } from '../../data/journal';
 const schema = {
   '@context': 'https://schema.org',
@@ -35,6 +36,9 @@ const schema = {
         Clear next steps for kitchen and laundry problems. Learn what to record safely, how to
         prepare for a visit, and when to discuss a residential appliance repair.
       </p>
+      <a class="text-link" href="/blog/appliance-repair-or-replace/#repair-or-replace-calculator">
+        Compare repair and replacement costs <Icon name="arrow" size={18} />
+      </a>
     </div>
   </section>
   <section class="section">

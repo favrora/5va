@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import FAQ from '../../components/FAQ.astro';
 import Icon from '../../components/Icon.astro';
+import RepairCostCalculator from '../../components/RepairCostCalculator.astro';
 
 import { articles, relatedArticles } from '../../data/journal';
 import { services } from '../../data/content';
@@ -11,6 +12,14 @@ export function getStaticPaths() {
 }
 const { article } = Astro.props;
 const recommended = relatedArticles(article.slug);
+const dateLabel = (date: string) =>
+  new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+const hasCalculator = article.slug === 'appliance-repair-or-replace';
 const relevantServices = article.relatedServices
   .map((slug) => services.find((service) => service.slug === slug))
   .filter((service): service is (typeof services)[number] => Boolean(service));
@@ -67,22 +76,18 @@ const schema = {
       <h1>{article.title}</h1>
       <p class="guide-byline">
         <a href="/about/">5VA Appliance Repair</a>
-        {(article.updatedOn || article.publishedOn) && (
+        {article.publishedOn && (
           <>
             {' '}
             <span aria-hidden="true">·</span>{' '}
-            <time datetime={article.updatedOn || article.publishedOn}>
-              {article.updatedOn && 'Updated '}
-              {new Date(`${article.updatedOn || article.publishedOn}T12:00:00Z`).toLocaleDateString(
-                'en-US',
-                {
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric',
-                  timeZone: 'UTC',
-                },
-              )}
-            </time>
+            <time datetime={article.publishedOn}>{dateLabel(article.publishedOn)}</time>
+          </>
+        )}
+        {article.updatedOn && article.updatedOn !== article.publishedOn && (
+          <>
+            {' '}
+            <span aria-hidden="true">·</span>{' '}
+            <time datetime={article.updatedOn}>Updated {dateLabel(article.updatedOn)}</time>
           </>
         )}
       </p>
@@ -106,6 +111,7 @@ const schema = {
         <div class="guide-summary">
           <p>{article.takeaway}</p>
         </div>
+        {hasCalculator && <RepairCostCalculator />}
         {article.sections.map((section, i) => (
           <>
             <section id={`section-${i}`}>
@@ -141,6 +147,13 @@ const schema = {
                     </table>
                   </section>
                 </div>
+              )}
+              {section.questions && (
+                <ol>
+                  {section.questions.map((question) => (
+                    <li>{question}</li>
+                  ))}
+                </ol>
               )}
               {section.links && (
                 <ul class="guide-context-links">

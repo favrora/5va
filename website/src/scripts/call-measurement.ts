@@ -126,6 +126,26 @@ export function initCallMeasurement({
       return '';
     }
   }
+  function landingCampaign() {
+    // Only the public business-profile tag is recognized. Never pass through arbitrary URL
+    // values, and let Google Ads handle its own click identifiers without overriding them.
+    const query = new URLSearchParams(browser.location.search);
+    if (
+      referrerOrigin() !== browser.location.origin &&
+      !['gclid', 'gbraid', 'wbraid'].some((key) => query.has(key)) &&
+      ['utm_source', 'utm_medium', 'utm_campaign'].every((key) => query.getAll(key).length === 1) &&
+      query.get('utm_source') === 'google' &&
+      query.get('utm_medium') === 'organic' &&
+      query.get('utm_campaign') === 'business-profile'
+    ) {
+      return {
+        campaign_source: 'google',
+        campaign_medium: 'organic',
+        campaign_name: 'business-profile',
+      };
+    }
+    return {};
+  }
   function loadTag() {
     if (!allowed || loaded) return;
     loaded = true;
@@ -154,6 +174,7 @@ export function initCallMeasurement({
     gtag('js', new Date(now()));
     gtag('config', ANALYTICS_ID, {
       send_page_view: true,
+      ...landingCampaign(),
       page_location: pageLocation(),
       page_referrer: referrerOrigin(),
       allow_google_signals: false,

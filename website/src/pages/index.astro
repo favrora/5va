@@ -108,18 +108,31 @@ const faqs = [
         <p class="repair-hero-hours">
           <Icon name="clock" size={17} /> Every day, 7am–8pm
         </p>
+        <a class="repair-hero-coverage-link" href="/service-areas/#check-your-zip">
+          <Icon name="pin" size={19} />
+          <span>
+            <strong>
+              Check your ZIP <Icon name="arrow" size={16} />
+            </strong>
+            <span>Philadelphia 19115 &amp; 19116, Montgomery County and select PA/NJ ZIPs</span>
+          </span>
+        </a>
         <nav class="hero-appliance-links" aria-label="Popular appliance repairs">
           <a href="/services/refrigerator-repair/">
-            <Icon name="fridge" size={23} />
-            <span>Refrigerators</span>
+            <Icon name="fridge" size={20} />
+            Refrigerator repair
           </a>
           <a href="/services/washer-repair/">
-            <Icon name="washer" size={23} />
-            <span>Laundry</span>
+            <Icon name="washer" size={20} />
+            Washer repair
           </a>
-          <a href="/services/oven-stove-repair/">
-            <Icon name="oven" size={23} />
-            <span>Cooking</span>
+          <a href="/services/dryer-repair/">
+            <Icon name="dryer" size={20} />
+            Dryer repair
+          </a>
+          <a href="/services/dishwasher-repair/">
+            <Icon name="dishwasher" size={20} />
+            Dishwasher repair
           </a>
         </nav>
       </div>
@@ -159,13 +172,6 @@ const faqs = [
           <small>Checked {business.reviewedOn}</small>
         </a>
       </div>
-      <a class="repair-hero-area" href="/service-areas/">
-        <Icon name="pin" size={19} />
-        <span>Philadelphia 19115 &amp; 19116 · Montgomery County · Selected PA &amp; NJ ZIPs</span>
-        <span class="hero-area-link">
-          Check your ZIP <Icon name="arrow" size={16} />
-        </span>
-      </a>
     </div>
   </section>
   <section class="repair-section" id="services">
@@ -316,8 +322,8 @@ const faqs = [
           <a href="/service-areas/pennsylvania/">Pennsylvania</a>
           <a href="/service-areas/new-jersey/">New Jersey</a>
         </div>
-        <a class="button button-yellow" href="/service-areas/">
-          Check all service ZIP codes <Icon name="arrow" size={18} />
+        <a class="button button-yellow" href="/service-areas/#check-your-zip">
+          Check your ZIP <Icon name="arrow" size={18} />
         </a>
       </div>
     </div>

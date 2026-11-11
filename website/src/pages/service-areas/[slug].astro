@@ -6,49 +6,46 @@ import RepairScope from '../../components/RepairScope.astro';
 import { areas, services } from '../../data/content';
 import { serviceAreaSchema } from '../../data/territory';
 import { business } from '../../data/business';
+
 export function getStaticPaths() {
   return areas.map((area) => ({ params: { slug: area.slug }, props: { area } }));
 }
+
 const { area } = Astro.props;
-const areaPostalSchema = serviceAreaSchema.filter(
-  (item) => 'address' in item && area.zips.includes(item.address.postalCode),
+const areaServed = serviceAreaSchema.filter((item) =>
+  'address' in item ? area.zips.includes(item.address.postalCode) : area.includesMontgomeryCounty,
 );
-const descriptions: Record<string, string> = {
-  philadelphia:
-    'In-home appliance repair in Philadelphia ZIPs 19115 and 19116. Call or text 5VA for household kitchen and laundry repairs, daily 7 AM–8 PM Eastern.',
-  'northeast-philadelphia':
-    'Household appliance repair in Northeast Philadelphia ZIPs 19115 and 19116. 5VA visits your home by appointment. Call or text +1 (267) 704-8588.',
-  'feasterville-trevose':
-    'In-home appliance repair in Feasterville-Trevose ZIP 19053. Refrigerator, washer, dryer and kitchen appliance service. Call or text 5VA, 7 AM–8 PM daily.',
-  'montgomery-county':
-    'Residential appliance repair throughout Montgomery County, PA. 5VA comes to your home, daily 7 AM–8 PM Eastern. Call or text +1 (267) 704-8588.',
-  pennsylvania:
-    'In-home appliance repair throughout Montgomery County and 24 selected PA ZIP codes, including Philadelphia 19115 and 19116. Check 5VA service coverage.',
-  'new-jersey':
-    'In-home residential appliance repair in 11 selected New Jersey ZIP codes. View coverage and call or text 5VA with your appliance problem, daily 7 AM–8 PM.',
-};
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   name: `Residential appliance repair in ${area.name}`,
   serviceType: 'Household appliance repair',
   provider: { '@id': new URL('/#business', Astro.site).href },
-  areaServed:
-    area.slug === 'montgomery-county'
-      ? [serviceAreaSchema[0]]
-      : area.slug === 'pennsylvania'
-        ? [serviceAreaSchema[0], ...areaPostalSchema]
-        : areaPostalSchema,
+  areaServed,
   url: new URL(Astro.url.pathname, Astro.site).href,
   description: area.intro,
 };
+
+const commonAppliances = [
+  { slug: 'washer-repair', label: 'Washer repair', symptom: 'Leaks, standing water or no spin' },
+  { slug: 'dryer-repair', label: 'Dryer repair', symptom: 'No heat, tumble or power' },
+  {
+    slug: 'dishwasher-repair',
+    label: 'Dishwasher repair',
+    symptom: 'Poor cleaning, leaks or no drain',
+  },
+  {
+    slug: 'refrigerator-repair',
+    label: 'Refrigerator repair',
+    symptom: 'Warm compartments, frost or leaks',
+  },
+];
+const otherAppliances = services.filter(
+  (service) => !commonAppliances.some((appliance) => appliance.slug === service.slug),
+);
 ---
 
-<Layout
-  title={`Appliance Repair in ${area.name} | Residential Service | 5VA`}
-  description={descriptions[area.slug]}
-  schema={schema}
->
+<Layout title={`${area.title} | 5VA`} description={area.description} schema={schema}>
   <section class="page-hero">
     <div class="container">
       <div class="breadcrumb">
@@ -58,17 +55,13 @@ const schema = {
         <span>/</span>
         <span>{area.name}</span>
       </div>
-      <h1>
-        Appliance repair
-        <br />
-        in {area.name}
-      </h1>
+      <h1>{area.title}</h1>
       <p class="lead">{area.intro}</p>
       <div class="repair-actions">
-        <a class="button button-yellow" href={business.phoneHref}>
+        <a class="button button-yellow" href={business.phoneHref} data-placement="area-hero">
           <Icon name="phone" size={18} /> Call {business.phone}
         </a>
-        <a class="button button-outline" href={business.smsHref}>
+        <a class="button button-outline" href={business.smsHref} data-placement="area-hero">
           <Icon name="chat" size={18} /> Text your ZIP code
         </a>
       </div>
@@ -78,49 +71,103 @@ const schema = {
   <section class="section">
     <div class="container detail-grid">
       <div class="prose">
-        <h2>Planning your home visit</h2>
-        <p>{area.localNote}</p>
-        <h2>Kitchen and laundry appliances</h2>
+        <h2>{area.zips.length ? 'Service ZIP codes' : 'Check your county address'}</h2>
+        {area.zips.length > 0 && (
+          <ul class="area-postal-list" aria-label={`${area.name} service ZIP codes`}>
+            {area.zips.map((zip) => (
+              <li>{zip}</li>
+            ))}
+          </ul>
+        )}
+        {area.slug === 'montgomery-county' && (
+          <>
+            <h3>Huntingdon Valley and Bryn Athyn</h3>
+            <p>
+              We visit homes in Bryn Athyn Borough and the Montgomery County part of Huntingdon
+              Valley, including Lower Moreland Township. If your mailing address says Huntingdon
+              Valley, confirm the property's county before booking. ZIP 19006 alone doesn't
+              establish that the address is in Montgomery County.
+            </p>
+            <h3>Willow Grove, Upper Moreland and Abington</h3>
+            <p>
+              We also serve Willow Grove addresses in Montgomery County and homes throughout Upper
+              Moreland and Abington townships. Tell us the municipality if it differs from the
+              postal city on your address.
+            </p>
+          </>
+        )}
+        {area.slug === 'pennsylvania' && (
+          <p>
+            See the <a href="/service-areas/montgomery-county/">Montgomery County address guide</a>
+            {', '}
+            <a href="/service-areas/philadelphia/">Philadelphia service ZIPs</a>, or local coverage
+            for <a href="/service-areas/levittown/">Levittown</a>
+            {' and '}
+            <a href="/service-areas/feasterville-trevose/">Feasterville-Trevose</a>.
+          </p>
+        )}
+        {area.slug === 'levittown' && (
+          <p>
+            These are the two Levittown ZIPs we serve. Use the{' '}
+            <a href="/service-areas/#check-your-zip">ZIP checker</a> for a different service
+            address.
+          </p>
+        )}
+        {area.slug === 'northeast-philadelphia' && (
+          <p>
+            See the main{' '}
+            <a href="/service-areas/philadelphia/">Philadelphia appliance repair page</a> for
+            service options and ZIP coverage.
+          </p>
+        )}
+        {area.slug === 'philadelphia' && (
+          <p>
+            For access and rental preparation, see our{' '}
+            <a href="/service-areas/northeast-philadelphia/">Northeast Philadelphia visit guide</a>.
+          </p>
+        )}
+
+        <h2>Kitchen and laundry appliance repair</h2>
+        <ul class="area-service-links">
+          {commonAppliances.map((appliance) => (
+            <li>
+              <a href={`/services/${appliance.slug}/`}>{appliance.label}</a>
+              <span>{appliance.symptom}</span>
+            </li>
+          ))}
+        </ul>
         <div class="mini-services">
-          {services.map((service) => (
+          {otherAppliances.map((service) => (
             <a href={`/services/${service.slug}/`}>{service.shortTitle}</a>
           ))}
         </div>
         <RepairScope compact />
-        <h2>{area.zips.length ? 'Service ZIP codes' : 'County coverage'}</h2>
-        <ul class="area-postal-list" aria-label={`${area.name} service coverage`}>
-          {area.neighborhoods.map((name) => (
-            <li>
-              <span>{name}</span>
-            </li>
-          ))}
-        </ul>
-        <h2>Get ready without moving the appliance</h2>
+
+        <h2>Planning your home visit</h2>
+        <p>{area.localNote}</p>
         <p>
           Use our <a href="/blog/appliance-repair-visit-checklist/">appliance visit checklist</a>{' '}
-          for model photos, access and permission to approve the work. Repair pricing follows the
+          for model photos, access and permission to approve the work. We quote repair work after an
           on-site inspection.
         </p>
         <p>
-          Another address? <a href="/service-areas/">View the full PA and NJ service territory</a>.
+          For another address, <a href="/service-areas/#check-your-zip">check your ZIP code</a>
+          {' or '}
+          <a href="/service-areas/#coverage">see all PA and NJ coverage</a>.
         </p>
       </div>
       <aside class="info-panel">
         <Icon name="pin" size={30} />
-        <h2>
-          Call or text
-          <br />
-          about your appliance
-        </h2>
+        <h2>Confirm a home visit</h2>
         <p>
-          Every day, 7am–8pm. Share the appliance, symptom and ZIP code. We confirm appointments and
-          any visit fee before booking.
+          Share your ZIP, appliance and symptom. We confirm coverage, the appointment and any visit
+          fee before booking. {business.hours}.
         </p>
-        <a class="button button-yellow" href={business.phoneHref}>
-          {business.phone}
+        <a class="button button-yellow" href={business.phoneHref} data-placement="area-booking">
+          Call {business.phone}
         </a>
         <small>Free initial call</small>
-        <a class="text-link" href={business.smsHref}>
+        <a class="text-link" href={business.smsHref} data-placement="area-booking">
           Send an SMS <Icon name="chat" size={17} />
         </a>
         <a class="text-link" href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
@@ -133,19 +180,58 @@ const schema = {
 </Layout>
 
 <style>
+  .area-postal-list,
+  .area-service-links {
+    list-style: none;
+    padding: 0;
+  }
+
+  .prose :is(.area-postal-list, .area-service-links) > li {
+    margin-top: 0;
+  }
+
   .area-postal-list {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    list-style: none;
-    padding: 0;
-    margin: 18px 0 32px;
+    margin: 14px 0 22px;
   }
+
   .area-postal-list li {
     border: 1px solid var(--line);
     border-radius: 9px;
-    padding: 8px 12px;
+    padding: 6px 12px;
     background: var(--white);
     font-variant-numeric: tabular-nums;
+  }
+
+  .area-service-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 20px;
+    margin: 14px 0;
+  }
+
+  .area-service-links li {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .area-service-links a {
+    align-self: start;
+    font-weight: 700;
+  }
+
+  .area-service-links span {
+    margin-top: 2px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 410px) {
+    .area-service-links {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 </style>

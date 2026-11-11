@@ -7,6 +7,7 @@ export const localGuides = [
     relatedServices: ['washer-repair'],
     description:
       'Washer leaking from the door, dispenser or underneath? Use the timing of the leak to plan the right next step and a residential repair visit.',
+    publishedOn: '2026-10-24',
     updatedOn: '2026-10-26',
     takeaway:
       'Stop the cycle if you can reach the controls safely. Stay out of water near electricity, leave the washer in place, and record when the leak started. A puddle alone does not identify the failed part.',
@@ -122,6 +123,7 @@ export const localGuides = [
     relatedServices: ['refrigerator-repair', 'freezer-repair'],
     description:
       'New refrigerator buzz, click, rattle or grinding sound? Compare the timing, cooling and ice-maker behavior before arranging a repair assessment.',
+    publishedOn: '2026-10-24',
     updatedOn: '2026-10-26',
     takeaway:
       'A new noise matters most in context: when it happens, how it changed and whether cooling changed too. Record from outside the refrigerator; do not remove panels or move it to locate the sound.',
@@ -243,6 +245,7 @@ export const localGuides = [
     relatedServices: ['refrigerator-repair', 'washer-repair', 'dishwasher-repair'],
     description:
       'Need appliance repair in Philadelphia? Confirm the appliance, service ZIP, access and diagnostic charges before booking an at-home visit.',
+    publishedOn: '2026-10-24',
     updatedOn: '2026-10-26',
     takeaway:
       'Start with the appliance and symptom, then confirm your ZIP code and who can approve the work. Ask about the visit charge before booking; a free first call is separate from an on-site assessment.',
@@ -371,6 +374,7 @@ export const localGuides = [
     relatedServices: ['dryer-repair', 'washer-repair'],
     description:
       'Dryer turns but does not heat, or needs repeated cycles? Separate the symptom, check normal settings and prepare for a household dryer assessment.',
+    publishedOn: '2026-10-24',
     updatedOn: '2026-10-26',
     takeaway:
       'A turning drum does not confirm heating. Record the selected cycle, whether there was no heat or slow drying, and whether clothes entered unusually wet. Stop use for burning smells, overheating or other hazards.',
@@ -496,6 +500,7 @@ export const localGuides = [
     relatedServices: ['dishwasher-repair'],
     description:
       'Dishwasher water remains after a cycle or returns later? Compare the water level, sink behavior and recent changes before arranging repair.',
+    publishedOn: '2026-10-24',
     updatedOn: '2026-10-26',
     takeaway:
       'Note whether the program finished, where water remains and whether it returns after sink use. Stop a leaking dishwasher, avoid drain-opening chemicals and keep the installation intact.',
@@ -601,6 +606,7 @@ export const localGuides = [
     relatedServices: ['oven-stove-repair', 'microwave-repair'],
     description:
       'Oven display works but there is no heat? Separate bake, broil and cooktop behavior, check normal controls and plan the right repair assessment.',
+    publishedOn: '2026-10-24',
     updatedOn: '2026-10-26',
     takeaway:
       'Record which cooking function failed, the selected settings and any message. Keep the oven, wiring and gas connections intact. A working clock or cooktop does not establish why the oven is cold.',
@@ -716,6 +722,7 @@ export const localGuides = [
     relatedServices: ['refrigerator-repair', 'ice-maker-repair'],
     description:
       'Water beneath a refrigerator, inside a drawer or around the dispenser? Separate the location, timing and cooling symptoms before arranging repair.',
+    publishedOn: '2026-10-24',
     updatedOn: '2026-10-26',
     takeaway:
       'Keep clear of water near electricity and leave the refrigerator in place. Record where water first appeared, whether ice or dispensing was involved and whether cooling changed. A floor puddle does not locate the fault.',
@@ -837,6 +844,7 @@ export const localGuides = [
     relatedServices: ['freezer-repair', 'refrigerator-repair'],
     description:
       'Freezer warming up, soft food or new frost? Protect the food, record the temperature history and plan a household freezer repair assessment.',
+    publishedOn: '2026-10-24',
     updatedOn: '2026-10-26',
     takeaway:
       'Protect the food before investigating the machine. Keep door openings brief, note temperature and timing, and leave panels and ice intact. Running sounds and a lit display do not prove safe frozen storage.',
@@ -973,6 +981,7 @@ export const localGuides = [
     ],
     description:
       'An appliance repair checklist for the first call, visit day and repair approval: model, symptoms, access, charges and the next step.',
+    publishedOn: '2026-10-24',
     updatedOn: '2026-10-26',
     takeaway:
       'Have the appliance, symptom and ZIP code ready. Leave the equipment installed, arrange access and authorization, and clarify the visit charge before the appointment.',

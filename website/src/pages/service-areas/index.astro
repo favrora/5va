@@ -3,20 +3,29 @@ import Coverage from '../../components/Coverage.astro';
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import CTA from '../../components/CTA.astro';
+import ZipCoverageCheck from '../../components/ZipCoverageCheck.astro';
 import { areas } from '../../data/content';
-const coverageNotes: Record<string, string> = {
-  philadelphia: 'Home visits in ZIP codes 19115 and 19116',
-  'northeast-philadelphia': 'Kitchen and laundry repair in 19115 and 19116',
-  'feasterville-trevose': 'Home visits in ZIP code 19053',
-  'montgomery-county': 'All of Montgomery County, Pennsylvania',
-  pennsylvania: 'Montgomery County and 24 listed Pennsylvania ZIPs',
-  'new-jersey': '11 listed New Jersey ZIP codes',
+import { business } from '../../data/business';
+
+const directory = areas.filter((area) => area.slug !== 'northeast-philadelphia');
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  '@id': new URL('/service-areas/#directory', Astro.site).href,
+  name: '5VA Appliance Repair service areas',
+  itemListElement: directory.map((area, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: area.name,
+    url: new URL(`/service-areas/${area.slug}/`, Astro.site).href,
+  })),
 };
 ---
 
 <Layout
-  title="Appliance Repair Service Areas | Philadelphia, PA & NJ | 5VA"
-  description="5VA appliance repair coverage: Philadelphia 19115/19116, all Montgomery County PA, and 35 selected PA/NJ ZIP codes. View the exact in-home service territory."
+  title="Appliance Repair Service Areas in Philadelphia, PA & NJ | 5VA"
+  description="Check your ZIP for in-home appliance repair. 5VA covers Philadelphia 19115 and 19116, all of Montgomery County, PA, and selected PA and NJ ZIP codes."
+  schema={schema}
 >
   <section class="page-hero">
     <div class="container">
@@ -25,32 +34,107 @@ const coverageNotes: Record<string, string> = {
         <span>/</span>
         <span>Service areas</span>
       </div>
-      <h1>
-        Philadelphia first
-        <br />
-        PA &amp; NJ by appointment
-      </h1>
-      <p class="lead">
-        We come to your home in Philadelphia 19115 and 19116, all of Montgomery County, PA, and the
-        selected Pennsylvania and New Jersey ZIP codes below. Every day, 7am–8pm.
-      </p>
+      <div class="coverage-hero-grid">
+        <div>
+          <h1>Appliance repair service areas</h1>
+          <p class="lead">
+            We come to your home in Philadelphia 19115 and 19116, throughout Montgomery County, PA,
+            and in selected Pennsylvania and New Jersey ZIP codes.
+          </p>
+          <p class="coverage-contact">
+            <a href={business.phoneHref} data-placement="coverage-hero">
+              Call 5VA
+            </a>
+            {' or '}
+            <a href={business.smsHref} data-placement="coverage-hero">
+              text your ZIP code
+            </a>{' '}
+            to confirm a visit. {business.hours}.
+          </p>
+        </div>
+        <ZipCoverageCheck />
+      </div>
     </div>
   </section>
-  <section class="section">
+  <section class="section" id="directory" aria-labelledby="area-directory-title">
     <div class="container">
-      {areas.map((area) => (
-        <a class="area-card" href={`/service-areas/${area.slug}/`}>
-          <h2>{area.name}</h2>
-          <p>{coverageNotes[area.slug]}</p>
-          <Icon name="arrow" size={24} />
-        </a>
-      ))}
-      <p class="notice">
-        Call or text to confirm an appointment and any visit fee. We come to your home; there is no
-        shop or appliance drop-off.
-      </p>
+      <h2 id="area-directory-title">Find service near you</h2>
+      <ul class="area-directory">
+        {directory.map((area) => (
+          <li>
+            <a class="area-card" href={`/service-areas/${area.slug}/`}>
+              <h3>{area.name}</h3>
+              <p>{area.coverage}</p>
+              <Icon name="arrow" size={22} />
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
   <Coverage />
-  <CTA title={'Your appliance and your ZIP code\nLet’s confirm the next step'} />
+  <CTA title="Confirm a home repair visit" />
 </Layout>
+
+<style>
+  .coverage-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: start;
+    gap: clamp(24px, 5vw, 64px);
+  }
+
+  .coverage-contact {
+    max-width: 42ch;
+    margin-top: 18px;
+  }
+
+  .coverage-contact a {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .area-directory {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    padding: 0;
+    margin: 24px 0 0;
+    list-style: none;
+  }
+
+  .area-directory .area-card {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 16px;
+    height: 100%;
+    padding: clamp(14px, 3vw, 22px);
+  }
+
+  .area-directory .area-card h3 {
+    font-size: clamp(18px, 3vw, 24px);
+  }
+
+  .area-directory .area-card p {
+    grid-column: 1;
+    grid-row: 2;
+    line-height: 1.45;
+  }
+
+  .area-directory .area-card > :global(svg) {
+    grid-column: 2;
+    grid-row: 1 / 3;
+  }
+
+  .area-directory .area-card:hover h3 {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  @media (max-width: 767px) {
+    .coverage-hero-grid,
+    .area-directory {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

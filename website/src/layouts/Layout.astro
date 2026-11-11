@@ -4,6 +4,7 @@ import Footer from '../components/Footer.astro';
 import CallMeasurement from '../components/CallMeasurement.astro';
 import { serviceAreaSchema } from '../data/territory';
 import { business } from '../data/business';
+import { pageDates } from '../data/page-dates';
 import { getReleaseSettings } from '../../release-config.mjs';
 import '../styles/global.css';
 import '../styles/journal.css';
@@ -76,6 +77,7 @@ const mainEntity = suppliedSchemas.find((item) =>
   ['Article', 'Service', 'ItemList'].includes(String(item['@type'])),
 );
 const articleSchema = suppliedSchemas.find((item) => item['@type'] === 'Article');
+const dateModified = articleSchema?.dateModified ?? pageDates.get(Astro.url.pathname);
 const webPageTypes: Record<string, string> = {
   '/about/': 'AboutPage',
   '/contact/': 'ContactPage',
@@ -110,6 +112,7 @@ const schemas: Record<string, unknown>[] = [
       width: 1200,
       height: socialImageHeight,
     },
+    ...(dateModified ? { dateModified } : {}),
     ...(mainEntity ? { mainEntity: { '@id': mainEntity['@id'] } } : {}),
   },
   ...suppliedSchemas,

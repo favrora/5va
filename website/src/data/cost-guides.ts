@@ -15,6 +15,7 @@ export const costGuides: Guide[] = [
     primaryKeyword: 'refrigerator repair cost',
     relatedServices: ['refrigerator-repair', 'freezer-repair'],
     publishedOn: '2026-10-31',
+    updatedOn: '2026-11-11',
     takeaway:
       'Published US guides put many refrigerator repairs in the low hundreds of dollars, but the fault and model determine the work. A useful quote separates diagnosis, parts, labor and any remaining charges. 5VA gives the repair price after an on-site inspection; national figures below are context, not our rates.',
     sections: [
@@ -87,8 +88,8 @@ export const costGuides: Guide[] = [
         ],
         links: [
           {
-            label: 'Use the broader repair-or-replace framework',
-            href: '/blog/appliance-repair-or-replace/',
+            label: 'Compare your quotes in the repair-or-replace calculator',
+            href: '/blog/appliance-repair-or-replace/#repair-or-replace-calculator',
           },
         ],
       },
@@ -164,6 +165,7 @@ export const costGuides: Guide[] = [
     primaryKeyword: 'washing machine repair cost',
     relatedServices: ['washer-repair', 'dryer-repair'],
     publishedOn: '2026-10-31',
+    updatedOn: '2026-11-11',
     takeaway:
       'A washer symptom is not a parts list. Compare the complete assessed repair, the machine’s condition and the installed replacement option. Published national costs help frame the discussion; 5VA’s price follows an on-site inspection.',
     sections: [
@@ -186,6 +188,24 @@ export const costGuides: Guide[] = [
             ],
           ],
         },
+      },
+      {
+        heading: 'Ask three questions about your washer quote',
+        paragraphs: [
+          '5VA prices the repair after inspecting the washer at your home. Before you authorize work, ask:',
+        ],
+        questions: [
+          'What fault did the inspection find, and what work will fix it?',
+          'What is the total including parts, labor and any visit or diagnostic charge?',
+          'What would I owe if I decline the repair, and what changes if another visit is needed?',
+        ],
+        links: [
+          { label: 'See in-home washer repair', href: '/services/washer-repair/' },
+          {
+            label: 'Check your ZIP for washer repair',
+            href: '/service-areas/#check-your-zip',
+          },
+        ],
       },
       {
         heading: 'Describe the stage where the washer stops',
@@ -260,8 +280,8 @@ export const costGuides: Guide[] = [
         ],
         links: [
           {
-            label: 'Compare repair and replacement systematically',
-            href: '/blog/appliance-repair-or-replace/',
+            label: 'Compare your quotes in the repair-or-replace calculator',
+            href: '/blog/appliance-repair-or-replace/#repair-or-replace-calculator',
           },
           { label: 'Budget a separate dryer problem', href: '/blog/dryer-repair-cost/' },
         ],
@@ -333,6 +353,7 @@ export const costGuides: Guide[] = [
     primaryKeyword: 'dryer repair cost',
     relatedServices: ['dryer-repair', 'washer-repair'],
     publishedOn: '2026-10-31',
+    updatedOn: '2026-11-11',
     takeaway:
       'A dryer repair bill should explain the diagnosed fault, the complete proposed work and any separate airflow or installation issue. National price guides are a starting reference, not a local quote. 5VA determines the repair price after an on-site inspection.',
     sections: [
@@ -424,8 +445,8 @@ export const costGuides: Guide[] = [
         ],
         links: [
           {
-            label: 'Compare repair and replacement options',
-            href: '/blog/appliance-repair-or-replace/',
+            label: 'Compare your quotes in the repair-or-replace calculator',
+            href: '/blog/appliance-repair-or-replace/#repair-or-replace-calculator',
           },
           {
             label: 'Read the separate washer cost guide',
@@ -488,6 +509,7 @@ export const costGuides: Guide[] = [
     primaryKeyword: 'dishwasher repair cost',
     relatedServices: ['dishwasher-repair'],
     publishedOn: '2026-10-31',
+    updatedOn: '2026-11-11',
     takeaway:
       'Compare the complete assessed repair with an installed replacement, not just a dishwasher’s retail price. Published national ranges are planning context; 5VA determines the actual repair price after an on-site inspection.',
     sections: [
@@ -568,8 +590,8 @@ export const costGuides: Guide[] = [
         ],
         links: [
           {
-            label: 'Compare repair with a complete replacement',
-            href: '/blog/appliance-repair-or-replace/',
+            label: 'Compare your quotes in the repair-or-replace calculator',
+            href: '/blog/appliance-repair-or-replace/#repair-or-replace-calculator',
           },
         ],
       },
@@ -635,6 +657,7 @@ export const costGuides: Guide[] = [
     primaryKeyword: 'refrigerator compressor replacement cost',
     relatedServices: ['refrigerator-repair', 'freezer-repair'],
     publishedOn: '2026-10-31',
+    updatedOn: '2026-11-11',
     takeaway:
       'A warm refrigerator or a clicking sound does not prove the compressor has failed. Confirm the diagnosis before comparing a complete sealed-system repair with replacement. A compressor part price alone is not the installed repair cost.',
     sections: [
@@ -731,8 +754,8 @@ export const costGuides: Guide[] = [
             href: '/blog/refrigerator-repair-cost/',
           },
           {
-            label: 'Review the full repair-or-replace decision',
-            href: '/blog/appliance-repair-or-replace/',
+            label: 'Compare your quotes in the repair-or-replace calculator',
+            href: '/blog/appliance-repair-or-replace/#repair-or-replace-calculator',
           },
         ],
       },
