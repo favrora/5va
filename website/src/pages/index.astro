@@ -61,7 +61,7 @@ const faqs = [
   },
   {
     q: 'What should I send by text?',
-    a: 'Send your ZIP code, appliance type, model if available, and a short description of the problem. A photo of the accessible model label or error code can help. Leave the appliance installed and do not remove panels.',
+    a: 'Send your town or ZIP code, appliance type, model if available, and a short description of the problem. A photo of the accessible model label or error code can help. Leave the appliance installed and do not remove panels.',
   },
 ];
 ---
@@ -108,11 +108,11 @@ const faqs = [
         <p class="repair-hero-hours">
           <Icon name="clock" size={17} /> Every day, 7am–8pm
         </p>
-        <a class="repair-hero-coverage-link" href="/service-areas/#check-your-zip">
+        <a class="repair-hero-coverage-link" href="/service-areas/#coverage">
           <Icon name="pin" size={19} />
           <span>
             <strong>
-              Check your ZIP <Icon name="arrow" size={16} />
+              View areas and ZIP codes <Icon name="arrow" size={16} />
             </strong>
             <span>Philadelphia 19115 &amp; 19116, Montgomery County and select PA/NJ ZIPs</span>
           </span>
@@ -258,7 +258,7 @@ const faqs = [
         <a href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
           5VA’s Google photos
         </a>
-        , checked {business.reviewedOn}. Tap a photo to enlarge.
+        . Tap a photo to enlarge.
       </p>
       <div class="repair-review-row">
         {reviews.slice(0, 2).map((review) => (
@@ -287,7 +287,7 @@ const faqs = [
             <span>1</span>
             <div>
               <h3>Call or text the details</h3>
-              <p>Tell us the appliance, problem and ZIP code. A model photo can help.</p>
+              <p>Tell us the appliance, problem and town or ZIP. A model photo can help.</p>
             </div>
           </li>
           <li>
@@ -322,8 +322,8 @@ const faqs = [
           <a href="/service-areas/pennsylvania/">Pennsylvania</a>
           <a href="/service-areas/new-jersey/">New Jersey</a>
         </div>
-        <a class="button button-yellow" href="/service-areas/#check-your-zip">
-          Check your ZIP <Icon name="arrow" size={18} />
+        <a class="button button-yellow" href="/service-areas/#coverage">
+          View areas and ZIP codes <Icon name="arrow" size={18} />
         </a>
       </div>
     </div>

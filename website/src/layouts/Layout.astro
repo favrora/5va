@@ -3,7 +3,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CallMeasurement from '../components/CallMeasurement.astro';
 import { serviceAreaSchema } from '../data/territory';
-import { business } from '../data/business';
+import { business, googleReviewSummary } from '../data/business';
+import { services } from '../data/content';
 import { pageDates } from '../data/page-dates';
 import { getReleaseSettings } from '../../release-config.mjs';
 import '../styles/global.css';
@@ -34,10 +35,33 @@ const {
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const { isProduction } = getReleaseSettings();
 const base = new URL('/', Astro.site).href;
+const isHome = Astro.url.pathname === '/';
+const showServiceCatalog = isHome || Astro.url.pathname === '/services/';
+const businessId = `${base}#business`;
+const catalog = {
+  '@type': 'OfferCatalog',
+  '@id': `${base}services/#catalog`,
+  name: 'Household appliance repair services',
+  url: `${base}services/`,
+  numberOfItems: services.length,
+  itemListElement: services.map(({ slug, title }) => {
+    const url = new URL(`/services/${slug}/`, base).href;
+    return {
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        '@id': `${url}#service`,
+        name: title,
+        url,
+        provider: { '@id': businessId },
+      },
+    };
+  }),
+};
 const organization = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
-  '@id': `${base}#business`,
+  '@id': businessId,
   name: business.name,
   url: base,
   telephone: '+1-267-704-8588',
@@ -60,6 +84,13 @@ const organization = {
   ],
   sameAs: [business.mapsUrl],
   hasMap: business.mapsUrl,
+  subjectOf: {
+    '@type': 'CollectionPage',
+    '@id': `${base}reviews/#webpage`,
+    url: `${base}reviews/`,
+    ...(isHome ? { description: googleReviewSummary } : {}),
+  },
+  ...(showServiceCatalog ? { hasOfferCatalog: catalog } : {}),
   logo: new URL('/brand-mark.svg', Astro.site).href,
   image: new URL('/images/work/technician-1200.webp', Astro.site).href,
 };
@@ -76,12 +107,14 @@ const suppliedSchemas: Record<string, unknown>[] = (
 const mainEntity = suppliedSchemas.find((item) =>
   ['Article', 'Service', 'ItemList'].includes(String(item['@type'])),
 );
+const mainEntityId = mainEntity?.['@id'] ?? (isHome ? businessId : undefined);
 const articleSchema = suppliedSchemas.find((item) => item['@type'] === 'Article');
 const dateModified = articleSchema?.dateModified ?? pageDates.get(Astro.url.pathname);
 const webPageTypes: Record<string, string> = {
   '/about/': 'AboutPage',
   '/contact/': 'ContactPage',
   '/blog/': 'CollectionPage',
+  '/reviews/': 'CollectionPage',
   '/services/': 'CollectionPage',
   '/service-areas/': 'CollectionPage',
 };
@@ -113,7 +146,8 @@ const schemas: Record<string, unknown>[] = [
       height: socialImageHeight,
     },
     ...(dateModified ? { dateModified } : {}),
-    ...(mainEntity ? { mainEntity: { '@id': mainEntity['@id'] } } : {}),
+    ...(mainEntityId ? { mainEntity: { '@id': mainEntityId } } : {}),
+    ...(Astro.url.pathname === '/reviews/' ? { relatedLink: business.mapsUrl } : {}),
   },
   ...suppliedSchemas,
 ];

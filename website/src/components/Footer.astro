@@ -91,8 +91,9 @@ const { showPrivacyChoices = false } = Astro.props;
     font: inherit;
     text-decoration: underline;
     text-underline-offset: 3px;
+    transition: color var(--link-motion);
   }
-  .privacy-choices:hover {
+  .privacy-choices:is(:hover, :focus-visible) {
     color: var(--yellow);
   }
 </style>

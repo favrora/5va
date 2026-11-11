@@ -7,14 +7,16 @@ export const business = {
   timeZone: 'America/New_York',
   region: 'Philadelphia · Pennsylvania & New Jersey',
   mapsUrl: 'https://www.google.com/maps?cid=12282828888363558368',
-  // Source: actual GBP rating/count observed October 24, 2026; phone confirmed by owner.
+  // Source: Google Maps profile checked November 11, 2026; phone confirmed by owner.
   mapsPlaceUrl:
     'https://www.google.com/maps/place/5VA+Appliance+Repair/data=!4m2!3m1!1s0x8d92ca89afeb83b5:0xaa755fcbf7d0e5e0',
   rating: '5.0',
-  reviewCount: 39,
-  reviewedOn: 'October 24, 2026',
+  reviewCount: 43,
+  reviewedOn: 'November 11, 2026',
   // Service-area business: no public street address or home coordinates.
 };
+
+export const googleReviewSummary = `Rated ${business.rating} from ${business.reviewCount} Google reviews as of ${business.reviewedOn}.`;
 
 // Short verbatim excerpts; the linked Google listing contains the full reviews.
 // Original English text was selected in Maps; these are not new translations.

@@ -24,7 +24,7 @@ import { business } from '../data/business';
             starts with a call
           </h1>
           <p class="lead">
-            Tell us which household appliance needs repair, what it is doing, and your ZIP code. We
+            Tell us which household appliance needs repair, what it is doing, and where you live. We
             cover Philadelphia 19115 and 19116, Montgomery County, PA, and selected PA/NJ ZIP codes.
           </p>
         </div>
@@ -65,22 +65,28 @@ import { business } from '../data/business';
           <li>
             <span>01</span>
             <div>
-              <strong>Your ZIP code</strong>
-              <p>We’ll confirm service at your address.</p>
+              <strong>Your town or ZIP code</strong>
+              <p>
+                Start with your town if you’re unsure of the ZIP. We’ll confirm your address before
+                booking.
+              </p>
             </div>
           </li>
           <li>
             <span>02</span>
             <div>
               <strong>The appliance and symptom</strong>
-              <p>Have the appliance type, brand, model, and any error code handy.</p>
+              <p>Tell us the type and brand, when the issue started, and any error code you see.</p>
             </div>
           </li>
           <li>
             <span>03</span>
             <div>
-              <strong>A photo, if it helps</strong>
-              <p>Text photos to +1 (267) 704-8588 from your own messaging app.</p>
+              <strong>The model label, if it’s easy to reach</strong>
+              <p>
+                Text a photo of the label on the door, frame, or another accessible spot. Leave the
+                appliance in place if reaching the label means moving it.
+              </p>
             </div>
           </li>
         </ul>
@@ -92,15 +98,18 @@ import { business } from '../data/business';
           Open every day, 7am–8pm. We come to your home by appointment. No public shop or customer
           drop-off location.
         </p>
-        <a class="text-link" href="/service-areas/">
-          Explore service areas <Icon name="arrow" size={17} />
+        <a class="text-link" href="/service-areas/#coverage">
+          View locations and ZIP codes <Icon name="arrow" size={17} />
         </a>
       </div>
       <div class="map-consent">
-        <h2>Find 5VA on Google</h2>
-        <p>Read the latest reviews and check our original business listing.</p>
-        <a class="text-link" href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
-          Open the Google listing <Icon name="diagonal" size={16} />
+        <h2>Preparing for the visit</h2>
+        <p>
+          If you rent, check who can authorize the work. Let us know about stairs, a tight
+          installation, or other access details when you arrange the visit.
+        </p>
+        <a class="text-link" href="/blog/appliance-repair-visit-checklist/">
+          Read the visit checklist <Icon name="arrow" size={16} />
         </a>
       </div>
     </div>

@@ -51,7 +51,7 @@ const schema = [
   {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    name: `${service.title} in Philadelphia`,
+    name: service.title,
     serviceType: service.title,
     description: searchDescriptions[service.slug],
     provider: { '@id': `${base}#business` },
@@ -106,8 +106,8 @@ const schema = [
               <a href="/service-areas/philadelphia/">Philadelphia 19115 and 19116</a>,{' '}
               <a href="/service-areas/montgomery-county/">Montgomery County</a>, and selected PA and
               NJ ZIP codes.{' '}
-              <a class="service-zip-link" href="/service-areas/#check-your-zip">
-                Check your ZIP
+              <a class="service-zip-link" href="/service-areas/#coverage">
+                See all covered ZIP codes
               </a>
             </p>
           </div>
@@ -131,7 +131,7 @@ const schema = [
         <h2>How to book an in-home visit</h2>
         <ol class="service-visit-steps">
           <li>
-            <strong>Call or text.</strong> Share your ZIP code, the problem and the model if it’s
+            <strong>Call or text.</strong> Share your town or ZIP, the problem and the model if it’s
             easy to find.
           </li>
           <li>
@@ -319,11 +319,16 @@ const schema = [
     padding: 8px 0;
     border-bottom: 1px solid var(--line);
     color: var(--ink);
+    text-decoration: underline;
     text-decoration-color: transparent;
+    transition:
+      color var(--link-motion),
+      text-decoration-color var(--link-motion);
   }
 
   .service-guide-list a:hover,
   .service-guide-list a:focus-visible {
+    color: var(--ink-hover);
     text-decoration-color: currentColor;
   }
 
@@ -341,9 +346,9 @@ const schema = [
   .service-review,
   .service-help {
     margin: 0;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
     border: 1px solid var(--line);
-    border-radius: 20px;
+    border-radius: var(--radius);
     background: var(--cream);
   }
 
@@ -363,7 +368,7 @@ const schema = [
 
   .service-review,
   .service-help {
-    padding: 20px;
+    padding: clamp(var(--space-4), 2.5vw, var(--space-5));
   }
 
   .service-review blockquote {
@@ -384,15 +389,42 @@ const schema = [
     color: var(--ink);
   }
 
+  .service-help {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+    gap: var(--space-3);
+  }
+
   .service-help h2 {
-    margin: 0 0 10px;
-    font-size: 1.3rem;
+    margin: 0;
+    font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+    text-wrap: pretty;
   }
 
   .service-help p {
-    margin: 0 0 14px;
+    margin: 0;
     color: var(--muted);
+    font-size: 0.9375rem;
     line-height: 1.65;
+  }
+
+  .service-help .text-link {
+    min-block-size: 44px;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    padding-inline-end: var(--space-1);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+    transition:
+      color var(--link-motion),
+      text-decoration-color var(--link-motion);
+  }
+
+  .service-help .text-link:is(:hover, :focus-visible) {
+    color: var(--ink-hover);
+    text-decoration-color: currentColor;
   }
 
   @media (max-width: 800px) {

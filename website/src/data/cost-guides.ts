@@ -202,8 +202,8 @@ export const costGuides: Guide[] = [
         links: [
           { label: 'See in-home washer repair', href: '/services/washer-repair/' },
           {
-            label: 'Check your ZIP for washer repair',
-            href: '/service-areas/#check-your-zip',
+            label: 'See washer repair service areas and ZIP codes',
+            href: '/service-areas/#coverage',
           },
         ],
       },

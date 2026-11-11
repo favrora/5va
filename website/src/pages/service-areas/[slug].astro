@@ -62,7 +62,7 @@ const otherAppliances = services.filter(
           <Icon name="phone" size={18} /> Call {business.phone}
         </a>
         <a class="button button-outline" href={business.smsHref} data-placement="area-hero">
-          <Icon name="chat" size={18} /> Text your ZIP code
+          <Icon name="chat" size={18} /> Text about a visit
         </a>
       </div>
       <p class="free-call">Free initial call. Visit and repair fees are separate.</p>
@@ -108,9 +108,8 @@ const otherAppliances = services.filter(
         )}
         {area.slug === 'levittown' && (
           <p>
-            These are the two Levittown ZIPs we serve. Use the{' '}
-            <a href="/service-areas/#check-your-zip">ZIP checker</a> for a different service
-            address.
+            These are the two Levittown ZIPs we serve.{' '}
+            <a href="/service-areas/#coverage">See other covered ZIP codes</a>.
           </p>
         )}
         {area.slug === 'northeast-philadelphia' && (
@@ -151,17 +150,15 @@ const otherAppliances = services.filter(
           on-site inspection.
         </p>
         <p>
-          For another address, <a href="/service-areas/#check-your-zip">check your ZIP code</a>
-          {' or '}
-          <a href="/service-areas/#coverage">see all PA and NJ coverage</a>.
+          <a href="/service-areas/#coverage">See all PA and NJ service areas and ZIP codes</a>.
         </p>
       </div>
       <aside class="info-panel">
         <Icon name="pin" size={30} />
         <h2>Confirm a home visit</h2>
         <p>
-          Share your ZIP, appliance and symptom. We confirm coverage, the appointment and any visit
-          fee before booking. {business.hours}.
+          Share your town or ZIP, appliance and symptom. We confirm coverage, the appointment and
+          any visit fee before booking. {business.hours}.
         </p>
         <a class="button button-yellow" href={business.phoneHref} data-placement="area-booking">
           Call {business.phone}

@@ -3,7 +3,6 @@ import Coverage from '../../components/Coverage.astro';
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import CTA from '../../components/CTA.astro';
-import ZipCoverageCheck from '../../components/ZipCoverageCheck.astro';
 import { areas } from '../../data/content';
 import { business } from '../../data/business';
 
@@ -24,41 +23,34 @@ const schema = {
 
 <Layout
   title="Appliance Repair Service Areas in Philadelphia, PA & NJ | 5VA"
-  description="Check your ZIP for in-home appliance repair. 5VA covers Philadelphia 19115 and 19116, all of Montgomery County, PA, and selected PA and NJ ZIP codes."
+  description="Browse where 5VA repairs appliances at home, including Philadelphia ZIPs 19115 and 19116, all of Montgomery County, PA, and selected PA and NJ ZIP codes."
   schema={schema}
 >
-  <section class="page-hero">
+  <section class="page-hero coverage-hero">
     <div class="container">
       <div class="breadcrumb">
         <a href="/">Home</a>
         <span>/</span>
         <span>Service areas</span>
       </div>
-      <div class="coverage-hero-grid">
-        <div>
-          <h1>Appliance repair service areas</h1>
-          <p class="lead">
-            We come to your home in Philadelphia 19115 and 19116, throughout Montgomery County, PA,
-            and in selected Pennsylvania and New Jersey ZIP codes.
-          </p>
-          <p class="coverage-contact">
-            <a href={business.phoneHref} data-placement="coverage-hero">
-              Call 5VA
-            </a>
-            {' or '}
-            <a href={business.smsHref} data-placement="coverage-hero">
-              text your ZIP code
-            </a>{' '}
-            to confirm a visit. {business.hours}.
-          </p>
-        </div>
-        <ZipCoverageCheck />
+      <h1>Appliance repair service areas</h1>
+      <p class="lead">
+        In-home appliance repair in Philadelphia ZIPs 19115 and 19116, throughout Montgomery County,
+        PA, and in selected Pennsylvania and New Jersey ZIP codes.
+      </p>
+      <div class="coverage-actions">
+        <a class="button button-dark" href="#coverage">
+          Browse ZIP codes <Icon name="arrow" size={17} />
+        </a>
+        <a class="text-link" href={business.phoneHref} data-placement="coverage-hero">
+          Call to confirm your area
+        </a>
       </div>
     </div>
   </section>
-  <section class="section" id="directory" aria-labelledby="area-directory-title">
+  <section class="section coverage-directory" id="directory" aria-labelledby="area-directory-title">
     <div class="container">
-      <h2 id="area-directory-title">Find service near you</h2>
+      <h2 id="area-directory-title">Coverage by location</h2>
       <ul class="area-directory">
         {directory.map((area) => (
           <li>
@@ -72,32 +64,40 @@ const schema = {
       </ul>
     </div>
   </section>
-  <Coverage />
+  <Coverage preserveZipAnchor />
   <CTA title="Confirm a home repair visit" />
 </Layout>
 
 <style>
-  .coverage-hero-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-    align-items: start;
-    gap: clamp(24px, 5vw, 64px);
+  .coverage-hero {
+    padding-block-end: clamp(28px, 4vw, 52px);
   }
 
-  .coverage-contact {
-    max-width: 42ch;
-    margin-top: 18px;
+  .coverage-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    margin-top: 20px;
   }
 
-  .coverage-contact a {
-    font-weight: 700;
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  .coverage-actions .button {
+    margin-top: 0;
+  }
+
+  .coverage-actions .text-link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .coverage-directory {
+    padding-block-start: clamp(28px, 4vw, 54px);
   }
 
   .area-directory {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 14px;
     padding: 0;
     margin: 24px 0 0;
@@ -109,6 +109,7 @@ const schema = {
     gap: 8px 16px;
     height: 100%;
     padding: clamp(14px, 3vw, 22px);
+    border: 1px solid var(--line);
   }
 
   .area-directory .area-card h3 {
@@ -131,8 +132,13 @@ const schema = {
     text-underline-offset: 4px;
   }
 
-  @media (max-width: 767px) {
-    .coverage-hero-grid,
+  @media (max-width: 950px) {
+    .area-directory {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
     .area-directory {
       grid-template-columns: minmax(0, 1fr);
     }

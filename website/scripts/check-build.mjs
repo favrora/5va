@@ -2,6 +2,8 @@ import { readdir, readFile, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { getReleaseSettings } from '../release-config.mjs';
 import { postalCodes } from '../src/data/territory.ts';
+import { business } from '../src/data/business.ts';
+import { services } from '../src/data/content.ts';
 import { articles } from '../src/data/journal.ts';
 import { pageDates } from '../src/data/page-dates.ts';
 import { routes } from '../src/data/routes.ts';
@@ -34,17 +36,17 @@ let largestPageJavaScript = 0;
 for (const file of pages) {
   const html = await readFile(file, 'utf8');
   const label = file.slice(dist.length);
-  const localTool = new Map([
-    ['/service-areas/index.html', 'check-your-zip'],
-    ['/blog/appliance-repair-or-replace/index.html', 'repair-or-replace-calculator'],
-  ]).get(label);
+  const hasCostCalculator = label === '/blog/appliance-repair-or-replace/index.html';
   assert.doesNotMatch(
     html,
     /<(?:form|textarea|select)(?:\s|>)/i,
     `${label}: customer contact must stay phone-only`,
   );
   for (const [input] of html.matchAll(/<input\b[^>]*>/gi)) {
-    assert.ok(localTool && html.includes(`id="${localTool}"`), `${label}: unexpected input`);
+    assert.ok(
+      hasCostCalculator && html.includes('id="repair-or-replace-calculator"'),
+      `${label}: unexpected input`,
+    );
     assert.doesNotMatch(input, /\sname=/i, `${label}: local calculator inputs must not submit`);
   }
   for (const phone of html.matchAll(/href="(tel:[^"]+)"/g))
@@ -116,7 +118,41 @@ for (const file of pages) {
     !company.address && !company.geo,
     `${label}: do not publish a home address or coordinates`,
   );
-  assert.deepEqual(company.sameAs, ['https://www.google.com/maps?cid=12282828888363558368']);
+  assert.deepEqual(company.sameAs, [business.mapsUrl]);
+  assert.equal(company.hasMap, business.mapsUrl);
+  assert.equal(company.subjectOf['@id'], `${release.site}/reviews/#webpage`);
+  if (label === '/index.html' || label === '/services/index.html') {
+    const catalog = company.hasOfferCatalog;
+    assert.equal(catalog['@type'], 'OfferCatalog');
+    assert.equal(catalog.numberOfItems, services.length);
+    assert.deepEqual(
+      catalog.itemListElement.map((offer) => [
+        offer['@type'],
+        offer.itemOffered['@type'],
+        offer.itemOffered['@id'],
+        offer.itemOffered.url,
+        offer.itemOffered.name,
+        offer.itemOffered.provider['@id'],
+      ]),
+      services.map(({ slug, title }) => {
+        const url = `${release.site}/services/${slug}/`;
+        return ['Offer', 'Service', `${url}#service`, url, title, company['@id']];
+      }),
+      `${label}: the catalog must match the eight published service pages`,
+    );
+  }
+  if (label === '/reviews/index.html') {
+    const reviewPage = pageSchemas.find((data) => data['@id'] === `${canonical}#webpage`);
+    assert.equal(reviewPage['@type'], 'CollectionPage');
+    assert.equal(reviewPage.relatedLink, business.mapsUrl);
+    assert.ok(reviewPage.description.includes(`${business.reviewCount} Google reviews`));
+  }
+  if (!label.includes('404')) {
+    assert.ok(
+      html.includes(`data-review-count>${business.reviewCount}</span>`),
+      `${label}: shared header review count must match the Google snapshot`,
+    );
+  }
   assert.equal(company.areaServed.length, 36, `${label}: exact territory required`);
   assert.equal(company.areaServed[0].name, 'Montgomery County, Pennsylvania, US');
   assert.deepEqual(

@@ -8,6 +8,7 @@
   --line: #dbe2d7;
   --surface: #ffffff;
   --surface-soft: #f3f5ee;
+  --ink-hover: #426d4d;
   --forest-deep: #102f29;
   --on-forest: #d2e0d4;
   --radius: 20px;
@@ -15,6 +16,7 @@
   --radius-lg: 28px;
   --shadow-card: 0 4px 20px #153c3106;
   --shadow-raised: 0 18px 42px #153c3110;
+  --shadow-header: 0 8px 18px -10px #102f2938, 0 2px 4px #102f290a;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -25,6 +27,7 @@
   --space-8: 64px;
   --section-space: clamp(56px, 6vw, 88px);
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --link-motion: 180ms var(--ease-out);
 }
 html {
   scroll-padding-top: 106px;
@@ -122,6 +125,7 @@ summary {
   font-size: 14px;
   line-height: 1.6;
   gap: 10px;
+  transition: color var(--link-motion);
 }
 .text-link svg {
   transition: transform 200ms var(--ease-out);
@@ -569,9 +573,10 @@ summary {
   font-size: 15px;
   line-height: 1.6;
   gap: 16px;
+  transition: color var(--link-motion);
 }
-.faq-item summary:hover {
-  color: #42704e;
+.faq-item summary:is(:hover, :focus-visible) {
+  color: var(--ink-hover);
 }
 .faq-item > p {
   font-size: 15px;
@@ -664,6 +669,30 @@ summary {
 }
 .info-panel small {
   line-height: 1.8;
+}
+.prose .mini-services > a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  padding: 8px 13px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.45;
+  text-decoration-color: transparent;
+  transition:
+    background-color var(--link-motion),
+    border-color var(--link-motion),
+    color var(--link-motion),
+    text-decoration-color var(--link-motion);
+}
+.prose .mini-services > a:is(:hover, :focus-visible) {
+  background: var(--cream);
+  border-color: #a9bdb0;
+  color: var(--ink-hover);
+  text-decoration-color: currentColor;
 }
 .about-grid {
   gap: 64px;
@@ -903,9 +932,13 @@ summary {
 .prose a {
   text-underline-offset: 4px;
   text-decoration-thickness: 1px;
+  transition:
+    color var(--link-motion),
+    text-decoration-color var(--link-motion),
+    text-decoration-thickness var(--link-motion);
 }
-.prose a:hover {
-  color: #426d4d;
+.prose a:is(:hover, :focus-visible) {
+  color: var(--ink-hover);
   text-decoration-thickness: 2px;
 }
 .guide-body > section > h2 {
@@ -1838,7 +1871,7 @@ summary {
   background: var(--paper);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
-  box-shadow: none;
+  box-shadow: var(--shadow-header);
 }
 .header-inner {
   height: 76px;
@@ -2652,6 +2685,7 @@ summary {
   }
   .site-header[data-scroll-hidden='true'] {
     transform: translateY(calc(-100% - 1px));
+    box-shadow: none;
     pointer-events: none;
   }
   html:has(#mobile-menu[open]) {

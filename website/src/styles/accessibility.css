@@ -55,7 +55,6 @@ iframe:focus-visible {
 }
 .service-card-bottom,
 .journal-card > .text-link,
-.mini-services > a,
 .filter-bar button {
   font-size: 13px;
 }
@@ -207,9 +206,6 @@ iframe:focus-visible {
   }
   .service-card p {
     font-size: 14px;
-  }
-  .service-help {
-    font-size: 13px;
   }
   .service-card-bottom {
     font-size: 12px;
