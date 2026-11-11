@@ -1,26 +1,43 @@
 # 5VA Appliance Repair
 
-English static Astro website for residential appliance repair at customers’ homes. Production: https://5varepair.com
+A production website for a Philadelphia-area appliance repair business, built with Astro and TypeScript. Service pages, local coverage, and an editorial blog share a static build and a single deployment pipeline.
 
-## Confirmed business scope
+[Live website](https://5varepair.com/) · [Repair guides](https://5varepair.com/blog/) · [Deployment workflow](.github/workflows/deploy-production.yml)
 
-- Call or SMS +1 267-704-8588. Daily 7 AM–8 PM Eastern. No customer intake/shop address.
-- Philadelphia ZIP codes 19115/19116, all Montgomery County PA, and the exact additional PA/NJ ZIPs in `website/src/data/territory.ts`. No statewide coverage claim.
-- Household appliances only; no commercial equipment, appliance sales or retail parts sales. Initial conversation is free; repair pricing follows on-site inspection. No invented warranties, fixed fees, certifications or availability.
-- Genuine Google Business Profile logo and work photos; blog images are editorial illustrations. Google review excerpts are an attributed dated snapshot, not a live API feed or self-serving review-star markup.
+## Engineering highlights
 
-## Development
+- **Static delivery.** Astro generates HTML from shared layouts and typed content. Navigation, service information, and contact links work without JavaScript. Interactive features enhance the rendered pages.
+- **Search and content architecture.** Service and article routes use shared data, canonical URLs, and structured metadata. The sitemap is generated from the same route data. Release configuration limits indexable builds to the production origin.
+- **Performance and accessibility.** Responsive WebP covers, self-hosted fonts, keyboard navigation, and reduced-motion support are part of the site implementation.
+- **Consent-aware measurement.** Optional analytics and call measurement load after consent. Direct contact links provide a fallback when measurement is unavailable.
+- **Verified releases.** GitHub Actions runs the test suite, builds the site, and validates generated HTML before deployment. The receiver stages each release and activates it atomically.
 
-Use Node 22.22.0 or newer. From `website/`: `npm ci`, `npm run dev`. Local builds stay noindex.
+## Run locally
 
-## Production release
+Requires Node.js 22.22.0 or later.
 
-Production pages offer optional Google ad-call measurement through Privacy choices. The Google tag loads only after permission; the automatic prompt appears only for Google ad-click parameters. The callback updates call numbers and links together, while SMS and structured business identity keep the real 267 number. Our code remembers the consent preference for up to 180 days and does not save ad click IDs.
+```bash
+cd website
+npm ci
+npm run dev
+```
 
-This is a separate Secondary website-call conversion for eligible Google forwarding-number calls of at least 60 seconds, not a conversion sent for every phone-button tap. Automated tests do not establish Google-side call attribution; that requires a real eligible call. Preserve existing campaign goals and the direct-number fallback.
+Open [localhost:4321](http://localhost:4321). Local builds use preview indexing settings.
 
-From `website/`: `SITE_ENV=production SITE_URL=https://5varepair.com npm run build`, `npm test`, `npm run validate:html`. The 404 remains noindex.
+To run the website checks from the same directory:
 
-Pushing `main` runs the checked production build and the isolated SSH deployment in `.github/workflows/deploy-production.yml`. Only built static files are sent to the dedicated production site. See `infra/deploy/README.md` for credentials, release checks and rollback. Secrets are held in GitHub Actions, never this repository.
+```bash
+npm test
+npm run build
+npm run validate:html
+```
 
-The older `codex/preview` branch contains generated GitHub Pages review files and stays separate from production source. Research, private operations, account details, credentials and local project instructions are excluded from this public repository.
+## Where to look
+
+| Area | Source |
+| --- | --- |
+| Page routes and shared UI | [website/src/pages](website/src/pages) and [website/src/components](website/src/components) |
+| Article catalog and related guides | [website/src/data/journal.ts](website/src/data/journal.ts) |
+| Indexing and canonical origin | [website/release-config.mjs](website/release-config.mjs) |
+| Build and behavior checks | [website/scripts](website/scripts) and [website/tests](website/tests) |
+| Deployment and release activation | [GitHub Actions workflow](.github/workflows/deploy-production.yml) and [infra/deploy](infra/deploy) |
