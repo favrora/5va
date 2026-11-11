@@ -4,7 +4,12 @@ import { articles, relatedArticles } from '../src/data/journal.ts';
 import { articles as originalArticles, services } from '../src/data/content.ts';
 import { localGuides } from '../src/data/local-guides.ts';
 import { costGuides } from '../src/data/cost-guides.ts';
+import { symptomGuides } from '../src/data/symptom-guides.ts';
 
+const symptomTopics = {
+  'dishwasher-not-cleaning': 'dishwasher-repair',
+  'dryer-wont-start': 'dryer-repair',
+};
 const localTopics = {
   'washer-leaking-water-philadelphia': 'washer-repair',
   'refrigerator-making-noise-philadelphia': 'refrigerator-repair',
@@ -36,8 +41,12 @@ const normalize = (value) => value.trim().replace(/\s+/g, ' ').toLowerCase();
 const sharesService = (left, right) =>
   left.relatedServices.some((slug) => right.relatedServices.includes(slug));
 
-test('the journal has nineteen appliance guides and preserves the original appliance topics', () => {
-  assert.equal(articles.length, 19);
+test('the journal has twenty-one appliance guides and preserves the original appliance topics', () => {
+  assert.equal(articles.length, 21);
+  assert.deepEqual(
+    articles.slice(0, symptomGuides.length).map((article) => article.slug),
+    Object.keys(symptomTopics),
+  );
   assert.deepEqual(
     costGuides.map((article) => article.slug).sort(),
     Object.keys(costTopics).sort(),
@@ -53,8 +62,11 @@ test('the journal has nineteen appliance guides and preserves the original appli
   assert.deepEqual(
     articles
       .slice(
-        costGuides.length + Object.keys(expandedTopics).length,
-        costGuides.length + Object.keys(expandedTopics).length + localGuides.length,
+        symptomGuides.length + costGuides.length + Object.keys(expandedTopics).length,
+        symptomGuides.length +
+          costGuides.length +
+          Object.keys(expandedTopics).length +
+          localGuides.length,
       )
       .map((article) => article.slug),
     localGuides.map((article) => article.slug),
@@ -63,6 +75,7 @@ test('the journal has nineteen appliance guides and preserves the original appli
   assert.deepEqual(
     articles.map((article) => article.slug).sort(),
     [
+      ...Object.keys(symptomTopics),
       ...Object.keys(costTopics),
       ...Object.keys(expandedTopics),
       ...Object.keys(localTopics),
@@ -105,6 +118,7 @@ test('service links resolve and local guides lead to the agreed primary service'
     ...localTopics,
     ...expandedTopics,
     ...costTopics,
+    ...symptomTopics,
   })) {
     const article = articles.find((item) => item.slug === slug);
     assert.equal(article.relatedServices[0], service, `${slug}: primary CTA destination`);
@@ -122,7 +136,7 @@ test('new local guides have navigable sections, useful FAQ data, and primary-sou
     'fsis.usda.gov',
     'pseg.com',
   ]);
-  for (const slug of Object.keys(localTopics)) {
+  for (const slug of Object.keys({ ...localTopics, ...symptomTopics })) {
     const article = articles.find((item) => item.slug === slug);
     assert.ok(article.takeaway.trim(), `${slug}: missing quick answer`);
     assert.ok(article.wordCount >= 350, `${slug}: insufficient useful editorial content`);

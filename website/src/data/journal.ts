@@ -1,6 +1,7 @@
 import { articles as existingArticles, services } from './content.ts';
 import { localGuides } from './local-guides.ts';
 import { costGuides } from './cost-guides.ts';
+import { symptomGuides } from './symptom-guides.ts';
 export interface JournalSection {
   heading: string;
   paragraphs: string[];
@@ -52,6 +53,8 @@ const metadata: Record<
   },
 };
 const titles: Record<string, string> = {
+  'dishwasher-not-cleaning': 'Dishwasher Not Cleaning Dishes? What to Check | 5VA',
+  'dryer-wont-start': 'Dryer Won’t Start? Safe Checks and Repair Signs | 5VA',
   'refrigerator-repair-cost': 'Refrigerator Repair Cost: Estimates & Decisions | 5VA',
   'washing-machine-repair-cost': 'Washing Machine Repair Cost: A Complete Guide | 5VA',
   'dryer-repair-cost': 'Dryer Repair Cost: Parts, Labor & Decisions | 5VA',
@@ -74,6 +77,8 @@ const titles: Record<string, string> = {
   'appliance-repair-or-replace': 'Repair or Replace an Appliance? Decision Guide | 5VA',
 };
 const imageDescriptions: Record<string, string> = {
+  'dishwasher-not-cleaning': 'Open household dishwasher with cups in the upper rack',
+  'dryer-wont-start': 'Closed front-loading dryer beside a basket of folded laundry',
   'refrigerator-repair-cost':
     'Closed stainless steel household refrigerator beside a notebook on a kitchen counter',
   'washing-machine-repair-cost':
@@ -482,6 +487,7 @@ const newGuides: JournalInput[] = [
   },
 ];
 const inputs: JournalInput[] = [
+  ...symptomGuides,
   ...costGuides,
   ...newGuides,
   ...localGuides,
