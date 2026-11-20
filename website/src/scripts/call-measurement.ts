@@ -1,4 +1,5 @@
 const TAG_ID = 'AW-18107060066';
+const GTM_ID = 'GTM-PRJL6C36';
 const CONVERSION = `${TAG_ID}/gh8dCJiDvKgdEOKej7pD`;
 export const ANALYTICS_ID = 'G-Y98Z0R2BVN';
 const NUMBER = '+1 (267) 704-8588';
@@ -32,6 +33,7 @@ export function initCallMeasurement({
   let allowed = false;
   let loaded = false;
   let tag: HTMLScriptElement | undefined;
+  let container: HTMLScriptElement | undefined;
   let returnFocus: HTMLButtonElement | undefined;
   const initialMessage = message.textContent;
   const callLinks = [...page.querySelectorAll<HTMLAnchorElement>(`a[href="${PHONE_HREF}"]`)];
@@ -172,11 +174,14 @@ export function initCallMeasurement({
     gtag('set', 'allow_ad_personalization_signals', false);
     gtag('set', 'allow_google_signals', false);
     gtag('js', new Date(now()));
-    gtag('config', ANALYTICS_ID, {
-      send_page_view: true,
+    const pageContext = {
       ...landingCampaign(),
       page_location: pageLocation(),
       page_referrer: referrerOrigin(),
+    };
+    gtag('config', ANALYTICS_ID, {
+      send_page_view: true,
+      ...pageContext,
       allow_google_signals: false,
       allow_ad_personalization_signals: false,
     });
@@ -190,7 +195,13 @@ export function initCallMeasurement({
     tag.async = true;
     tag.src = `https://www.googletagmanager.com/gtag/js?id=${TAG_ID}`;
     tag.onerror = restoreNumber;
+    layer.push({ ...pageContext, 'gtm.start': now(), event: 'gtm.js' });
     page.head.appendChild(tag);
+
+    container = page.createElement('script');
+    container.async = true;
+    container.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`;
+    page.head.appendChild(container);
   }
   function closeCard() {
     card!.hidden = true;
@@ -239,6 +250,7 @@ export function initCallMeasurement({
         // Cookie access can be blocked; a denied reload must still happen.
       }
       tag?.remove();
+      container?.remove();
       // A loaded third-party script cannot reliably be unloaded. Start a new denied page.
       browser.location.reload();
     }
@@ -289,13 +301,15 @@ export function initCallMeasurement({
         : 'site';
     // A contact click is intent, never a connected call, submitted SMS or Ads conversion.
     // Read the current pathname rather than trusting arbitrary custom-event details.
-    (browser as TagWindow).gtag?.('event', name, {
-      send_to: ANALYTICS_ID,
+    const parameters = {
       page_location: pageLocation(),
       page_referrer: referrerOrigin(),
       placement: safePlacement,
       contact_method: name === 'phone_click' ? 'phone' : 'sms',
-    });
+    };
+    const target = browser as TagWindow;
+    target.gtag?.('event', name, { send_to: ANALYTICS_ID, ...parameters });
+    target.dataLayer?.push({ event: `5va_${name}`, ...parameters });
   });
   const choice = readChoice();
   if (choice === 'allowed') {
